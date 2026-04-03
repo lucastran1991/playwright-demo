@@ -17,6 +17,7 @@ type Config struct {
 	DBSSLMode  string
 	JWTSecret  string
 	ServerPort   string
+	CORSOrigin   string
 	BlueprintDir string
 	ModelDir     string
 }
@@ -34,6 +35,7 @@ func Load() (*Config, error) {
 		DBSSLMode:  getEnv("DB_SSLMODE", "disable"),
 		JWTSecret:  getEnv("JWT_SECRET", ""),
 		ServerPort:   getEnv("SERVER_PORT", "8889"),
+		CORSOrigin:   getEnv("CORS_ORIGIN", "http://localhost:8089"),
 		BlueprintDir: getEnv("BLUEPRINT_DIR", "./blueprint/Node & Edge"),
 		ModelDir:     getEnv("MODEL_DIR", "./blueprint"),
 	}

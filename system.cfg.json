@@ -1,5 +1,6 @@
 {
   "project": "playwright-demo",
+  "host": "localhost",
   "backend": {
     "name": "api",
     "cwd": "./backend",

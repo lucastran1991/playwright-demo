@@ -1,14 +1,18 @@
 // PM2 ecosystem config -- reads from system.cfg.json
 const path = require('path')
+const fs = require('fs')
 const cfg = require('./system.cfg.json')
+
+const backendCwd = path.resolve(__dirname, cfg.backend.cwd)
+const hasBinary = fs.existsSync(path.join(backendCwd, 'server'))
 
 module.exports = {
   apps: [
     {
       name: cfg.backend.name,
-      cwd: path.resolve(__dirname, cfg.backend.cwd),
-      script: 'go',
-      args: 'run ./cmd/server',
+      cwd: backendCwd,
+      script: hasBinary ? './server' : 'go',
+      args: hasBinary ? '' : 'run ./cmd/server',
       interpreter: 'none',
       env: {
         BLUEPRINT_DIR: path.resolve(__dirname, cfg.backend.env.BLUEPRINT_DIR),

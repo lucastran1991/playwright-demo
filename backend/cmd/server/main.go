@@ -41,7 +41,7 @@ func main() {
 	depTracer := service.NewDependencyTracer(tracerRepo)
 	tracerHandler := handler.NewTracerHandler(modelIngestionSvc, depTracer, tracerRepo, cfg.ModelDir)
 
-	r := router.Setup(authHandler, blueprintHandler, tracerHandler, cfg.JWTSecret)
+	r := router.Setup(authHandler, blueprintHandler, tracerHandler, cfg.JWTSecret, cfg.CORSOrigin)
 
 	log.Printf("Server starting on :%s", cfg.ServerPort)
 	if err := r.Run(":" + cfg.ServerPort); err != nil {
