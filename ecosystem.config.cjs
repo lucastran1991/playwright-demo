@@ -31,8 +31,10 @@ module.exports = {
     {
       name: cfg.frontend.name,
       cwd: frontendCwd,
-      script: pkg,
-      args: hasNextBuild ? `start --port ${cfg.frontend.port}` : `dev --port ${cfg.frontend.port}`,
+      script: 'npx',
+      args: hasNextBuild
+        ? `next start --hostname 0.0.0.0 --port ${cfg.frontend.port}`
+        : `next dev --hostname 0.0.0.0 --port ${cfg.frontend.port}`,
       interpreter: 'none',
       watch: false,
       autorestart: true,
