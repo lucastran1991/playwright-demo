@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/user/app/internal/repository"
 	"gorm.io/gorm"
@@ -66,7 +67,9 @@ func (t *DependencyTracer) RefreshLookups() {
 		t.topoLookup = lookup
 	}
 
-	// Build topology name -> slug mapping from blueprint_types
+	// Build topology name -> slug mapping from blueprint_types.
+	// Uses case-insensitive prefix matching because CSV topology names
+	// may differ from DB names (e.g. "Whitespace Blueprint" vs "Whitespace").
 	t.slugLookup = make(map[string]string)
 	btypes, err := t.repo.ListBlueprintTypes()
 	if err != nil {
@@ -74,6 +77,22 @@ func (t *DependencyTracer) RefreshLookups() {
 	} else {
 		for _, bt := range btypes {
 			t.slugLookup[bt.Name] = bt.Slug
+		}
+	}
+	// Also build reverse: for each unique topology in capacity_node_types,
+	// find the best matching blueprint_type by case-insensitive prefix.
+	for _, ct := range types {
+		topo := ct.Topology
+		if _, ok := t.slugLookup[topo]; ok {
+			continue // exact match exists
+		}
+		topoLower := strings.ToLower(topo)
+		for _, bt := range btypes {
+			if strings.HasPrefix(topoLower, strings.ToLower(bt.Name)) ||
+				strings.HasPrefix(strings.ToLower(bt.Name), topoLower) {
+				t.slugLookup[topo] = bt.Slug
+				break
+			}
 		}
 	}
 }
