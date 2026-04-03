@@ -1,0 +1,50 @@
+{
+  "project": "playwright-demo",
+  "backend": {
+    "name": "api",
+    "cwd": "./backend",
+    "command": "go run ./cmd/server",
+    "port": 8080,
+    "url": "http://localhost:8080",
+    "env_file": "./backend/.env",
+    "env": {
+      "BLUEPRINT_DIR": "./blueprint/Node & Edge",
+      "MODEL_DIR": "./blueprint"
+    }
+  },
+  "frontend": {
+    "name": "web",
+    "cwd": "./frontend",
+    "command": "pnpm dev",
+    "port": 3000,
+    "url": "http://localhost:3000",
+    "env_file": "./frontend/.env.local"
+  },
+  "database": {
+    "type": "postgresql",
+    "name": "app_dev",
+    "host": "localhost",
+    "port": 5432
+  },
+  "api": {
+    "base_url": "http://localhost:8080",
+    "health": "/health",
+    "auth": {
+      "register": "/api/auth/register",
+      "login": "/api/auth/login"
+    },
+    "blueprints": {
+      "ingest": "/api/blueprints/ingest",
+      "types": "/api/blueprints/types",
+      "nodes": "/api/blueprints/nodes"
+    },
+    "models": {
+      "ingest": "/api/models/ingest",
+      "capacity_nodes": "/api/models/capacity-nodes"
+    },
+    "trace": {
+      "dependencies": "/api/trace/dependencies/:nodeId",
+      "impacts": "/api/trace/impacts/:nodeId"
+    }
+  }
+}
