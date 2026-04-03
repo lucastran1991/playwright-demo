@@ -159,24 +159,9 @@ if [[ "$AUTO_INGEST" -eq 1 ]]; then
   echo ""
   echo "Waiting for backend to start..."
   sleep 5
-  # Register system user (ignore if exists)
-  TOKEN=$(curl -s -X POST "$BE_URL/api/auth/register" \
-    -H "Content-Type: application/json" \
-    -d '{"name":"System","email":"system@local","password":"system-init-password-change-me"}' \
-    | python3 -c "import sys,json; print(json.load(sys.stdin).get('access_token',''))" 2>/dev/null)
-  if [[ -z "$TOKEN" ]]; then
-    TOKEN=$(curl -s -X POST "$BE_URL/api/auth/login" \
-      -H "Content-Type: application/json" \
-      -d '{"email":"system@local","password":"system-init-password-change-me"}' \
-      | python3 -c "import sys,json; print(json.load(sys.stdin).get('access_token',''))" 2>/dev/null)
-  fi
-  if [[ -n "$TOKEN" ]]; then
-    echo "Ingesting blueprints..."
-    curl -s -X POST "$BE_URL/api/blueprints/ingest" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
-    echo "Ingesting models..."
-    curl -s -X POST "$BE_URL/api/models/ingest" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
-    echo "Data ingestion complete."
-  else
-    echo "WARNING: could not get auth token. Run ingestion manually."
-  fi
+  echo "Ingesting blueprints..."
+  curl -s -X POST "$BE_URL/api/blueprints/ingest" | python3 -m json.tool
+  echo "Ingesting models..."
+  curl -s -X POST "$BE_URL/api/models/ingest" | python3 -m json.tool
+  echo "Data ingestion complete."
 fi

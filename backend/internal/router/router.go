@@ -35,7 +35,7 @@ func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.Blueprint
 		auth.POST("/refresh", authHandler.RefreshToken)
 	}
 
-	// Public blueprint read endpoints
+	// Public blueprint endpoints (read + ingest)
 	blueprints := r.Group("/api/blueprints")
 	{
 		blueprints.GET("/types", blueprintHandler.ListTypes)
@@ -43,12 +43,14 @@ func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.Blueprint
 		blueprints.GET("/nodes/:nodeId", blueprintHandler.GetNode)
 		blueprints.GET("/edges", blueprintHandler.ListEdges)
 		blueprints.GET("/tree/:typeSlug", blueprintHandler.GetTree)
+		blueprints.POST("/ingest", blueprintHandler.Ingest)
 	}
 
 	// Public model + trace endpoints
 	models := r.Group("/api/models")
 	{
 		models.GET("/capacity-nodes", tracerHandler.ListCapacityNodes)
+		models.POST("/ingest", tracerHandler.IngestModels)
 	}
 	trace := r.Group("/api/trace")
 	{
@@ -61,8 +63,6 @@ func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.Blueprint
 	protected.Use(middleware.AuthRequired(jwtSecret))
 	{
 		protected.GET("/auth/me", authHandler.Me)
-		protected.POST("/blueprints/ingest", blueprintHandler.Ingest)
-		protected.POST("/models/ingest", tracerHandler.IngestModels)
 	}
 
 	return r
