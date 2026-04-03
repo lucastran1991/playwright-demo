@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query"
 import {
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
   Background,
   Controls,
   useNodesState,
@@ -32,6 +33,7 @@ function DependencyImpactDAGInner() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const { fitView } = useReactFlow()
 
   // Fetch dependency trace (upstream + local)
   const depQuery = useQuery({
@@ -71,6 +73,8 @@ function DependencyImpactDAGInner() {
     const { nodes: laidNodes, edges: laidEdges } = layoutDAG(rawNodes, rawEdges)
     setNodes(laidNodes)
     setEdges(laidEdges)
+    // Center the view after React commits new nodes
+    requestAnimationFrame(() => fitView({ padding: 0.25, duration: 300 }))
   }, [
     selectedNodeId,
     depQuery.data,
