@@ -1,0 +1,6 @@
+Node Type,Impact Node Type,Topological Relationship,Downstream Level
+Rack PDU,Rack,Load,
+RPP,Rack PDU,Downstream,1
+RPP,Rack,Load,
+Room PDU,Rack PDU,Downstream,2
+UPS,Rack PDU,Downstream,3

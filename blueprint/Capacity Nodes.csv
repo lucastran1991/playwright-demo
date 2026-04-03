@@ -1,0 +1,25 @@
+Node Type,Topology,Capacity Node (Capacity Domain),ActiveConstraint
+Rack PDU,Electrical System,False,False
+RPP,Electrical System,True,True
+Room PDU,Electrical System,True,True
+UPS,Electrical System,True,True
+BESS,Electrical System,True,True
+Switch Gear,Electrical System,False,False
+Utility Feed,Electrical System,True,True
+Generator,Electrical System,True,True
+RDHx,Cooling System,False,False
+DTC,Cooling System,False,False
+Air Zone,Cooling System,True,True
+Liquid Lood,Cooling System,True,True
+Air Cooling Unit,Cooling System,False,False
+CDU,Cooling System,False,False
+Cooling Distribution,Cooling System,True,True
+Cooling Plant,Cooling System,True,True
+Rack,Spatial Topology,True,False
+Row,Spatial Topology,False,False
+Zone,Spatial Topology,False,False
+Aisle,Spatial Topology,False,False
+Capacity Cell,Whitespace Blueprint,True,False
+Room Bundle,Whitespace Blueprint,True,False
+Room PDU Bundle,Whitespace Blueprint,True,False
+UPS Bundle,Whitespace Blueprint,True,False

@@ -1,0 +1,6 @@
+Node Type,Dependency Node Type,Relationship Type,Topological Relationship,Upstream Level
+Rack,RPP,Dependency,Upstream,1
+Rack,Room PDU,Dependency,Upstream,2
+Rack,Air Zone,Dependency,Upstream,1
+Rack,RDHx,Dependency,Local,
+Row,RPP,Dependency,Upstream,1

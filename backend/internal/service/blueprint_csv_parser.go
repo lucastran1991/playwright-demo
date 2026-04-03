@@ -73,7 +73,7 @@ func FindCSVFile(domainPath, kind string) (string, error) {
 
 // ParseNodesCSV reads and parses a blueprint Nodes CSV file.
 func ParseNodesCSV(filePath string) ([]NodeRow, error) {
-	records, err := readCSV(filePath)
+	records, err := ReadCSV(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func ParseNodesCSV(filePath string) ([]NodeRow, error) {
 
 // ParseEdgesCSV reads and parses a blueprint Edges CSV file.
 func ParseEdgesCSV(filePath string) ([]EdgeRow, error) {
-	records, err := readCSV(filePath)
+	records, err := ReadCSV(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func FolderToName(folder string) string {
 	return strings.TrimSpace(s)
 }
 
-func readCSV(filePath string) ([][]string, error) {
+func ReadCSV(filePath string) ([][]string, error) {
 	f, err := os.Open(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open CSV file %s: %w", filePath, err)

@@ -1,0 +1,7 @@
+Node Type,Topology,Capacity Node (Capacity Domain),ActiveConstraint
+Rack PDU,Electrical System,False,False
+RPP,Electrical System,True,True
+UPS,Electrical System,True,True
+Air Zone,Cooling System,True,True
+Rack,Spatial Topology,True,False
+Capacity Cell,Whitespace Blueprint,True,False

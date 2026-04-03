@@ -36,7 +36,12 @@ func main() {
 	ingestionSvc := service.NewBlueprintIngestionService(blueprintRepo, db)
 	blueprintHandler := handler.NewBlueprintHandler(ingestionSvc, blueprintRepo, cfg.BlueprintDir)
 
-	r := router.Setup(authHandler, blueprintHandler, cfg.JWTSecret)
+	tracerRepo := repository.NewTracerRepository(db)
+	modelIngestionSvc := service.NewModelIngestionService(db)
+	depTracer := service.NewDependencyTracer(tracerRepo)
+	tracerHandler := handler.NewTracerHandler(modelIngestionSvc, depTracer, tracerRepo, cfg.ModelDir)
+
+	r := router.Setup(authHandler, blueprintHandler, tracerHandler, cfg.JWTSecret)
 
 	log.Printf("Server starting on :%s", cfg.ServerPort)
 	if err := r.Run(":" + cfg.ServerPort); err != nil {

@@ -18,9 +18,12 @@ internal/          # Private packages (internal to app)
   handler/         # HTTP handlers (controllers)
   middleware/      # HTTP middleware (auth, CORS)
   model/           # GORM data models
+    blueprint_*.go # Blueprint domain models
   repository/      # Data access layer
+    blueprint_repository.go
   router/          # Route definitions
   service/         # Business logic
+    blueprint_*.go # Blueprint services
 
 pkg/               # Public/reusable packages
   response/        # Standard response helpers

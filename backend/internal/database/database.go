@@ -37,5 +37,8 @@ func Migrate(db *gorm.DB) error {
 		&model.BlueprintNode{},
 		&model.BlueprintNodeMembership{},
 		&model.BlueprintEdge{},
+		&model.CapacityNodeType{},
+		&model.DependencyRule{},
+		&model.ImpactRule{},
 	)
 }
