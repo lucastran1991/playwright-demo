@@ -16,8 +16,9 @@ export default function TracerNode({ data }: { data: TracerNodeData }) {
 
   return (
     <div
-      className={`relative flex flex-col gap-0.5 rounded-lg px-3 py-2 border-2 ${borderStyle} ${sourceRing} min-w-[180px] max-w-[200px] transition-all`}
+      className={`relative flex flex-col gap-0.5 rounded-lg px-3 py-2 border-2 ${borderStyle} ${sourceRing} min-w-[180px] max-w-[200px] transition-all cursor-pointer hover:scale-[1.03] hover:shadow-lg`}
       style={{ borderColor: color, backgroundColor: bg }}
+      onClick={() => data.onNodeClick?.(data)}
     >
       <Handle type="target" position={Position.Left} className="!border-0 !w-2 !h-2 !rounded-full" style={{ background: color }} />
 

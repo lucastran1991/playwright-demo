@@ -20,7 +20,8 @@ import { traceToDAGElements, layoutDAG } from "./dag-helpers"
 import TracerNode from "./dag-node"
 import TracerEdge from "./dag-edge"
 import DAGSearch from "./dag-search"
-import type { TraceResponse } from "./dag-types"
+import DagDetailPopup from "./dag-detail-popup"
+import type { TraceResponse, TracerNodeData } from "./dag-types"
 
 // Register custom node and edge types
 const nodeTypes = { tracerNode: TracerNode }
@@ -33,6 +34,7 @@ interface ApiWrapper<T> {
 function DependencyImpactDAGInner() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [depth, setDepth] = useState(2)
+  const [popupData, setPopupData] = useState<TracerNodeData | null>(null)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { fitView } = useReactFlow()
@@ -73,7 +75,12 @@ function DependencyImpactDAGInner() {
     const impact = impactQuery.data ?? null
     const { nodes: rawNodes, edges: rawEdges } = traceToDAGElements(dep, impact)
     const { nodes: laidNodes, edges: laidEdges } = layoutDAG(rawNodes, rawEdges)
-    setNodes(laidNodes)
+    // Inject click handler into each node's data
+    const nodesWithClick = laidNodes.map((n) => ({
+      ...n,
+      data: { ...n.data, onNodeClick: (d: TracerNodeData) => setPopupData(d) },
+    }))
+    setNodes(nodesWithClick)
     setEdges(laidEdges)
     // Center view after ReactFlow measures new nodes (needs slight delay)
     setTimeout(() => fitView({ padding: 0.2, duration: 400 }), 50)
@@ -167,6 +174,9 @@ function DependencyImpactDAGInner() {
           className="!bg-card !border-border !shadow-lg [&>button]:!bg-card [&>button]:!border-border [&>button]:!fill-foreground"
         />
       </ReactFlow>
+
+      {/* Node detail popup */}
+      {popupData && <DagDetailPopup data={popupData} onClose={() => setPopupData(null)} />}
     </div>
   )
 }

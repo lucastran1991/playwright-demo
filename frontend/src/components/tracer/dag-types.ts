@@ -44,4 +44,5 @@ export interface TracerNodeData extends Record<string, unknown> {
   isLocal: boolean
   ring: number // distance from source: 0=source, 1=level1, 2=level2, etc.
   level: number // upstream/downstream level (0 for source/local)
+  onNodeClick?: (data: TracerNodeData) => void
 }
