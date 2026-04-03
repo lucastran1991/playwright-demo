@@ -112,48 +112,53 @@ export function traceToDAGElements(
   }
 
   // If local deps exist, create a group node containing source + local deps
+  // Use vertical stack layout: source on top, local deps below
   const allNodes = Array.from(nodesMap.values())
   if (localNodes.length > 0) {
     const groupId = `group-local-${source.node_id}`
-    const cols = Math.min(localNodes.length + 1, 3)
-    const rows = Math.ceil((localNodes.length + 1) / cols)
-    const groupW = cols * (NODE_WIDTH + GROUP_PADDING) + GROUP_PADDING
-    const groupH = rows * (NODE_HEIGHT + GROUP_PADDING) + GROUP_PADDING + 24 // +24 for label
+    const totalItems = localNodes.length + 1 // source + locals
+    const ITEM_GAP = 16
+    const LABEL_H = 28
+    const groupW = NODE_WIDTH + GROUP_PADDING * 2
+    const groupH = LABEL_H + totalItems * NODE_HEIGHT + (totalItems - 1) * ITEM_GAP + GROUP_PADDING * 2
 
     const groupNode: Node = {
       id: groupId,
       type: "group",
       position: { x: 0, y: 0 },
-      data: { label: "Local Dependencies" },
+      data: { label: "Local" },
       style: {
         width: groupW,
         height: groupH,
         border: "1.5px dashed #6B7280",
         borderRadius: "12px",
         backgroundColor: "rgba(107,114,128,0.05)",
-        padding: "8px",
       },
+      zIndex: -1,
     }
 
-    // Position children relative to group
+    // Source node at top of group
     const sourceInGroup = nodesMap.get(source.node_id)!
     sourceInGroup.parentId = groupId
     sourceInGroup.extent = "parent"
-    sourceInGroup.position = { x: GROUP_PADDING, y: GROUP_PADDING + 24 }
+    sourceInGroup.position = { x: GROUP_PADDING, y: LABEL_H + GROUP_PADDING }
+    sourceInGroup.zIndex = 10
 
+    // Local deps stacked below source
     localNodes.forEach((ln, i) => {
       ln.parentId = groupId
       ln.extent = "parent"
-      const col = (i + 1) % cols
-      const row = Math.floor((i + 1) / cols)
-      ln.position = { x: GROUP_PADDING + col * (NODE_WIDTH + GROUP_PADDING), y: GROUP_PADDING + 24 + row * (NODE_HEIGHT + GROUP_PADDING) }
+      ln.position = { x: GROUP_PADDING, y: LABEL_H + GROUP_PADDING + (i + 1) * (NODE_HEIGHT + ITEM_GAP) }
+      ln.zIndex = 10
     })
 
-    // Group must come first in nodes array
-    return { nodes: [groupNode, ...allNodes], edges }
+    // Group must come first in nodes array, set high zIndex on all non-group nodes
+    const nonGroupNodes = allNodes.map((n) => ({ ...n, zIndex: n.zIndex ?? 10 }))
+    return { nodes: [groupNode, ...nonGroupNodes], edges }
   }
 
-  return { nodes: allNodes, edges }
+  // No group: set zIndex on all nodes to stay above edges
+  return { nodes: allNodes.map((n) => ({ ...n, zIndex: 10 })), edges }
 }
 
 // Dagre LR layout
