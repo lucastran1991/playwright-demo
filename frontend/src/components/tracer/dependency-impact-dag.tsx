@@ -93,7 +93,7 @@ function DependencyImpactDAGInner() {
   const isEmpty = !selectedNodeId
 
   return (
-    <div className="relative h-[calc(100vh-10rem)] rounded-lg border border-border overflow-hidden bg-card">
+    <div className="relative h-[calc(100vh-8rem)] rounded-lg border border-border overflow-hidden bg-card">
       {/* Search bar overlay */}
       <DAGSearch onSelect={handleSelect} onClear={handleClear} />
 

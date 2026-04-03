@@ -1,6 +1,6 @@
 import dagre from "@dagrejs/dagre"
 import { Zap, Droplets, Building2, Package } from "lucide-react"
-import type { Node, Edge } from "@xyflow/react"
+import { MarkerType, type Node, type Edge } from "@xyflow/react"
 import type { TraceResponse, TracerNodeData } from "./dag-types"
 
 // Topology display config
@@ -21,9 +21,14 @@ export function getTopologyKey(topology: string): string {
 }
 
 // Edge style constants
-const DEP_STYLE = { stroke: "#3B82F6", strokeWidth: 2 }
-const IMPACT_STYLE = { stroke: "#EF4444", strokeWidth: 2 }
+const DEP_STYLE = { stroke: "#3B82F6", strokeWidth: 2.5 }
+const IMPACT_STYLE = { stroke: "#EF4444", strokeWidth: 2.5 }
 const LOCAL_STYLE = { stroke: "#6B7280", strokeWidth: 1.5, strokeDasharray: "6 3" }
+
+// Arrow markers
+const DEP_MARKER = { type: MarkerType.ArrowClosed, color: "#3B82F6", width: 16, height: 16 }
+const IMPACT_MARKER = { type: MarkerType.ArrowClosed, color: "#EF4444", width: 16, height: 16 }
+const LOCAL_MARKER = { type: MarkerType.ArrowClosed, color: "#6B7280", width: 12, height: 12 }
 
 const NODE_WIDTH = 200
 const NODE_HEIGHT = 80
@@ -57,7 +62,7 @@ export function traceToDAGElements(
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false))
         }
-        edges.push({ id: `dep-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: DEP_STYLE, data: { label: group.topology } })
+        edges.push({ id: `dep-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: DEP_STYLE, animated: true, markerEnd: DEP_MARKER })
       }
     }
   }
@@ -69,7 +74,7 @@ export function traceToDAGElements(
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true))
         }
-        edges.push({ id: `local-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: LOCAL_STYLE, data: { label: group.topology } })
+        edges.push({ id: `local-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: LOCAL_STYLE, markerEnd: LOCAL_MARKER })
       }
     }
   }
@@ -81,7 +86,7 @@ export function traceToDAGElements(
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false))
         }
-        edges.push({ id: `impact-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: IMPACT_STYLE, data: { label: group.topology } })
+        edges.push({ id: `impact-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: IMPACT_STYLE, animated: true, markerEnd: IMPACT_MARKER })
       }
     }
   }
@@ -93,7 +98,7 @@ export function traceToDAGElements(
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true))
         }
-        edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOCAL_STYLE, data: { label: group.topology } })
+        edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOCAL_STYLE, markerEnd: LOCAL_MARKER })
       }
     }
   }

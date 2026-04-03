@@ -57,19 +57,7 @@ export default function TracerEdge({
         path={edgePath}
         style={style}
       />
-      {/* Optional topology label */}
-      {data?.label && (
-        <text>
-          <textPath
-            href={`#${id}`}
-            startOffset="50%"
-            textAnchor="middle"
-            style={{ fontSize: 9, fill: strokeColor, opacity: 0.7 }}
-          >
-            {data.label}
-          </textPath>
-        </text>
-      )}
+      {/* Labels hidden for cleaner view */}
     </>
   )
 }
