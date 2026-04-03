@@ -4,7 +4,9 @@ const fs = require('fs')
 const cfg = require('./system.cfg.json')
 
 const backendCwd = path.resolve(__dirname, cfg.backend.cwd)
+const frontendCwd = path.resolve(__dirname, cfg.frontend.cwd)
 const hasBinary = fs.existsSync(path.join(backendCwd, 'server'))
+const hasNextBuild = fs.existsSync(path.join(frontendCwd, '.next'))
 
 module.exports = {
   apps: [
@@ -24,9 +26,9 @@ module.exports = {
     },
     {
       name: cfg.frontend.name,
-      cwd: path.resolve(__dirname, cfg.frontend.cwd),
+      cwd: frontendCwd,
       script: 'pnpm',
-      args: `dev --port ${cfg.frontend.port}`,
+      args: hasNextBuild ? `start --port ${cfg.frontend.port}` : `dev --port ${cfg.frontend.port}`,
       interpreter: 'none',
       watch: false,
       autorestart: true,
