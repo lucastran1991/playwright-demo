@@ -60,7 +60,7 @@ if [[ "$WITH_POSTGRES" -eq 1 ]]; then
   createdb app_dev 2>/dev/null || true
 fi
 
-# Validate env files
+# Validate env files exist
 if [[ ! -f "$BACKEND/.env" ]]; then
   echo "Missing backend/.env — copy from .env.example:"
   echo "  cp $BACKEND/.env.example $BACKEND/.env"
@@ -71,6 +71,27 @@ if [[ ! -f "$FRONTEND/.env.local" ]]; then
   echo "Missing frontend/.env.local — copy from .env.example:"
   echo "  cp $FRONTEND/.env.example $FRONTEND/.env.local"
   exit 1
+fi
+
+# Sync ports/URLs from system.cfg.json into .env files (single source of truth)
+SYSCFG="$ROOT/system.cfg.json"
+if command -v python3 >/dev/null 2>&1 && [[ -f "$SYSCFG" ]]; then
+  eval "$(python3 -c "
+import json
+cfg = json.load(open('$SYSCFG'))
+be = cfg['backend']
+fe = cfg['frontend']
+print(f'BE_PORT={be[\"port\"]}')
+print(f'FE_PORT={fe[\"port\"]}')
+print(f'BE_URL={be[\"url\"]}')
+print(f'FE_URL={fe[\"url\"]}')
+")"
+  # Update backend SERVER_PORT
+  sed -i '' "s|^SERVER_PORT=.*|SERVER_PORT=$BE_PORT|" "$BACKEND/.env"
+  # Update frontend API URL and AUTH_URL
+  sed -i '' "s|^NEXT_PUBLIC_API_URL=.*|NEXT_PUBLIC_API_URL=$BE_URL|" "$FRONTEND/.env.local"
+  sed -i '' "s|^AUTH_URL=.*|AUTH_URL=$FE_URL|" "$FRONTEND/.env.local"
+  echo "Synced ports from system.cfg.json (backend:$BE_PORT, frontend:$FE_PORT)"
 fi
 
 # Install frontend deps if needed
@@ -93,9 +114,9 @@ echo "  Stop:    ./start.sh stop"
 echo "  Restart: ./start.sh restart"
 echo "  Status:  ./start.sh status"
 echo ""
-echo "Backend:  http://localhost:8889"
-echo "Frontend: http://localhost:8089"
-echo "Tracer:   http://localhost:8089/tracer"
+echo "Backend:  ${BE_URL:-http://localhost:8889}"
+echo "Frontend: ${FE_URL:-http://localhost:8089}"
+echo "Tracer:   ${FE_URL:-http://localhost:8089}/tracer"
 echo ""
 echo "--- Quick setup (first time) ---"
 echo "  bash scripts/register-dev-users.sh"
