@@ -7,11 +7,12 @@ import (
 
 // TracedNode represents a node found during dependency/impact tracing.
 type TracedNode struct {
-	ID       uint   `json:"id"`
-	NodeID   string `json:"node_id"`
-	Name     string `json:"name"`
-	NodeType string `json:"node_type"`
-	Level    int    `json:"level"`
+	ID           uint    `json:"id"`
+	NodeID       string  `json:"node_id"`
+	Name         string  `json:"name"`
+	NodeType     string  `json:"node_type"`
+	Level        int     `json:"level"`
+	ParentNodeID *string `json:"parent_node_id,omitempty"`
 }
 
 // TracerRepository handles queries for dependency/impact tracing.
@@ -29,24 +30,27 @@ func (r *TracerRepository) FindUpstreamNodes(sourceDBID uint, typeSlug string, m
 	var nodes []TracedNode
 	err := r.db.Raw(`
 		WITH RECURSIVE upstream AS (
-			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level,
+			       child.node_id as parent_node_id
 			FROM blueprint_edges be
 			JOIN blueprint_nodes bn ON bn.id = be.from_node_id
+			JOIN blueprint_nodes child ON child.id = be.to_node_id
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE be.to_node_id = ? AND bt.slug = ?
 
 			UNION ALL
 
-			SELECT bn.id, bn.node_id, bn.name, bn.node_type, u.level + 1
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, u.level + 1,
+			       u.node_id as parent_node_id
 			FROM upstream u
 			JOIN blueprint_edges be ON be.to_node_id = u.id
 			JOIN blueprint_nodes bn ON bn.id = be.from_node_id
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE bt.slug = ? AND u.level < ?
 		)
-		SELECT DISTINCT id, node_id, name, node_type, MIN(level) as level
+		SELECT id, node_id, name, node_type, MIN(level) as level, parent_node_id
 		FROM upstream
-		GROUP BY id, node_id, name, node_type
+		GROUP BY id, node_id, name, node_type, parent_node_id
 		ORDER BY level, node_type, node_id
 	`, sourceDBID, typeSlug, typeSlug, maxLevel).Scan(&nodes).Error
 	return nodes, err
@@ -57,24 +61,27 @@ func (r *TracerRepository) FindDownstreamNodes(sourceDBID uint, typeSlug string,
 	var nodes []TracedNode
 	err := r.db.Raw(`
 		WITH RECURSIVE downstream AS (
-			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level,
+			       parent.node_id as parent_node_id
 			FROM blueprint_edges be
 			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+			JOIN blueprint_nodes parent ON parent.id = be.from_node_id
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE be.from_node_id = ? AND bt.slug = ?
 
 			UNION ALL
 
-			SELECT bn.id, bn.node_id, bn.name, bn.node_type, d.level + 1
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, d.level + 1,
+			       d.node_id as parent_node_id
 			FROM downstream d
 			JOIN blueprint_edges be ON be.from_node_id = d.id
 			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE bt.slug = ? AND d.level < ?
 		)
-		SELECT DISTINCT id, node_id, name, node_type, MIN(level) as level
+		SELECT id, node_id, name, node_type, MIN(level) as level, parent_node_id
 		FROM downstream
-		GROUP BY id, node_id, name, node_type
+		GROUP BY id, node_id, name, node_type, parent_node_id
 		ORDER BY level, node_type, node_id
 	`, sourceDBID, typeSlug, typeSlug, maxLevel).Scan(&nodes).Error
 	return nodes, err

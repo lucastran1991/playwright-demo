@@ -5,6 +5,7 @@ export interface TracedNode {
   name: string
   node_type: string
   level: number
+  parent_node_id?: string
 }
 
 export interface TraceLevelGroup {

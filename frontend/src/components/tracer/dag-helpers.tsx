@@ -61,14 +61,20 @@ export function traceToDAGElements(
   const sourceTopo = source.topology || "Electrical System"
   nodesMap.set(source.node_id, makeNode(source.node_id, source.name, source.node_type, sourceTopo, 0, true, false))
 
-  // Upstream deps
+  // Upstream deps -- chain edges using parent_node_id (L2→L1→source)
   if (depResponse?.upstream) {
     for (const group of depResponse.upstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level))
         }
-        edges.push({ id: `dep-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: UPSTREAM_STYLE, animated: true, markerEnd: UPSTREAM_MARKER })
+        // Edge: this node → its child (parent_node_id). Falls back to source if parent not in graph.
+        const rawTarget = n.parent_node_id ?? source.node_id
+        const target = nodesMap.has(rawTarget) || rawTarget === source.node_id ? rawTarget : source.node_id
+        const edgeId = `dep-${n.node_id}-${target}`
+        if (!edges.some((e) => e.id === edgeId)) {
+          edges.push({ id: edgeId, source: n.node_id, target, type: "tracerEdge", style: UPSTREAM_STYLE, animated: true, markerEnd: UPSTREAM_MARKER })
+        }
       }
     }
   }
@@ -87,14 +93,20 @@ export function traceToDAGElements(
     }
   }
 
-  // Downstream impacts
+  // Downstream impacts -- chain edges using parent_node_id (source→L1→L2)
   if (impactResponse?.downstream) {
     for (const group of impactResponse.downstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level))
         }
-        edges.push({ id: `impact-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: DOWNSTREAM_STYLE, animated: true, markerEnd: DOWNSTREAM_MARKER })
+        // Edge: parent → this node. Falls back to source if parent not in graph.
+        const rawFrom = n.parent_node_id ?? source.node_id
+        const from = nodesMap.has(rawFrom) || rawFrom === source.node_id ? rawFrom : source.node_id
+        const edgeId = `impact-${from}-${n.node_id}`
+        if (!edges.some((e) => e.id === edgeId)) {
+          edges.push({ id: edgeId, source: from, target: n.node_id, type: "tracerEdge", style: DOWNSTREAM_STYLE, animated: true, markerEnd: DOWNSTREAM_MARKER })
+        }
       }
     }
   }
