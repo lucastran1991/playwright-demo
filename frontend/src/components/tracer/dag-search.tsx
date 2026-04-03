@@ -80,7 +80,7 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
     setDebouncedQuery("")
     setSelectedLabel("")
     setIsOpen(false)
-    setTypeFilter("All Types")
+    // Keep typeFilter -- only clear search text and selected node
     onClear()
   }
 
