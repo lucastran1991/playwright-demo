@@ -23,6 +23,7 @@ type SourceNode struct {
 	NodeID   string `json:"node_id"`
 	Name     string `json:"name"`
 	NodeType string `json:"node_type"`
+	Topology string `json:"topology"`
 }
 
 // TraceLevelGroup groups traced nodes by level and topology.
@@ -113,7 +114,7 @@ func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, inclu
 	}
 
 	resp := &TraceResponse{
-		Source: SourceNode{NodeID: node.NodeID, Name: node.Name, NodeType: node.NodeType},
+		Source: SourceNode{NodeID: node.NodeID, Name: node.Name, NodeType: node.NodeType, Topology: t.lookupTopology(node.NodeType)},
 	}
 
 	upstreamByTopo, localByTopo := t.groupDepRules(rules)
@@ -169,7 +170,7 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 	}
 
 	resp := &TraceResponse{
-		Source: SourceNode{NodeID: node.NodeID, Name: node.Name, NodeType: node.NodeType},
+		Source: SourceNode{NodeID: node.NodeID, Name: node.Name, NodeType: node.NodeType, Topology: t.lookupTopology(node.NodeType)},
 	}
 
 	downstreamByTopo, loadByTopo := t.groupImpactRules(rules)

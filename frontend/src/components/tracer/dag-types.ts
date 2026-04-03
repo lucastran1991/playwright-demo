@@ -19,7 +19,7 @@ export interface TraceLocalGroup {
 }
 
 export interface TraceResponse {
-  source: { node_id: string; name: string; node_type: string }
+  source: { node_id: string; name: string; node_type: string; topology?: string }
   upstream?: TraceLevelGroup[]
   local?: TraceLocalGroup[]
   downstream?: TraceLevelGroup[]
@@ -42,4 +42,5 @@ export interface TracerNodeData extends Record<string, unknown> {
   isSource: boolean
   isLocal: boolean
   ring: number // distance from source: 0=source, 1=level1, 2=level2, etc.
+  level: number // upstream/downstream level (0 for source/local)
 }

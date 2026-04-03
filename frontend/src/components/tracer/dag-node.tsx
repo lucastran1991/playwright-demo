@@ -5,69 +5,55 @@ import { Handle, Position } from "@xyflow/react"
 import { TOPOLOGY_CONFIG, getTopologyKey } from "./dag-helpers"
 import type { TracerNodeData } from "./dag-types"
 
-interface TracerNodeProps {
-  data: TracerNodeData
-}
-
-export default function TracerNode({ data }: TracerNodeProps) {
+export default function TracerNode({ data }: { data: TracerNodeData }) {
   const topoKey = getTopologyKey(data.topology)
   const config = TOPOLOGY_CONFIG[topoKey] ?? TOPOLOGY_CONFIG.default
-  const color = config.color
-  const icon = config.icon
+  const { color, bg, icon } = config
 
-  const borderClass = data.isLocal
-    ? "border-dashed border-2"
-    : "border border-solid"
-
-  const sourceHighlight = data.isSource
-    ? "ring-2 ring-yellow-400/50 shadow-lg shadow-yellow-400/20"
-    : ""
+  const borderStyle = data.isLocal ? "border-dashed" : "border-solid"
+  const sourceRing = data.isSource ? "ring-2 ring-amber-400/60 shadow-lg shadow-amber-400/20" : ""
+  const showLevel = !data.isSource && !data.isLocal && data.level > 0
 
   return (
     <div
-      className={`
-        relative flex flex-col gap-1 rounded-lg bg-card px-3 py-2
-        ${borderClass} ${sourceHighlight}
-        min-w-[180px] max-w-[200px]
-      `}
-      style={{ borderColor: color }}
+      className={`relative flex flex-col gap-0.5 rounded-lg px-3 py-2 border-2 ${borderStyle} ${sourceRing} min-w-[180px] max-w-[200px] transition-all`}
+      style={{ borderColor: color, backgroundColor: bg }}
     >
-      {/* Target handle - left side for LR layout */}
-      <Handle
-        type="target"
-        position={Position.Left}
-        className="!border-0 !w-2 !h-2 !rounded-full"
-        style={{ background: color }}
-      />
+      <Handle type="target" position={Position.Left} className="!border-0 !w-2 !h-2 !rounded-full" style={{ background: color }} />
 
-      {/* Header: topology icon + node_type */}
+      {/* Level badge - top right */}
+      {showLevel && (
+        <span className="absolute -top-2 -right-2 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-card border border-border text-muted-foreground shadow-sm">
+          L{data.level}
+        </span>
+      )}
+
+      {/* Source badge */}
+      {data.isSource && (
+        <span className="absolute -top-2 -right-2 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-400 text-black shadow-sm">
+          SRC
+        </span>
+      )}
+
+      {/* Header: icon + type */}
       <div className="flex items-center gap-1.5">
         <span style={{ color }}>{icon}</span>
         <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground truncate">
           {data.nodeType}
         </span>
-        {data.isSource && (
-          <span className="ml-auto text-[10px] font-semibold text-yellow-500">SOURCE</span>
-        )}
       </div>
 
-      {/* node_id - bold */}
+      {/* Node ID */}
       <p className="text-xs font-bold leading-tight truncate" style={{ color }}>
         {data.nodeId}
       </p>
 
-      {/* name - muted, smaller */}
+      {/* Name */}
       <p className="text-[11px] text-muted-foreground leading-tight truncate">
         {data.name}
       </p>
 
-      {/* Source handle - right side for LR layout */}
-      <Handle
-        type="source"
-        position={Position.Right}
-        className="!border-0 !w-2 !h-2 !rounded-full"
-        style={{ background: color }}
-      />
+      <Handle type="source" position={Position.Right} className="!border-0 !w-2 !h-2 !rounded-full" style={{ background: color }} />
     </div>
   )
 }
