@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { Network } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -26,6 +27,11 @@ const navItems = [
         <rect width="7" height="5" x="3" y="16" rx="1" />
       </svg>
     ),
+  },
+  {
+    title: "Tracer",
+    href: "/dashboard/tracer",
+    icon: <Network className="h-4 w-4" />,
   },
   {
     title: "Settings",

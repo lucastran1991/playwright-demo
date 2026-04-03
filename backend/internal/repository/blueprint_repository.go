@@ -74,8 +74,8 @@ func (r *BlueprintRepository) ListTypes() ([]model.BlueprintType, error) {
 	return types, nil
 }
 
-// ListNodes returns nodes with optional type filter and pagination.
-func (r *BlueprintRepository) ListNodes(typeSlug string, limit, offset int) ([]model.BlueprintNode, int64, error) {
+// ListNodes returns nodes with optional type filter, text search, and pagination.
+func (r *BlueprintRepository) ListNodes(typeSlug, search string, limit, offset int) ([]model.BlueprintNode, int64, error) {
 	query := r.db.Model(&model.BlueprintNode{})
 	if typeSlug != "" {
 		query = query.Where("id IN (?)",
@@ -83,6 +83,9 @@ func (r *BlueprintRepository) ListNodes(typeSlug string, limit, offset int) ([]m
 				Joins("JOIN blueprint_types ON blueprint_types.id = blueprint_node_memberships.blueprint_type_id").
 				Where("blueprint_types.slug = ?", typeSlug),
 		)
+	}
+	if search != "" {
+		query = query.Where("node_id ILIKE ? OR name ILIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
 	var total int64
