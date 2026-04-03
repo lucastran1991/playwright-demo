@@ -1,3 +1,4 @@
+import dagre from "@dagrejs/dagre"
 import { Zap, Droplets, Building2, Package } from "lucide-react"
 import type { Node, Edge } from "@xyflow/react"
 import type { TraceResponse, TracerNodeData } from "./dag-types"
@@ -100,46 +101,26 @@ export function traceToDAGElements(
   return { nodes: Array.from(nodesMap.values()), edges }
 }
 
-// Radial/concentric layout: source at center, nodes arranged in rings by distance (ring field).
-// Nodes at the same ring are evenly spaced around the circle at that radius.
+// Dagre horizontal (LR) layout
 export function layoutDAG(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges: Edge[] } {
   if (nodes.length === 0) return { nodes, edges }
 
-  const RING_RADIUS = 250 // distance between concentric rings
+  const g = new dagre.graphlib.Graph()
+  g.setDefaultEdgeLabel(() => ({}))
+  g.setGraph({ rankdir: "LR", ranksep: 100, nodesep: 40, marginx: 30, marginy: 30 })
 
-  // Group nodes by ring
-  const ringGroups = new Map<number, Node[]>()
   for (const node of nodes) {
-    const ring = (node.data as TracerNodeData).ring ?? 0
-    if (!ringGroups.has(ring)) ringGroups.set(ring, [])
-    ringGroups.get(ring)!.push(node)
+    g.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT })
+  }
+  for (const edge of edges) {
+    g.setEdge(edge.source, edge.target)
   }
 
+  dagre.layout(g)
+
   const laid = nodes.map((node) => {
-    const data = node.data as TracerNodeData
-    const ring = data.ring ?? 0
-
-    // Source at center
-    if (ring === 0) {
-      return { ...node, position: { x: -NODE_WIDTH / 2, y: -NODE_HEIGHT / 2 } }
-    }
-
-    const siblings = ringGroups.get(ring)!
-    const idx = siblings.indexOf(node)
-    const count = siblings.length
-    const radius = ring * RING_RADIUS
-
-    // Distribute evenly around the circle, starting from top
-    const angleStep = (2 * Math.PI) / count
-    const angle = -Math.PI / 2 + idx * angleStep // start from top
-
-    return {
-      ...node,
-      position: {
-        x: Math.cos(angle) * radius - NODE_WIDTH / 2,
-        y: Math.sin(angle) * radius - NODE_HEIGHT / 2,
-      },
-    }
+    const pos = g.node(node.id)
+    return { ...node, position: { x: pos.x - NODE_WIDTH / 2, y: pos.y - NODE_HEIGHT / 2 } }
   })
 
   return { nodes: laid, edges }
