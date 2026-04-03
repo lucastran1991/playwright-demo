@@ -3,18 +3,6 @@
 
 import { BaseEdge, getSmoothStepPath } from "@xyflow/react"
 
-interface TracerEdgeProps {
-  id: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  sourcePosition: any
-  targetPosition: any
-  style?: React.CSSProperties
-  data?: { label?: string }
-}
-
 export default function TracerEdge({
   id,
   sourceX,
@@ -24,8 +12,8 @@ export default function TracerEdge({
   sourcePosition,
   targetPosition,
   style = {},
-  data,
-}: TracerEdgeProps) {
+  markerEnd,
+}) {
   const [edgePath] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -36,8 +24,6 @@ export default function TracerEdge({
     borderRadius: 8,
   })
 
-  const strokeColor = (style.stroke as string) || "#6B7280"
-
   return (
     <>
       {/* Glow layer */}
@@ -46,18 +32,18 @@ export default function TracerEdge({
         path={edgePath}
         style={{
           ...style,
-          strokeWidth: (style.strokeWidth as number ?? 2) + 4,
+          strokeWidth: (style.strokeWidth ?? 2) + 4,
           strokeOpacity: 0.15,
-          strokeDasharray: style.strokeDasharray as string | undefined,
+          strokeDasharray: style.strokeDasharray,
         }}
       />
-      {/* Main edge */}
+      {/* Main edge with arrow */}
       <BaseEdge
         id={id}
         path={edgePath}
         style={style}
+        markerEnd={markerEnd}
       />
-      {/* Labels hidden for cleaner view */}
     </>
   )
 }
