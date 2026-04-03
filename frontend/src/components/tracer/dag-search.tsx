@@ -50,19 +50,22 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
+  const activeType = typeFilter !== "All Types" ? typeFilter : ""
+  const hasQuery = debouncedQuery.length >= 2 || activeType !== ""
+
   const { data, isFetching } = useQuery({
-    queryKey: ["node-search", debouncedQuery],
-    queryFn: () =>
-      apiFetch<SearchResponse>(`/api/blueprints/nodes?search=${encodeURIComponent(debouncedQuery)}&limit=50`),
-    enabled: debouncedQuery.length >= 2,
+    queryKey: ["node-search", debouncedQuery, activeType],
+    queryFn: () => {
+      const params = new URLSearchParams({ limit: "20" })
+      if (debouncedQuery.length >= 2) params.set("search", debouncedQuery)
+      if (activeType) params.set("node_type", activeType)
+      return apiFetch<SearchResponse>(`/api/blueprints/nodes?${params}`)
+    },
+    enabled: hasQuery,
     staleTime: 30_000,
   })
 
-  // Client-side type filter on results
-  const allResults = data?.data ?? []
-  const results = typeFilter === "All Types"
-    ? allResults.slice(0, 20)
-    : allResults.filter((n) => n.node_type === typeFilter).slice(0, 20)
+  const results = data?.data ?? []
 
   function handleSelect(node: SearchNode) {
     setSelectedLabel(`${node.node_id} — ${node.name}`)
@@ -81,7 +84,7 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
     onClear()
   }
 
-  const showDropdown = isOpen && debouncedQuery.length >= 2
+  const showDropdown = isOpen && hasQuery
 
   return (
     <div ref={containerRef} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[480px]">
@@ -128,7 +131,7 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
           {NODE_TYPES.map((t) => (
             <button
               key={t}
-              onClick={() => { setTypeFilter(t); setShowTypeDropdown(false) }}
+              onClick={() => { setTypeFilter(t); setShowTypeDropdown(false); setIsOpen(true) }}
               className={`w-full text-left px-3 py-2 text-xs transition-colors border-b border-border/30 last:border-0 ${
                 typeFilter === t ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent text-foreground"
               }`}

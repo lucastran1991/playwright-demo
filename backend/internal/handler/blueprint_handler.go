@@ -47,9 +47,10 @@ func (h *BlueprintHandler) ListTypes(c *gin.Context) {
 func (h *BlueprintHandler) ListNodes(c *gin.Context) {
 	typeSlug := c.Query("type")
 	search := c.Query("search")
+	nodeType := c.Query("node_type")
 	limit, offset := parsePagination(c)
 
-	nodes, total, err := h.repo.ListNodes(typeSlug, search, limit, offset)
+	nodes, total, err := h.repo.ListNodes(typeSlug, search, nodeType, limit, offset)
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to list nodes")
 		return
