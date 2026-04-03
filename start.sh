@@ -115,9 +115,16 @@ sedi "s|^NEXT_PUBLIC_API_URL=.*|NEXT_PUBLIC_API_URL=$BE_URL|" "$FRONTEND/.env.lo
 sedi "s|^AUTH_URL=.*|AUTH_URL=$FE_URL|" "$FRONTEND/.env.local"
 echo "Config synced from system.cfg.json (backend:$BE_PORT, frontend:$FE_PORT)"
 
+# Detect package manager (pnpm > npm)
+if command -v pnpm >/dev/null 2>&1; then
+  PKG="pnpm"
+else
+  PKG="npm"
+fi
+
 # Install frontend deps if needed
 if [[ ! -d "$FRONTEND/node_modules" ]]; then
-  (cd "$FRONTEND" && pnpm install)
+  (cd "$FRONTEND" && $PKG install)
 fi
 
 # Production build
@@ -125,7 +132,7 @@ if [[ "$PROD_MODE" -eq 1 ]]; then
   echo "Building backend binary..."
   (cd "$BACKEND" && go build -o server ./cmd/server)
   echo "Building frontend..."
-  (cd "$FRONTEND" && pnpm build)
+  (cd "$FRONTEND" && $PKG run build)
 fi
 
 # Stop existing PM2 processes and flush logs
