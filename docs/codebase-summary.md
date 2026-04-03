@@ -5,8 +5,8 @@
 Fullstack application scaffold with Go Gin backend and Next.js 15 frontend. Clean architecture separation with JWT authentication, PostgreSQL persistence, and production-ready UI components.
 
 **Generated:** 2026-04-03  
-**Last Updated:** From repomix scan  
-**Total Files:** 107 files  
+**Last Updated:** 2026-04-04 (Added capacity nodes, dependency/impact rules, tracer API)  
+**Total Files:** 120+ files (with tracer feature)  
 **Primary Languages:** Go, TypeScript/TSX
 
 ## Directory Structure
@@ -191,6 +191,18 @@ playground-demo/
 - BlueprintEdge model: ID, SourceNodeID (FK), TargetNodeID (FK), BlueprintTypeID (FK), timestamps
 - Represents directed edges between nodes
 
+**`internal/model/capacity_node_type.go`**
+- CapacityNodeType model: ID, NodeType, Topology, IsCapacityNode, ActiveConstraint, timestamps
+- Metadata: which node types are capacity domains across topologies
+
+**`internal/model/dependency_rule.go`**
+- DependencyRule model: ID, NodeType, DependencyNodeType, RelationshipType, TopologicalRelationship, UpstreamLevel, timestamps
+- Type-level upstream/local dependencies (composite unique key on node_type + dependency_node_type)
+
+**`internal/model/impact_rule.go`**
+- ImpactRule model: ID, NodeType, ImpactNodeType, TopologicalRelationship, DownstreamLevel, timestamps
+- Type-level downstream/load impacts (composite unique key on node_type + impact_node_type)
+
 **`internal/service/auth_service.go`** (123 lines)
 - `Register(name, email, password)` - Creates user, hashes password, generates tokens
 - `Login(email, password)` - Validates credentials, generates tokens
@@ -209,6 +221,25 @@ playground-demo/
 - `ParseEdges(file, typeID)` - Extracts source/target edges from Edges.csv
 - `ParseHierarchy(file)` - Extracts parent/child memberships from Hierarchy.csv
 - Handles CSV parsing with validation
+- `ReadCSV(filePath)` - Exported helper for CSV file reading
+
+**`internal/service/model_csv_parser.go`**
+- `ParseCapacityNodesCSV(filePath)` - Parses Capacity Nodes.csv (24 rows)
+- `ParseDependenciesCSV(filePath)` - Parses Dependencies.csv (147 rows)
+- `ParseImpactsCSV(filePath)` - Parses Impacts.csv (118 rows)
+- Handles nullable integers (upstream_level, downstream_level)
+- Handles "True"/"False" string to bool conversion
+
+**`internal/service/model_ingestion_service.go`**
+- `IngestAll(modelDir)` - Orchestrates ingestion of 3 model CSVs
+- Idempotent upsert: ON CONFLICT DO UPDATE per table
+- Returns summary: capacity nodes, dependency rules, impact rules upserted
+
+**`internal/service/dependency_tracer.go`**
+- `TraceDependencies(nodeID, maxLevels, includeLocal)` - Resolves upstream dependencies
+- `TraceImpacts(nodeID, maxLevels, loadScope)` - Resolves downstream impacts
+- Groups results by topology and hop level
+- Filters to only nodes matching rule target types
 
 **`internal/repository/user_repository.go`** (Not shown, but referenced)
 - `Create(user)` - INSERT user
@@ -226,6 +257,14 @@ playground-demo/
 - `SaveEdges(edges)` - Persists blueprint edges
 - `SaveMemberships(memberships)` - Persists node memberships
 
+**`internal/repository/tracer_repository.go`**
+- `FindUpstreamNodes(sourceDBID, typeSlug, maxLevel)` - Recursive CTE: parent walk
+- `FindDownstreamNodes(sourceDBID, typeSlug, maxLevel)` - Recursive CTE: child walk
+- `FindLocalNodes(sourceDBID, typeSlug)` - Direct edge neighbors
+- `ListCapacityNodeTypes()` - All capacity node types
+- `GetDependencyRules(nodeType)` - Rules for given node type
+- `GetImpactRules(nodeType)` - Impact rules for given node type
+
 **`internal/handler/auth_handler.go`** (130 lines)
 - `Register(c *gin.Context)` - POST /api/auth/register
 - `Login(c *gin.Context)` - POST /api/auth/login
@@ -240,6 +279,12 @@ playground-demo/
 - `GetNode(c *gin.Context)` - GET /api/blueprints/nodes/:nodeId - Single node + memberships
 - `ListEdges(c *gin.Context)` - GET /api/blueprints/edges - Lists edges for type
 - `GetTree(c *gin.Context)` - GET /api/blueprints/tree/:typeSlug - Recursive tree structure
+
+**`internal/handler/tracer_handler.go`**
+- `IngestModels(c *gin.Context)` - POST /api/models/ingest (protected) - Triggers model CSV ingestion
+- `ListCapacityNodes(c *gin.Context)` - GET /api/models/capacity-nodes - Lists all capacity node types
+- `TraceDependencies(c *gin.Context)` - GET /api/trace/dependencies/:nodeId - Upstream dependencies
+- `TraceImpacts(c *gin.Context)` - GET /api/trace/impacts/:nodeId - Downstream impacts
 
 **`internal/router/router.go`** (Not shown, but referenced)
 - Gin engine setup with CORS middleware
@@ -472,6 +517,40 @@ blueprint_type_id (uint, FK to blueprint_types)
 created_at (timestamp)
 ```
 
+### Capacity Node Type
+```
+id (uint, primary key)
+node_type (string, unique)
+topology (string)
+is_capacity_node (bool)
+active_constraint (bool)
+created_at (timestamp)
+updated_at (timestamp)
+```
+
+### Dependency Rule
+```
+id (uint, primary key)
+node_type (string, composite unique)
+dependency_node_type (string, composite unique)
+relationship_type (string)
+topological_relationship (string) -- "Upstream" or "Local"
+upstream_level (int, nullable)
+created_at (timestamp)
+updated_at (timestamp)
+```
+
+### Impact Rule
+```
+id (uint, primary key)
+node_type (string, composite unique)
+impact_node_type (string, composite unique)
+topological_relationship (string) -- "Downstream" or "Load"
+downstream_level (int, nullable)
+created_at (timestamp)
+updated_at (timestamp)
+```
+
 ### Session (Frontend NextAuth)
 ```
 user {
@@ -506,6 +585,7 @@ accessToken (string, JWT)
 - bcrypt (password hashing)
 - godotenv (config loading)
 - encoding/csv (CSV parsing)
+- database/sql (raw SQL for recursive CTEs)
 
 **Frontend:**
 - Next.js 15 (framework)

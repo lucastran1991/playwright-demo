@@ -35,27 +35,44 @@
 
 ### Configuration Layer
 - **`internal/config/config.go`** - Loads environment variables, validates config
-- Environment variables: `DB_*`, `JWT_SECRET`, `SERVER_PORT`, `BLUEPRINT_DIR`
+- Environment variables: `DB_*`, `JWT_SECRET`, `SERVER_PORT`, `BLUEPRINT_DIR`, `MODEL_DIR`
   - `BLUEPRINT_DIR`: Path to blueprint CSV files (default: `./blueprint/Node & Edge`)
+  - `MODEL_DIR`: Path to model metadata CSVs (default: `./blueprint`)
 
 ### Database Layer
 - **`internal/database/database.go`** - PostgreSQL connection pooling, migrations
 - **`internal/model/user.go`** - GORM model definition
+- **`internal/model/capacity_node_type.go`** - Capacity domain metadata
+- **`internal/model/dependency_rule.go`** - Upstream/local dependency rules
+- **`internal/model/impact_rule.go`** - Downstream/load impact rules
 
 ### Repository Layer (Data Access)
 - **`internal/repository/user_repository.go`** - CRUD operations on users
-- Methods: `Create()`, `FindByID()`, `FindByEmail()`
+  - Methods: `Create()`, `FindByID()`, `FindByEmail()`
+- **`internal/repository/tracer_repository.go`** - Dependency tracing with recursive CTEs
+  - Methods: `FindUpstreamNodes()`, `FindDownstreamNodes()`, `FindLocalNodes()`
+  - Queries: Capacity node types, dependency rules, impact rules
 - Uses GORM ORM
 
 ### Service Layer (Business Logic)
 - **`internal/service/auth_service.go`** - Authentication operations
-- Methods: `Register()`, `Login()`, `RefreshToken()`, `GetUser()`
-- Handles password hashing, token generation, validation
+  - Methods: `Register()`, `Login()`, `RefreshToken()`, `GetUser()`
+  - Handles password hashing, token generation, validation
+- **`internal/service/model_csv_parser.go`** - Parses model metadata CSVs
+  - Methods: `ParseCapacityNodesCSV()`, `ParseDependenciesCSV()`, `ParseImpactsCSV()`
+- **`internal/service/model_ingestion_service.go`** - Ingests model metadata into DB
+  - Methods: `IngestAll()`
+  - Transactions for idempotent upsert
+- **`internal/service/dependency_tracer.go`** - Traces node dependencies and impacts
+  - Methods: `TraceDependencies()`, `TraceImpacts()`
+  - Groups results by topology and level
 
 ### Handler Layer (HTTP)
 - **`internal/handler/auth_handler.go`** - HTTP request/response handling
-- Maps HTTP requests to service calls
-- Input validation, error responses
+  - Maps HTTP requests to service calls
+  - Input validation, error responses
+- **`internal/handler/tracer_handler.go`** - Model ingestion + dependency tracing HTTP handlers
+  - Endpoints: model ingestion, capacity node listing, dependency/impact tracing
 
 ### Router & Middleware
 - **`internal/router/router.go`** - Route definitions, middleware setup
@@ -243,15 +260,23 @@ Blueprint data stored in `./blueprint/Node & Edge/` directory:
 
 ### API Endpoints
 
-**Ingestion (Protected)**
+**Blueprint Ingestion (Protected)**
 - `POST /api/blueprints/ingest` - Trigger full CSV ingestion, returns summary
 
-**Read-Only (Public)**
+**Blueprint Read (Public)**
 - `GET /api/blueprints/types` - List all blueprint domains
 - `GET /api/blueprints/nodes?type=slug&limit=20&offset=0` - List nodes with type filter
 - `GET /api/blueprints/nodes/:nodeId` - Get single node + memberships
 - `GET /api/blueprints/edges?type=slug&limit=20&offset=0` - List edges for type
 - `GET /api/blueprints/tree/:typeSlug` - Recursive tree structure
+
+**Model Ingestion (Protected)**
+- `POST /api/models/ingest` - Ingest capacity nodes, dependency rules, impact rules
+
+**Model & Trace Read (Public)**
+- `GET /api/models/capacity-nodes` - List all capacity node types with constraints
+- `GET /api/trace/dependencies/:nodeId?levels=2&include_local=true` - Upstream dependencies of node
+- `GET /api/trace/impacts/:nodeId?levels=2&load_scope=` - Downstream impacts of node
 
 ### Ingestion Service
 **`internal/service/blueprint_ingestion_service.go`**
@@ -267,6 +292,48 @@ Blueprint data stored in `./blueprint/Node & Edge/` directory:
 - `ParseEdges(file, typeID)` - Extracts source/target edges
 - `ParseHierarchy(file)` - Extracts parent/child memberships
 - Handles malformed CSV gracefully with validation
+
+## Capacity Nodes, Dependency & Impact Rules Feature
+
+### Overview
+Ingests metadata that defines capacity domains, upstream/local dependencies, and downstream/load impacts across system topologies. Enables querying which nodes depend on or impact a given node.
+
+### Models
+- **CapacityNodeType** - Capacity domain classification
+  - Fields: `id`, `node_type`, `topology`, `is_capacity_node`, `active_constraint`, `created_at`, `updated_at`
+- **DependencyRule** - Type-level upstream/local dependencies
+  - Fields: `id`, `node_type`, `dependency_node_type`, `relationship_type`, `topological_relationship`, `upstream_level`
+- **ImpactRule** - Type-level downstream/load impacts
+  - Fields: `id`, `node_type`, `impact_node_type`, `topological_relationship`, `downstream_level`
+
+### CSV Format
+Model data stored in `./blueprint/` directory:
+```
+├── Capacity Nodes.csv   # node_type, topology, is_capacity_node, active_constraint
+├── Dependencies.csv     # node_type, dependency_node_type, relationship_type, topological_relationship, upstream_level
+└── Impacts.csv          # node_type, impact_node_type, topological_relationship, downstream_level
+```
+
+### Ingestion Service
+**`internal/service/model_ingestion_service.go`**
+- `IngestAll(modelDir string)` - Orchestrates parsing & persistence
+- Parses 3 model CSVs (Capacity Nodes, Dependencies, Impacts)
+- Idempotent: re-running produces same state via ON CONFLICT upsert
+
+### Tracing Service
+**`internal/service/dependency_tracer.go`**
+- `TraceDependencies(nodeID, maxLevels, includeLocal)` - Resolves upstream dependencies from rules + CTE queries
+- `TraceImpacts(nodeID, maxLevels, loadScope)` - Resolves downstream impacts
+- Groups results by topology and hop level
+- Filters results to only nodes matching rule target types
+
+### Tracing Repository
+**`internal/repository/tracer_repository.go`**
+- Recursive CTE queries against blueprint_edges topology
+- `FindUpstreamNodes()` - Parent walk (follows edge.from_node_id)
+- `FindDownstreamNodes()` - Child walk (follows edge.to_node_id)
+- `FindLocalNodes()` - Direct edge neighbors
+- Rule lookups: `GetDependencyRules()`, `GetImpactRules()`, `ListCapacityNodeTypes()`
 
 ## Data Flow Examples
 
