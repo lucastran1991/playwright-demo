@@ -33,7 +33,7 @@ func Load() (*Config, error) {
 		DBName:     getEnv("DB_NAME", ""),
 		DBSSLMode:  getEnv("DB_SSLMODE", "disable"),
 		JWTSecret:  getEnv("JWT_SECRET", ""),
-		ServerPort:   getEnv("SERVER_PORT", "8080"),
+		ServerPort:   getEnv("SERVER_PORT", "8889"),
 		BlueprintDir: getEnv("BLUEPRINT_DIR", "./blueprint/Node & Edge"),
 		ModelDir:     getEnv("MODEL_DIR", "./blueprint"),
 	}

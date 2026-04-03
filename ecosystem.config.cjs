@@ -22,7 +22,7 @@ module.exports = {
       name: cfg.frontend.name,
       cwd: path.resolve(__dirname, cfg.frontend.cwd),
       script: 'pnpm',
-      args: 'dev',
+      args: `dev --port ${cfg.frontend.port}`,
       interpreter: 'none',
       watch: false,
       autorestart: true,

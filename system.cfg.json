@@ -4,8 +4,8 @@
     "name": "api",
     "cwd": "./backend",
     "command": "go run ./cmd/server",
-    "port": 8080,
-    "url": "http://localhost:8080",
+    "port": 8889,
+    "url": "http://localhost:8889",
     "env_file": "./backend/.env",
     "env": {
       "BLUEPRINT_DIR": "./blueprint/Node & Edge",
@@ -16,8 +16,8 @@
     "name": "web",
     "cwd": "./frontend",
     "command": "pnpm dev",
-    "port": 3000,
-    "url": "http://localhost:3000",
+    "port": 8089,
+    "url": "http://localhost:8089",
     "env_file": "./frontend/.env.local"
   },
   "database": {
@@ -27,7 +27,7 @@
     "port": 5432
   },
   "api": {
-    "base_url": "http://localhost:8080",
+    "base_url": "http://localhost:8889",
     "health": "/health",
     "auth": {
       "register": "/api/auth/register",
