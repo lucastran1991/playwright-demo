@@ -38,7 +38,7 @@ done
 # Handle non-start actions
 case "$ACTION" in
   stop)    pm2 stop "$CONFIG" 2>/dev/null; pm2 delete all 2>/dev/null || true; echo "Stopped."; exit 0 ;;
-  restart) pm2 restart "$CONFIG"; echo "Restarted."; exit 0 ;;
+  restart) pm2 flush 2>/dev/null || true; pm2 restart "$CONFIG"; echo "Restarted."; exit 0 ;;
   logs)    pm2 logs; exit 0 ;;
   status)  pm2 list; exit 0 ;;
 esac
@@ -78,8 +78,9 @@ if [[ ! -d "$FRONTEND/node_modules" ]]; then
   (cd "$FRONTEND" && pnpm install)
 fi
 
-# Stop existing PM2 processes (clean restart)
+# Stop existing PM2 processes and flush logs
 pm2 delete all 2>/dev/null || true
+pm2 flush 2>/dev/null || true
 
 # Start via PM2
 pm2 start "$CONFIG"
