@@ -70,14 +70,22 @@ fi
 
 # PostgreSQL (optional)
 if [[ "$WITH_POSTGRES" -eq 1 ]]; then
-  if command -v brew >/dev/null 2>&1; then
+  if command -v systemctl >/dev/null 2>&1; then
+    # Linux (EC2, Ubuntu, Amazon Linux, etc.)
+    sudo systemctl start postgresql 2>/dev/null \
+      || sudo systemctl start postgresql-15 2>/dev/null \
+      || sudo systemctl start postgresql-14 2>/dev/null \
+      || { echo "Could not start PostgreSQL via systemctl. Start it manually."; exit 1; }
+    sleep 2
+  elif command -v brew >/dev/null 2>&1; then
+    # macOS via Homebrew
     brew services start postgresql@15 2>/dev/null || brew services start postgresql@14 2>/dev/null || {
       echo "Could not start PostgreSQL via Homebrew. Start it manually."
       exit 1
     }
     sleep 2
   else
-    echo "Homebrew not found; start PostgreSQL yourself."
+    echo "No supported service manager found. Start PostgreSQL manually."
     exit 1
   fi
   createdb app_dev 2>/dev/null || true
@@ -95,13 +103,16 @@ if [[ ! -f "$FRONTEND/.env.local" ]]; then
   exit 1
 fi
 
+# Cross-platform sed in-place (macOS uses -i '', GNU/Linux uses -i)
+sedi() { if [[ "$OSTYPE" == darwin* ]]; then sed -i '' "$@"; else sed -i "$@"; fi; }
+
 # Sync config from system.cfg.json into .env files
-sed -i '' "s|^SERVER_PORT=.*|SERVER_PORT=$BE_PORT|" "$BACKEND/.env"
+sedi "s|^SERVER_PORT=.*|SERVER_PORT=$BE_PORT|" "$BACKEND/.env"
 grep -q "^CORS_ORIGIN=" "$BACKEND/.env" \
-  && sed -i '' "s|^CORS_ORIGIN=.*|CORS_ORIGIN=$FE_URL|" "$BACKEND/.env" \
+  && sedi "s|^CORS_ORIGIN=.*|CORS_ORIGIN=$FE_URL|" "$BACKEND/.env" \
   || echo "CORS_ORIGIN=$FE_URL" >> "$BACKEND/.env"
-sed -i '' "s|^NEXT_PUBLIC_API_URL=.*|NEXT_PUBLIC_API_URL=$BE_URL|" "$FRONTEND/.env.local"
-sed -i '' "s|^AUTH_URL=.*|AUTH_URL=$FE_URL|" "$FRONTEND/.env.local"
+sedi "s|^NEXT_PUBLIC_API_URL=.*|NEXT_PUBLIC_API_URL=$BE_URL|" "$FRONTEND/.env.local"
+sedi "s|^AUTH_URL=.*|AUTH_URL=$FE_URL|" "$FRONTEND/.env.local"
 echo "Config synced from system.cfg.json (backend:$BE_PORT, frontend:$FE_PORT)"
 
 # Install frontend deps if needed
