@@ -75,8 +75,8 @@ function DependencyImpactDAGInner() {
     const { nodes: laidNodes, edges: laidEdges } = layoutDAG(rawNodes, rawEdges)
     setNodes(laidNodes)
     setEdges(laidEdges)
-    // Center the view after React commits new nodes
-    requestAnimationFrame(() => fitView({ padding: 0.25, duration: 300 }))
+    // Center view after ReactFlow measures new nodes (needs slight delay)
+    setTimeout(() => fitView({ padding: 0.2, duration: 400 }), 50)
   }, [
     selectedNodeId,
     depQuery.data,
@@ -157,8 +157,7 @@ function DependencyImpactDAGInner() {
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        fitView
-        fitViewOptions={{ padding: 0.2 }}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
         minZoom={0.2}
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
