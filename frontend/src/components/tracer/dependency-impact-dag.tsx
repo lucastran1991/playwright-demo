@@ -15,6 +15,7 @@ import {
 } from "@xyflow/react"
 import { Loader2, Minus, Plus, Layers } from "lucide-react"
 import { apiFetch } from "@/lib/api-client"
+import { ThemeToggle } from "@/components/dashboard/theme-toggle"
 import { traceToDAGElements, layoutDAG } from "./dag-helpers"
 import TracerNode from "./dag-node"
 import TracerEdge from "./dag-edge"
@@ -98,7 +99,12 @@ function DependencyImpactDAGInner() {
   const isEmpty = !selectedNodeId
 
   return (
-    <div className="relative h-[calc(100vh-8rem)] rounded-lg border border-border overflow-hidden bg-card">
+    <div className="relative h-screen overflow-hidden bg-card">
+      {/* Theme toggle - top right */}
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
+
       {/* Depth control - top left */}
       <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 rounded-lg border border-border bg-card shadow-lg px-2 py-1.5">
         <Layers className="h-3.5 w-3.5 text-muted-foreground" />
