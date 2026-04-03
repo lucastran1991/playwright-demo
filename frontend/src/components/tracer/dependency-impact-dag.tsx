@@ -32,7 +32,7 @@ interface ApiWrapper<T> {
 
 function DependencyImpactDAGInner() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
-  const [depth, setDepth] = useState(1)
+  const [depth, setDepth] = useState(2)
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const { fitView } = useReactFlow()
