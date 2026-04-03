@@ -1,4 +1,3 @@
-import dagre from "@dagrejs/dagre"
 import { Zap, Droplets, Building2, Package } from "lucide-react"
 import type { Node, Edge } from "@xyflow/react"
 import type { TraceResponse, TracerNodeData } from "./dag-types"
@@ -28,6 +27,12 @@ const LOCAL_STYLE = { stroke: "#6B7280", strokeWidth: 1.5, strokeDasharray: "6 3
 const NODE_WIDTH = 200
 const NODE_HEIGHT = 80
 
+// Helper to create a node entry
+function makeNode(nodeId: string, name: string, nodeType: string, topology: string, ring: number, isSource: boolean, isLocal: boolean): Node {
+  const data: TracerNodeData = { nodeId, name, nodeType, topology, isSource, isLocal, ring }
+  return { id: nodeId, type: "tracerNode", position: { x: 0, y: 0 }, data }
+}
+
 // Merge dep and impact TraceResponse into ReactFlow nodes + edges
 export function traceToDAGElements(
   depResponse: TraceResponse | null,
@@ -41,146 +46,53 @@ export function traceToDAGElements(
   const nodesMap = new Map<string, Node>()
   const edges: Edge[] = []
 
-  // Add source node
-  const sourceNodeData: TracerNodeData = {
-    nodeId: source.node_id,
-    name: source.name,
-    nodeType: source.node_type,
-    topology: "source",
-    isSource: true,
-    isLocal: false,
-  }
-  nodesMap.set(source.node_id, {
-    id: source.node_id,
-    type: "tracerNode",
-    position: { x: 0, y: 0 },
-    data: sourceNodeData,
-  })
+  // Source node at center (ring 0)
+  nodesMap.set(source.node_id, makeNode(source.node_id, source.name, source.node_type, "source", 0, true, false))
 
-  // Add upstream nodes from dep response (upstream -> source)
+  // Upstream dependencies (ring = level)
   if (depResponse?.upstream) {
     for (const group of depResponse.upstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          const data: TracerNodeData = {
-            nodeId: n.node_id,
-            name: n.name,
-            nodeType: n.node_type,
-            topology: group.topology,
-            isSource: false,
-            isLocal: false,
-          }
-          nodesMap.set(n.node_id, {
-            id: n.node_id,
-            type: "tracerNode",
-            position: { x: 0, y: 0 },
-            data,
-          })
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false))
         }
-        edges.push({
-          id: `dep-${n.node_id}-${source.node_id}`,
-          source: n.node_id,
-          target: source.node_id,
-          type: "tracerEdge",
-          style: DEP_STYLE,
-          data: { label: group.topology },
-        })
+        edges.push({ id: `dep-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: DEP_STYLE, data: { label: group.topology } })
       }
     }
   }
 
-  // Add local nodes from dep response (dashed, gray)
+  // Local dependencies (ring 1, local flag)
   if (depResponse?.local) {
     for (const group of depResponse.local) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          const data: TracerNodeData = {
-            nodeId: n.node_id,
-            name: n.name,
-            nodeType: n.node_type,
-            topology: group.topology,
-            isSource: false,
-            isLocal: true,
-          }
-          nodesMap.set(n.node_id, {
-            id: n.node_id,
-            type: "tracerNode",
-            position: { x: 0, y: 0 },
-            data,
-          })
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true))
         }
-        edges.push({
-          id: `local-${n.node_id}-${source.node_id}`,
-          source: n.node_id,
-          target: source.node_id,
-          type: "tracerEdge",
-          style: LOCAL_STYLE,
-          data: { label: group.topology },
-        })
+        edges.push({ id: `local-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: LOCAL_STYLE, data: { label: group.topology } })
       }
     }
   }
 
-  // Add downstream nodes from impact response (source -> downstream)
+  // Downstream impacts (ring = level)
   if (impactResponse?.downstream) {
     for (const group of impactResponse.downstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          const data: TracerNodeData = {
-            nodeId: n.node_id,
-            name: n.name,
-            nodeType: n.node_type,
-            topology: group.topology,
-            isSource: false,
-            isLocal: false,
-          }
-          nodesMap.set(n.node_id, {
-            id: n.node_id,
-            type: "tracerNode",
-            position: { x: 0, y: 0 },
-            data,
-          })
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false))
         }
-        edges.push({
-          id: `impact-${source.node_id}-${n.node_id}`,
-          source: source.node_id,
-          target: n.node_id,
-          type: "tracerEdge",
-          style: IMPACT_STYLE,
-          data: { label: group.topology },
-        })
+        edges.push({ id: `impact-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: IMPACT_STYLE, data: { label: group.topology } })
       }
     }
   }
 
-  // Add load nodes from impact response (dashed)
+  // Load impacts (ring 1, local flag)
   if (impactResponse?.load) {
     for (const group of impactResponse.load) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          const data: TracerNodeData = {
-            nodeId: n.node_id,
-            name: n.name,
-            nodeType: n.node_type,
-            topology: group.topology,
-            isSource: false,
-            isLocal: true,
-          }
-          nodesMap.set(n.node_id, {
-            id: n.node_id,
-            type: "tracerNode",
-            position: { x: 0, y: 0 },
-            data,
-          })
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true))
         }
-        edges.push({
-          id: `load-${source.node_id}-${n.node_id}`,
-          source: source.node_id,
-          target: n.node_id,
-          type: "tracerEdge",
-          style: LOCAL_STYLE,
-          data: { label: group.topology },
-        })
+        edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOCAL_STYLE, data: { label: group.topology } })
       }
     }
   }
@@ -188,26 +100,45 @@ export function traceToDAGElements(
   return { nodes: Array.from(nodesMap.values()), edges }
 }
 
-// Apply Dagre LR layout to nodes and edges
+// Radial/concentric layout: source at center, nodes arranged in rings by distance (ring field).
+// Nodes at the same ring are evenly spaced around the circle at that radius.
 export function layoutDAG(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges: Edge[] } {
-  const g = new dagre.graphlib.Graph()
-  g.setDefaultEdgeLabel(() => ({}))
-  g.setGraph({ rankdir: "LR", ranksep: 80, nodesep: 40 })
+  if (nodes.length === 0) return { nodes, edges }
 
+  const RING_RADIUS = 250 // distance between concentric rings
+
+  // Group nodes by ring
+  const ringGroups = new Map<number, Node[]>()
   for (const node of nodes) {
-    g.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT })
+    const ring = (node.data as TracerNodeData).ring ?? 0
+    if (!ringGroups.has(ring)) ringGroups.set(ring, [])
+    ringGroups.get(ring)!.push(node)
   }
-  for (const edge of edges) {
-    g.setEdge(edge.source, edge.target)
-  }
-
-  dagre.layout(g)
 
   const laid = nodes.map((node) => {
-    const pos = g.node(node.id)
+    const data = node.data as TracerNodeData
+    const ring = data.ring ?? 0
+
+    // Source at center
+    if (ring === 0) {
+      return { ...node, position: { x: -NODE_WIDTH / 2, y: -NODE_HEIGHT / 2 } }
+    }
+
+    const siblings = ringGroups.get(ring)!
+    const idx = siblings.indexOf(node)
+    const count = siblings.length
+    const radius = ring * RING_RADIUS
+
+    // Distribute evenly around the circle, starting from top
+    const angleStep = (2 * Math.PI) / count
+    const angle = -Math.PI / 2 + idx * angleStep // start from top
+
     return {
       ...node,
-      position: { x: pos.x - NODE_WIDTH / 2, y: pos.y - NODE_HEIGHT / 2 },
+      position: {
+        x: Math.cos(angle) * radius - NODE_WIDTH / 2,
+        y: Math.sin(angle) * radius - NODE_HEIGHT / 2,
+      },
     }
   })
 

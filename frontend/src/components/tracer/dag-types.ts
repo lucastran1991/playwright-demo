@@ -41,4 +41,5 @@ export interface TracerNodeData extends Record<string, unknown> {
   topology: string
   isSource: boolean
   isLocal: boolean
+  ring: number // distance from source: 0=source, 1=level1, 2=level2, etc.
 }
