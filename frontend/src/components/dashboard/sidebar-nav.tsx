@@ -30,7 +30,7 @@ const navItems = [
   },
   {
     title: "Tracer",
-    href: "/dashboard/tracer",
+    href: "/tracer",
     icon: <Network className="h-4 w-4" />,
   },
   {

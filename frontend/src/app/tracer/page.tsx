@@ -1,10 +1,13 @@
-import DependencyImpactDAG from '@/components/tracer/dependency-impact-dag'
+import DependencyImpactDAG from "@/components/tracer/dependency-impact-dag"
 
-export const metadata = { title: 'Dependency Tracer' }
+export const metadata = {
+  title: "Dependency Tracer",
+  description: "Trace node dependencies and downstream impacts",
+}
 
 export default function TracerPage() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div>
         <h1 className="text-2xl font-bold">Dependency Tracer</h1>
         <p className="text-muted-foreground text-sm">
