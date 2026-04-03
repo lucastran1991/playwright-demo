@@ -129,10 +129,11 @@ export function traceToDAGElements(
   if (localNodes.length > 0) {
     const groupId = `group-local-${source.node_id}`
     const totalItems = localNodes.length + 1 // source + locals
-    const ITEM_GAP = 16
-    const LABEL_H = 28
-    const groupW = NODE_WIDTH + GROUP_PADDING * 2
-    const groupH = LABEL_H + totalItems * NODE_HEIGHT + (totalItems - 1) * ITEM_GAP + GROUP_PADDING * 2
+    const ITEM_GAP = 24
+    const LABEL_H = 32
+    const INNER_PAD = 30
+    const groupW = NODE_WIDTH + INNER_PAD * 2
+    const groupH = LABEL_H + totalItems * NODE_HEIGHT + (totalItems - 1) * ITEM_GAP + INNER_PAD * 2
 
     const groupNode: Node = {
       id: groupId,
@@ -153,14 +154,14 @@ export function traceToDAGElements(
     const sourceInGroup = nodesMap.get(source.node_id)!
     sourceInGroup.parentId = groupId
     sourceInGroup.extent = "parent"
-    sourceInGroup.position = { x: GROUP_PADDING, y: LABEL_H + GROUP_PADDING }
+    sourceInGroup.position = { x: INNER_PAD, y: LABEL_H + INNER_PAD }
     sourceInGroup.zIndex = 10
 
     // Local deps stacked below source
     localNodes.forEach((ln, i) => {
       ln.parentId = groupId
       ln.extent = "parent"
-      ln.position = { x: GROUP_PADDING, y: LABEL_H + GROUP_PADDING + (i + 1) * (NODE_HEIGHT + ITEM_GAP) }
+      ln.position = { x: INNER_PAD, y: LABEL_H + INNER_PAD + (i + 1) * (NODE_HEIGHT + ITEM_GAP) }
       ln.zIndex = 10
     })
 
@@ -185,7 +186,7 @@ export function layoutDAG(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges:
 
   const g = new dagre.graphlib.Graph()
   g.setDefaultEdgeLabel(() => ({}))
-  g.setGraph({ rankdir: "LR", ranksep: 100, nodesep: 40, marginx: 30, marginy: 30 })
+  g.setGraph({ rankdir: "LR", ranksep: 160, nodesep: 60, marginx: 40, marginy: 40 })
 
   for (const node of topLevel) {
     const w = node.style?.width ? Number(node.style.width) : NODE_WIDTH
