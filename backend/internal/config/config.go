@@ -16,7 +16,8 @@ type Config struct {
 	DBName     string
 	DBSSLMode  string
 	JWTSecret  string
-	ServerPort string
+	ServerPort   string
+	BlueprintDir string
 }
 
 // Load reads .env file and returns a validated Config.
@@ -31,7 +32,8 @@ func Load() (*Config, error) {
 		DBName:     getEnv("DB_NAME", ""),
 		DBSSLMode:  getEnv("DB_SSLMODE", "disable"),
 		JWTSecret:  getEnv("JWT_SECRET", ""),
-		ServerPort: getEnv("SERVER_PORT", "8080"),
+		ServerPort:   getEnv("SERVER_PORT", "8080"),
+		BlueprintDir: getEnv("BLUEPRINT_DIR", "./blueprint/Node & Edge"),
 	}
 
 	if cfg.DBUser == "" || cfg.DBPassword == "" || cfg.DBName == "" {

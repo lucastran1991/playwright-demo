@@ -18,6 +18,14 @@ Fullstack web application scaffold combining Go (backend) and Next.js 15 (fronte
 - Protected endpoints with Bearer token validation
 - Session management via NextAuth.js
 
+### Blueprint CSV Ingestion
+- Import hierarchical blueprint data from CSV files
+- Support for multiple blueprint domains (types)
+- CSV format: Nodes, Edges, and Hierarchy relationships
+- Public read-only API endpoints with filtering & pagination
+- Protected ingestion endpoint (admin only)
+- Recursive tree traversal for node relationships
+
 ### Dashboard
 - Protected layout with sidebar navigation
 - Responsive design (mobile/tablet/desktop)
@@ -42,6 +50,12 @@ Fullstack web application scaffold combining Go (backend) and Next.js 15 (fronte
 | FR5 | Protected dashboard layout | High | Complete |
 | FR6 | Dark/light mode toggle | Medium | Complete |
 | FR7 | Responsive sidebar navigation | Medium | Complete |
+| FR8 | CSV blueprint ingestion (protected) | High | Complete |
+| FR9 | List blueprint types/domains | High | Complete |
+| FR10 | List blueprint nodes with filters | High | Complete |
+| FR11 | Get single node with memberships | High | Complete |
+| FR12 | List blueprint edges | High | Complete |
+| FR13 | Recursive tree traversal | Medium | Complete |
 
 ## Non-Functional Requirements
 
@@ -52,6 +66,9 @@ Fullstack web application scaffold combining Go (backend) and Next.js 15 (fronte
 | NFR3 | Database pool | Connections | 25 max, 5 idle |
 | NFR4 | CORS policy | Headers | Frontend origin allowed |
 | NFR5 | API response format | Structure | Consistent JSON + status codes |
+| NFR6 | Blueprint list pagination | Limit | 20 items per page default |
+| NFR7 | CSV parsing | Encoding | UTF-8, flexible delimiter |
+| NFR8 | Ingestion atomicity | Guarantee | Transaction-based consistency |
 
 ## Technical Stack
 

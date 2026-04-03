@@ -32,7 +32,11 @@ func main() {
 	authService := service.NewAuthService(userRepo, cfg.JWTSecret)
 	authHandler := handler.NewAuthHandler(authService)
 
-	r := router.Setup(authHandler, cfg.JWTSecret)
+	blueprintRepo := repository.NewBlueprintRepository(db)
+	ingestionSvc := service.NewBlueprintIngestionService(blueprintRepo, db)
+	blueprintHandler := handler.NewBlueprintHandler(ingestionSvc, blueprintRepo, cfg.BlueprintDir)
+
+	r := router.Setup(authHandler, blueprintHandler, cfg.JWTSecret)
 
 	log.Printf("Server starting on :%s", cfg.ServerPort)
 	if err := r.Run(":" + cfg.ServerPort); err != nil {

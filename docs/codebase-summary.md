@@ -177,6 +177,20 @@ playground-demo/
 **`internal/model/user.go`** (Not shown, but referenced)
 - GORM User model with fields: ID, Name, Email, Password, timestamps
 
+**`internal/model/blueprint_type.go`**
+- BlueprintType model: ID, Name (unique), Slug (unique), FolderName, timestamps
+
+**`internal/model/blueprint_node.go`**
+- BlueprintNode model: ID, NodeID (unique per type), BlueprintTypeID (FK), timestamps
+
+**`internal/model/blueprint_node_membership.go`**
+- BlueprintNodeMembership model: ID, ParentNodeID (FK), ChildNodeID (FK), timestamps
+- Represents hierarchical parent-child relationships
+
+**`internal/model/blueprint_edge.go`**
+- BlueprintEdge model: ID, SourceNodeID (FK), TargetNodeID (FK), BlueprintTypeID (FK), timestamps
+- Represents directed edges between nodes
+
 **`internal/service/auth_service.go`** (123 lines)
 - `Register(name, email, password)` - Creates user, hashes password, generates tokens
 - `Login(email, password)` - Validates credentials, generates tokens
@@ -184,10 +198,33 @@ playground-demo/
 - `GetUser(id)` - Fetches user by ID
 - Handles error cases (user exists, invalid credentials, not found)
 
+**`internal/service/blueprint_ingestion_service.go`**
+- `IngestAll(dir string)` - Orchestrates CSV parsing for all blueprint types
+- Reads blueprint directory, detects type folders
+- Parses Nodes, Edges, Hierarchy CSVs per type
+- Returns summary: types count, nodes count, edges count
+
+**`internal/service/blueprint_csv_parser.go`**
+- `ParseNodes(file, typeID)` - Extracts node_id rows from Nodes.csv
+- `ParseEdges(file, typeID)` - Extracts source/target edges from Edges.csv
+- `ParseHierarchy(file)` - Extracts parent/child memberships from Hierarchy.csv
+- Handles CSV parsing with validation
+
 **`internal/repository/user_repository.go`** (Not shown, but referenced)
 - `Create(user)` - INSERT user
 - `FindByID(id)` - SELECT by ID
 - `FindByEmail(email)` - SELECT by email
+
+**`internal/repository/blueprint_repository.go`**
+- `ListTypes()` - Retrieves all blueprint types (domains)
+- `ListNodes(typeSlug, limit, offset)` - Retrieves nodes with pagination, optional type filter
+- `GetNodeByNodeID(nodeId)` - Retrieves single node + its memberships
+- `ListEdges(typeSlug, limit, offset)` - Retrieves edges for type with pagination
+- `GetTree(typeSlug)` - Recursive tree traversal from root nodes
+- `SaveTypes(types)` - Persists blueprint types
+- `SaveNodes(nodes)` - Persists blueprint nodes
+- `SaveEdges(edges)` - Persists blueprint edges
+- `SaveMemberships(memberships)` - Persists node memberships
 
 **`internal/handler/auth_handler.go`** (130 lines)
 - `Register(c *gin.Context)` - POST /api/auth/register
@@ -195,6 +232,14 @@ playground-demo/
 - `RefreshToken(c *gin.Context)` - POST /api/auth/refresh
 - `Me(c *gin.Context)` - GET /api/auth/me (protected)
 - Maps errors to HTTP status codes
+
+**`internal/handler/blueprint_handler.go`**
+- `Ingest(c *gin.Context)` - POST /api/blueprints/ingest (protected) - Triggers CSV ingestion
+- `ListTypes(c *gin.Context)` - GET /api/blueprints/types - Lists all blueprint domains
+- `ListNodes(c *gin.Context)` - GET /api/blueprints/nodes - Lists nodes with type filter
+- `GetNode(c *gin.Context)` - GET /api/blueprints/nodes/:nodeId - Single node + memberships
+- `ListEdges(c *gin.Context)` - GET /api/blueprints/edges - Lists edges for type
+- `GetTree(c *gin.Context)` - GET /api/blueprints/tree/:typeSlug - Recursive tree structure
 
 **`internal/router/router.go`** (Not shown, but referenced)
 - Gin engine setup with CORS middleware
@@ -391,6 +436,42 @@ created_at (timestamp)
 updated_at (timestamp)
 ```
 
+### Blueprint Type
+```
+id (uint, primary key)
+name (string, unique)
+slug (string, unique)
+folder_name (string)
+created_at (timestamp)
+updated_at (timestamp)
+```
+
+### Blueprint Node
+```
+id (uint, primary key)
+node_id (string)
+blueprint_type_id (uint, FK to blueprint_types)
+created_at (timestamp)
+updated_at (timestamp)
+```
+
+### Blueprint Node Membership
+```
+id (uint, primary key)
+parent_node_id (uint, FK to blueprint_nodes)
+child_node_id (uint, FK to blueprint_nodes)
+created_at (timestamp)
+```
+
+### Blueprint Edge
+```
+id (uint, primary key)
+source_node_id (uint, FK to blueprint_nodes)
+target_node_id (uint, FK to blueprint_nodes)
+blueprint_type_id (uint, FK to blueprint_types)
+created_at (timestamp)
+```
+
 ### Session (Frontend NextAuth)
 ```
 user {
@@ -424,6 +505,7 @@ accessToken (string, JWT)
 - JWT (golang-jwt/jwt/v5)
 - bcrypt (password hashing)
 - godotenv (config loading)
+- encoding/csv (CSV parsing)
 
 **Frontend:**
 - Next.js 15 (framework)

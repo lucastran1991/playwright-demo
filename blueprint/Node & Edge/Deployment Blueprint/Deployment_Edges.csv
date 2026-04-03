@@ -1,0 +1,20 @@
+From Node Name,From Node ID,From Node Org Path,To Node Name,To Node ID,To Node Org Path
+Deployment Blueprint,Deployment-Root-01,,Meridian,Meridian-01,Deployment Blueprint
+Deployment Blueprint,Deployment-Root-01,,Pacific,Pacific-01,Deployment Blueprint
+Deployment Blueprint,Deployment-Root-01,,Keystone,Keystone-01,Deployment Blueprint
+Meridian,Meridian-01,Deployment Blueprint,SJ-Meridian-C01,SJ-Meridian-C01,Deployment Blueprint / Meridian
+Pacific,Pacific-01,Deployment Blueprint,SJ-Pacific-C01,SJ-Pacific-C01,Deployment Blueprint / Pacific
+Keystone,Keystone-01,Deployment Blueprint,SJ-Keystone-C01,SJ-Keystone-C01,Deployment Blueprint / Keystone
+Keystone,Keystone-01,Deployment Blueprint,SJ-Keystone-C02,SJ-Keystone-C02,Deployment Blueprint / Keystone
+SJ-Meridian-C01,SJ-Meridian-C01,Deployment Blueprint / Meridian,SJ-Meridian-C01-PP01,SJ-Meridian-C01-PP01,Deployment Blueprint / Meridian / SJ-Meridian-C01
+SJ-Keystone-C01,SJ-Keystone-C01,Deployment Blueprint / Keystone,SJ-Keystone-C01-PP01,SJ-Keystone-C01-PP01,Deployment Blueprint / Keystone / SJ-Keystone-C01
+SJ-Pacific-C01,SJ-Pacific-C01,Deployment Blueprint / Pacific,SJ-Pacific-C01-PD01,SJ-Pacific-C01-PD01,Deployment Blueprint / Pacific / SJ-Pacific-C01
+SJ-Pacific-C01,SJ-Pacific-C01,Deployment Blueprint / Pacific,SJ-Pacific-C01-PD02,SJ-Pacific-C01-PD02,Deployment Blueprint / Pacific / SJ-Pacific-C01
+SJ-Pacific-C01,SJ-Pacific-C01,Deployment Blueprint / Pacific,SJ-Pacific-C01-PD03,SJ-Pacific-C01-PD03,Deployment Blueprint / Pacific / SJ-Pacific-C01
+SJ-Pacific-C01,SJ-Pacific-C01,Deployment Blueprint / Pacific,SJ-Pacific-C01-PD04,SJ-Pacific-C01-PD04,Deployment Blueprint / Pacific / SJ-Pacific-C01
+SJ-Meridian-C01-PP01,SJ-Meridian-C01-PP01,Deployment Blueprint / Meridian / SJ-Meridian-C01,Capacity Cell R1R2,CC-R1R2,Deployment Blueprint / Meridian / SJ-Meridian-C01 / SJ-Meridian-C01-PP01
+SJ-Keystone-C01-PP01,SJ-Keystone-C01-PP01,Deployment Blueprint / Keystone / SJ-Keystone-C01,Capacity Cell R5E,CC-R5E,Deployment Blueprint / Keystone / SJ-Keystone-C01 / SJ-Keystone-C01-PP01
+SJ-Pacific-C01-PD01,SJ-Pacific-C01-PD01,Deployment Blueprint / Pacific / SJ-Pacific-C01,Capacity Cell R3,CC-R3,Deployment Blueprint / Pacific / SJ-Pacific-C01 / SJ-Pacific-C01-PD01
+SJ-Pacific-C01-PD02,SJ-Pacific-C01-PD02,Deployment Blueprint / Pacific / SJ-Pacific-C01,Capacity Cell R3,CC-R3,Deployment Blueprint / Pacific / SJ-Pacific-C01 / SJ-Pacific-C01-PD01
+SJ-Pacific-C01-PD03,SJ-Pacific-C01-PD03,Deployment Blueprint / Pacific / SJ-Pacific-C01,Capacity Cell R3,CC-R3,Deployment Blueprint / Pacific / SJ-Pacific-C01 / SJ-Pacific-C01-PD01
+SJ-Pacific-C01-PD04,SJ-Pacific-C01-PD04,Deployment Blueprint / Pacific / SJ-Pacific-C01,Capacity Cell R3,CC-R3,Deployment Blueprint / Pacific / SJ-Pacific-C01 / SJ-Pacific-C01-PD01

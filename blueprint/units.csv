@@ -1,0 +1,227 @@
+Unit Class Name,Unit Name,Unit Abbreviation,Synonyms,Standard Unit,Standard Unit Conversion Factor
+Mass,metric ton,MT,"tonne, tonnes, T",kilogram,1000
+Mass,kilogram,Kg,kilograms,kilogram,1
+Mass,gram,g,"grams, gm",kilogram,0.001
+Mass,short ton,ton,"Imperial Ton, Long Ton",kilogram,907.18474
+Mass,pound,lb,"pounds, lbs",kilogram,0.45359237
+Area,square meter,m2,"meter squared, sq m",square meter,1
+Area,hectare,ha,,square meter,10000
+Area,square yard,sq yd,,square meter,0.836127
+Area,square feet,sq ft,,square meter,0.092903
+Area,acre,acre,,square meter,4046.85642
+Area,square mile,mi2,,square meter,2589988.11
+Area-Related Rate,square meter per hour,m2/hr,,square meter per hour,1
+Area-Related Rate,hectare per day,ha/day,,square meter per hour,416.667
+Area-Related Rate,hectare per year,ha/year,,square meter per hour,1.142
+Volume,liter,Ltr,,cubic meter,0.001
+Volume,gallon,Gal,,cubic meter,0.00378541
+Volume,cubic meter,m3,,cubic meter,1
+Volume,standard cubic foot,scf,,cubic meter,0.0283168
+Volume,megaliter,ML,,cubic meter,1000
+Volume,kiloliter,KL,,cubic meter,1
+Volume,gigaliter,GL,,cubic meter,1000000
+Volume,Barrel,BBL,,cubic meter,0.158987
+Volume,cubic foot,CF,,cubic meter,0.0283168
+Volume,centum cubic feet,CCF,,cubic meter,2.83168
+Volume,thousand cubic feet,MCF,,cubic meter,28.3168
+Volume,million cubic feet,MMCF,,cubic meter,28316.8
+Volume,billion cubic feet,BCF,,cubic meter,28316800
+Volume,cubic yard,yd3,,cubic meter,0.764555
+Flow Rate,cubic meter per hour,m3/hr,,cubic meter per hour,1
+Flow Rate,liter per hour,Ltr/hr,,cubic meter per hour,0.001
+Energy,kilowatt hour,kWh,,kilowatt hour,1
+Energy,megawatt hour,MWh,,kilowatt hour,1000
+Energy,gigawatt hour,GWh,,kilowatt hour,1000000
+Energy,megajoule,MJ,,kilowatt hour,0.277778
+Energy,gigajoule,GJ,,kilowatt hour,277.778
+Energy,terajoule,TJ,,kilowatt hour,277778
+Energy,British thermal unit,Btu,,kilowatt hour,0.000293071
+Energy,million British thermal units,mmBtu,,kilowatt hour,293.071
+Energy,therm,thm,,kilowatt hour,29.3071
+Energy,dekatherm,DT,,kilowatt hour,293.071
+Power,kilowatt,kW,,kilowatt,1
+Power,megawatt,mW,,kilowatt,1000
+Power,watt,W,,kilowatt,0.001
+Power,gigawatt,GW,,kilowatt,1000000
+Power,terawatt,TW,,kilowatt,1000000000
+Power,housepower,hp,,kilowatt,0.7457
+Power,BTU per hour,BTU/hr,,kilowatt,0.000293071
+Power,ton of refrigeration,TR,,kilowatt,3.516853
+Speed,kilometer per hour,km/hr,,kilometer per hour,1
+Speed,mile per hour,mi/hr,,kilometer per hour,1.60934
+Angular Velocity,rotations per minute,rpm,,rotations per Minute,1
+Temperature,celsius,Â°c,,celsius,1
+Passenger travel distance,person-kilometer,person-km,,person-kilometer,1
+Passenger travel distance,person-mile,person-mi,,person-kilometer,1.60934
+Passenger travel distance,passenger-kilometer,passenger-km,,person-kilometer,1
+Passenger travel distance,passenger-mile,passenger-mi,,person-kilometer,1.60934
+Goods transport weight-distance,Metric Ton-Kilometer,tonne-km,,Metric Ton-Kilometer,1
+Goods transport weight-distance,revenue tonne kilometer,RTK,,Metric Ton-Kilometer,1
+Goods transport weight-distance,short ton-mile,ton-mile,,Metric Ton-Kilometer,1.60934
+Time Period,day,day,,day,1
+Time Period,week,wk,,day,7
+Time Period,month,mo.,,day,30.436875
+Time Period,quarter,qtr,,day,91.310625
+Time Period,year,yr,,day,365.25
+Time Period,hour,hr,,day,0.0416667
+Time Period,minute,min,,day,0.000694444
+Time Period,Seconds,s,"seconds, s",day,1.15741E-05
+Population,capita,capita,,person,1
+Population,person,person,,person,1
+Household,household,household,,household,1
+Population-period,capita-year,capita-yr,,capita-year,1
+Household-period,household-day,household-day,,household-day,1
+Livestock,animal,animal,,animal,1
+Livestock,head,head,,animal,1
+Livestock-period,animal-day,animal-day,,animal-day,1
+Livestock-period,animal-year,animal-yr,,animal-day,365.25
+Count,count,count,,count,1
+Dimensionless Concentration,parts-per-million,ppm,,ratio,0.000001
+Dimensionless Concentration,parts-per-billion,ppb,,ratio,0.000000001
+General Dimensionless Units,percentage,%,,ratio,0.01
+General Dimensionless Units,ratio,ratio,,ratio,1
+General Dimensionless Units,dimensionless,dimensionless,"dimensionless, unitless, scalar, coefficient",ratio,1
+Other Counts,room-night,room-night,,count,1
+Other Counts,mine,mine,,count,1
+Mass times Length,Kilogram-meter,kg-m,kg-m,Kilogram per Kilometer,0.001
+Mass times Length,Kilogram per Kilometer,kg-km,kg-km,Kilogram per Kilometer,1
+Mass times Length,Tonne-kilometer,t-km,"Metric Ton-kilometer, t-km",Kilogram per Kilometer,1000
+Mass times Length,Ton-mile,ton-mi,"Short Ton-mile, ton-mi",Kilogram per Kilometer,1609.344
+Mass Concentration,Milligrams per liter,mg/L,,Kilograms per cubic meter,0.001
+Mass Concentration,Grams per liter,g/L,,Kilograms per cubic meter,1
+Mass Concentration,Micrograms per liter,Âµg/L,,Kilograms per cubic meter,0.000001
+Mass Concentration,Kilograms per cubic meter,kg/mÂ³,,Kilograms per cubic meter,1
+Mass Concentration,Parts per million,ppm,,Kilograms per cubic meter,0.001
+Mass Concentration,Parts per billion,ppb,,Kilograms per cubic meter,0.000001
+Mass Concentration,Milligrams per cubic meter,mg/mÂ³,,Kilograms per cubic meter,0.000001
+Mass Concentration,Grams per cubic meter,g/mÂ³,,Kilograms per cubic meter,0.001
+Volume per Time,Cubic meters per second,mÂ³/s,"Cubic meter per second, mÂ³/s, Cubic meter/second",Cubic meter per hour,3600
+Volume per Time,Cubic meters per hour,mÂ³/h,"Cubic meter per hour, mÂ³/h, Cubic meter/hour",Cubic meter per hour,1
+Volume per Time,Liters per second,L/s,"liters per second, L/s, lps",Cubic meter per hour,3.6
+Volume per Time,Liters per hour,L/h,"Liters per hour, L/h",Cubic meter per hour,0.001
+Volume per Time,Gallons per minute,GPM,"gallons per minute, GPM, gpm",Cubic meter per hour,0.2271247
+Volume per Time,Cubic feet per minute,CFM,"cubic feet per minute, CFM, cfm",Cubic meter per hour,1.699
+Energy per Time,Watts,W,"watts, W",Kilowatt,0.001
+Energy per Time,Kilowatt,kW,"kilowatts, kW",Kilowatt,1
+Energy per Time,Megawatts,MW,"megawatts, MW",Kilowatt,1000
+Energy per Time,Horsepower,hp,"horsepower, hp",Kilowatt,0.7457
+Energy per Time,British thermal units per hour,BTU/h,"British thermal units per hour, BTU/h, btu/h",Kilowatt,0.000293071
+Energy per Time,mmBtu per hour,mmBTU/h,"mmBtu per hour, mmBTU/h",Kilowatt,293.071
+Energy per Time,Joules per second,J/s,"joules per second, J/s",Kilowatt,0.001
+Mass per Time,Kilograms per second,kg/s,"kilograms per second, kg/s, kgs",kilogram per hour,3600
+Mass per Time,kilogram per hour,kg/h,"Kilograms per hour, kg/h",kilogram per hour,1
+Mass per Time,Grams per second,g/s,"grams per second, g/s, gs",kilogram per hour,3.6
+Mass per Time,Tonnes per hour,t/h,"tonnes per hour, t/h, tph",kilogram per hour,1000
+Mass per Time,Pounds per hour,lb/h,"pounds per hour, lb/h, lbh",kilogram per hour,0.45
+Percentage,Percent,%,"Percent, %",ratio,0.01
+Percentage,ratio,ratio,ratio,ratio,1
+Length,Meters,m,"meters, m",kilometer,0.001
+Length,Centimeters,cm,"centimeters, cm",kilometer,0.00001
+Length,Millimeters,mm,"millimeters, mm",kilometer,0.000001
+Length,kilometer,km,"kilometers, km",kilometer,1
+Length,Inches,in,"inches, in",kilometer,0.0000254
+Length,Feet,ft,"feet, ft",kilometer,0.0003048
+Length,Yards,yd,"yards, yd",kilometer,0.0009144
+Length,Miles,mi,"miles, mi",kilometer,1.60934
+Length,rack unit,U,"RU, rack space unit",kilometer,0.00004445
+Electric Current,ampere,A,"amperes, A",ampere,1
+Electric Current,Milliamperes,mA,"milliamperes, mA",ampere,0.001
+Electric Current,Kiloamperes,kA,"kiloamperes, kA",ampere,1000
+Time,Seconds,s,"seconds, s",Hour,0.000277778
+Time,Minutes,min,"minutes, min",Hour,0.016666667
+Time,Hour,h,"hours, h",Hour,1
+Time,Days,d,"days, d",Hour,24
+Time,Weeks,wk,"weeks, wk",Hour,168
+Time,Months,mo,"months, mo, M",Hour,730.5
+Time,Years,yr,"years, yr, Y",Hour,8766
+Count times Length,Vehicle-mile,VM,"Vehicle-miles, Car-mile, Car-miles, Truck-mile, Truck-miles",Count-kilometer,1.60934
+Count times Length,Vehicle-kilometer,VK,"Vehicle-kilometers, Car-kilometer, Car-kilometers, Truck-kilometer, Truck-kilometers",Count-kilometer,1
+Count times Length,Passenger-mile,PM,"Passenger-miles, Person-mile, Person-miles",Count-kilometer,1
+Count times Length,Passenger-kilometer,PK,"Passenger-kilomters, Person-kilometer, Person-kilometers",Count-kilometer,1
+Count times Length,Count-kilometer,CK,Count-kilometers,Count-kilometer,1
+Percentage per Time,Percent per year,%/yr,,Ratio per hour,0.000001142
+Percentage per Time,Percent per day,%/d,,Ratio per hour,0.000416667
+Percentage per Time,Percent per hour,%/h,,Ratio per hour,0.01
+Percentage per Time,Ratio per hour,ratio/h,,Ratio per hour,1
+Mass Density,Kilograms per cubic meter,kg/mÂ³,,Kilograms per cubic meter,1
+Mass Density,Pounds per cubic foot,lb/ftÂ³,,Kilograms per cubic meter,16.0185
+Mass Density,Grams per centimeter,g/cmÂ³,,Kilograms per cubic meter,1000
+Currency,2024 US Dollars,2024 USD,,2022 US Dollars,0.93
+Currency,2023 US Dollars,2023 USD,,2022 US Dollars,0.96
+Currency,2022 US Dollars,2022 USD,,2022 US Dollars,1
+Currency,2021 US Dollars,2021 USD,,2022 US Dollars,1.07
+Currency,2020 US Dollars,2020 USD,,2022 US Dollars,1.08
+Currency,2019 US Dollars,2019 USD,,2022 US Dollars,1.11
+Goods Storage Weight-Duration,Ton-Year,ST-yr,,Metric Ton-Year,0.9072
+Goods Storage Weight-Duration,Ton-Month,ST-mo,,Metric Ton-Year,0.0756
+Goods Storage Weight-Duration,Metric Ton-Year,MT-Yr,,Metric Ton-Year,1
+Goods Storage Weight-Duration,Metric Ton-Month,MT-mo,,Metric Ton-Year,0.0833
+Goods Storage Weight-Duration,Kilogram-Year,kg-Yr,,Metric Ton-Year,0.001
+Goods Storage Weight-Duration,Kilogram-Month,kg-mo,,Metric Ton-Year,0.0000833
+Voltage,volt,V,volts,volt,1
+Voltage,millivolt,mV,millivolts,volt,0.001
+Voltage,kilovolt,kV,kilovolts,volt,1000
+Voltage,microvolt,Î¼V,microvolts,volt,0.000001
+Voltage,megavolt,MV,megavolts,volt,1000000
+Memory Usage,Gigabyte,GB,"gigabytes, Gbytes",Byte,1073741824
+Memory Usage,Byte,B,"bytes, b",Byte,1
+Memory Usage,Kilobyte,KB,"kilobytes, kbyte, Kbyte",Byte,1024
+Memory Usage,Megabyte,MB,"megabytes, mbyte, Mbyte",Byte,1048576
+Memory Usage,Terabyte,TB,"terabytes, tbyte, Tbyte",Byte,1.10E+12
+Memory Usage,Petabyte,PB,"petabytes, pbyte, Pbyte",Byte,1.13E+15
+Memory Usage,Exabyte,EB,"exabytes, ebyte, Ebyte",Byte,1.15E+18
+Memory Usage,Zettabyte,ZB,"zettabytes, zbyte, Zbyte",Byte,1.18E+21
+Memory Usage,Yottabyte,YB,"yottabytes, ybyte, Ybyte",Byte,1.21E+24
+Pressure,Pascal,Pa,pascals,Pascal,1
+Pressure,Kilopascal,kPa,kilopascals,Pascal,1000
+Pressure,Megapascal,MPa,megapascals,Pascal,1000000
+Pressure,Bar,bar,bars,Pascal,100000
+Pressure,Millibar,mbar,millibars,Pascal,100
+Pressure,Atmosphere,atm,"atmospheres, standard atm",Pascal,101325
+Pressure,Torr,Torr,mmHg,Pascal,133.322
+Pressure,Millimeter Of Mercury,mmHg,"mm of Hg, millimeters Hg",Pascal,133.322
+Pressure,Inch Of Mercury,inHg,inches Hg,Pascal,3386.389
+Pressure,Inch Of Water Column,in H2O,"inches of water, inWC",Pascal,249.08891
+Pressure,Pound Per Square Inch,PSI,"psig, lb/in²",Pascal,6894.757
+Pressure,Pound Per Square Foot,PSF,lb/ft²,Pascal,47.88026
+Pressure,Kilogram-Force Per Sq Cm,kgf/cm²,kg/cm²,Pascal,98066.5
+Pressure,Megagram Per Sq Meter,Mg/m²,metric ton/m²,Pascal,9806.65
+Grid Emissions,Kilogram CO2 Per Kilowatt-hour,kg CO2/kWh,"kgCO2/kWh, kilograms CO2 per kWh",Kilogram CO2 Per Kilowatt-hour,1
+Grid Emissions,Gram CO2 Per Kilowatt-hour,g CO2/kWh,"gCO2/kWh, grams CO2 per kWh",Kilogram CO2 Per Kilowatt-hour,0.001
+Grid Emissions,Metric Ton CO2 Per Kilowatt-hour,t CO2/kWh,"tonne CO2/kWh, metric tons CO2",Kilogram CO2 Per Kilowatt-hour,1000
+Grid Emissions,Pound CO2 Per Kilowatt-hour,lb CO2/kWh,"lbsCO2/kWh, pounds CO2 per kWh",Kilogram CO2 Per Kilowatt-hour,0.45359237
+Grid Emissions,Short Ton CO2 Per Kilowatt-hour,ton CO2/kWh,US ton CO2/kWh,Kilogram CO2 Per Kilowatt-hour,907.18474
+Power Density,Kilowatt Per Rack Unit,kW/U,"kW per U, kilowatt/U",Kilowatt Per Rack Unit,1
+Power Density,Watt Per Rack Unit,W/U,"W per U, watt/U",Kilowatt Per Rack Unit,0.001
+Power Density,Megawatt Per Rack Unit,MW/U,"MW per U, megawatt/U",Kilowatt Per Rack Unit,1000
+Data Transfer Rate,bit per second,bps,bits/s,bit per second,1
+Data Transfer Rate,kilobit per second,Kbps,"kbps, kilobits/s",bit per second,1000
+Data Transfer Rate,megabit per second,Mbps,megabits/s,bit per second,1000000
+Data Transfer Rate,gigabit per second,Gbps,gigabits/s,bit per second,1000000000
+Data Transfer Rate,terabit per second,Tbps,terabits/s,bit per second,1.00E+12
+Data Transfer Rate,byte per second,B/s,bytes/s,bit per second,8
+Data Transfer Rate,kilobyte per second,KB/s,kilobytes/s,bit per second,8000
+Data Transfer Rate,megabyte per second,MB/s,megabytes/s,bit per second,8000000
+Data Transfer Rate,gigabyte per second,GB/s,gigabytes/s,bit per second,8000000000
+Operation Rate,operation per second,ops/s,"operations/s, op/s",operation per second,1
+Operation Rate,operation per minute,opm,operations/minute,operation per second,0.0166667
+Operation Rate,query per second,QPS,queries/s,operation per second,1
+Operation Rate,request per second,RPS,"requests/s, req/s",operation per second,1
+Throughput Rate,count per second,count/s,"jobs/s, ops/s",count per second,1
+Throughput Rate,count per minute,count/min,jobs/min,count per second,0.0166667
+Throughput Rate,count per hour,count/hr,jobs/hr,count per second,0.00027778
+Power per Time,Watt per second,W/s,"watt per second, watts per second, W/s, watt/second, watts/second",kW/s,0.001
+Power per Time,Kilowatt per second,kW/s,"kilowatt per second, kilowatts per second, kW/s, kilowatt/second, kilowatts/second",kW/s,1
+Power per Time,Megawatt per second,MW/s,"megawatt per second, megawatts per second, MW/s, megawatt/second, megawatts/second",kW/s,1000
+Temperature per Power,Celsius per watt,°C/W,"celsius per watt, degree celsius per watt, °C/W, degC/W, celsius/watt",Celsius per kilowatt,1000
+Temperature per Power,Celsius per kilowatt,°C/kW,"celsius per kilowatt, degree celsius per kilowatt, °C/kW, degC/kW, celsius/kilowatt",Celsius per kilowatt,1
+Temperature per Power,Celsius per megawatt,°C/MW,"celsius per megawatt, degree celsius per megawatt, °C/MW, degC/MW, celsius/megawatt",Celsius per kilowatt,0.001
+Temperature times Time,Celsius-second,°C·s,"celsius second, degree celsius second, °C·s, degC·s, celsius*second",Celsius-second,1
+Temperature times Time,Celsius-minute,°C·min,"celsius minute, degree celsius minute, °C·min, degC·min, celsius*minute",Celsius-second,60
+Temperature times Time,Celsius-hour,°C·h,"celsius hour, degree celsius hour, °C·h, degC·h, celsius*hour",Celsius-second,3600
+Ratio times Time,Ratio-second,1·s,"ratio second, unitless second, 1*s, dimensionless second",Ratio-second,1
+Ratio times Time,Ratio-minute,1·min,"ratio minute, unitless minute, 1*min, dimensionless minute",Ratio-second,60
+Ratio times Time,Ratio-hour,1·h,"ratio hour, unitless hour, 1*h, dimensionless hour",Ratio-second,3600
+Ratio times Time,Percent-second,%·s,"percent second, %*second, percent per second integrated",Ratio-second,0.01
+Ratio times Time,Percent-minute,%·min,"percent minute, %*minute",Ratio-second,0.6
+Ratio times Time,Percent-hour,%·h,"percent hour, %*hour",Ratio-second,36

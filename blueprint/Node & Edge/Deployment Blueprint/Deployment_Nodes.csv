@@ -1,0 +1,18 @@
+Node ID,Node Name,Node Role,Org Path,Node Type
+Deployment-Root-01,Deployment Blueprint,,,Deployment Blueprint
+Meridian-01,Meridian,,Deployment Blueprint,Deployment
+Pacific-01,Pacific,,Deployment Blueprint,Deployment
+Keystone-01,Keystone,,Deployment Blueprint,Deployment
+SJ-Meridian-C01,SJ-Meridian-C01,,Deployment Blueprint / Meridian,Cluster
+SJ-Pacific-C01,SJ-Pacific-C01,,Deployment Blueprint / Pacific,Cluster
+SJ-Keystone-C01,SJ-Keystone-C01,,Deployment Blueprint / Keystone,Cluster
+SJ-Keystone-C02,SJ-Keystone-C02,,Deployment Blueprint / Keystone,Cluster
+SJ-Meridian-C01-PP01,SJ-Meridian-C01-PP01,,Deployment Blueprint / Meridian / SJ-Meridian-C01,Placement Plan
+SJ-Keystone-C01-PP01,SJ-Keystone-C01-PP01,,Deployment Blueprint / Keystone / SJ-Keystone-C01,Placement Plan
+SJ-Pacific-C01-PD01,SJ-Pacific-C01-PD01,,Deployment Blueprint / Pacific / SJ-Pacific-C01,Placement Draft
+SJ-Pacific-C01-PD02,SJ-Pacific-C01-PD02,,Deployment Blueprint / Pacific / SJ-Pacific-C01,Placement Draft
+SJ-Pacific-C01-PD03,SJ-Pacific-C01-PD03,,Deployment Blueprint / Pacific / SJ-Pacific-C01,Placement Draft
+SJ-Pacific-C01-PD04,SJ-Pacific-C01-PD04,,Deployment Blueprint / Pacific / SJ-Pacific-C01,Placement Draft
+CC-R1R2,Capacity Cell R1R2,,Deployment Blueprint / Meridian / SJ-Meridian-C01 / SJ-Meridian-C01-PP01,Capacity Cell
+CC-R3,Capacity Cell R3,,Deployment Blueprint / Pacific / SJ-Pacific-C01 / SJ-Pacific-C01-PD01,Capacity Cell
+CC-R5E,Capacity Cell R5E,,Deployment Blueprint / Keystone / SJ-Keystone-C01 / SJ-Keystone-C01-PP01,Capacity Cell

@@ -1,0 +1,118 @@
+Node Type,Impact Node Type,Topological Relationship,Downstream Level
+Rack PDU,Rack,Load,
+RPP,Rack PDU,Downstream,1
+RPP,Rack,Load,
+RPP,Row,Load,
+RPP,Zone,Load,
+RPP,Capacity Cell,Load,
+RPP,Room Bundle,Load,
+RPP,Room PDU Bundle,Load,
+RPP,UPS Bundle,Load,
+Room PDU,Rack PDU,Downstream,2
+Room PDU,RPP,Downstream,1
+Room PDU,Rack,Load,
+Room PDU,Row,Load,
+Room PDU,Zone,Load,
+Room PDU,Capacity Cell,Load,
+Room PDU,Room Bundle,Load,
+Room PDU,Room PDU Bundle,Load,
+Room PDU,UPS Bundle,Load,
+UPS,Rack PDU,Downstream,3
+UPS,RPP,Downstream,2
+UPS,Room PDU,Downstream,1
+UPS,Rack,Load,
+UPS,Row,Load,
+UPS,Zone,Load,
+UPS,Capacity Cell,Load,
+UPS,Room Bundle,Load,
+UPS,Room PDU Bundle,Load,
+UPS,UPS Bundle,Load,
+BESS,Rack PDU,Downstream,4
+BESS,RPP,Downstream,3
+BESS,Room PDU,Downstream,2
+BESS,UPS,Downstream,1
+BESS,Rack,Load,
+BESS,Row,Load,
+BESS,Zone,Load,
+BESS,Capacity Cell,Load,
+BESS,Room Bundle,Load,
+BESS,Room PDU Bundle,Load,
+BESS,UPS Bundle,Load,
+Switch Gear,Rack PDU,Downstream,
+Switch Gear,RPP,Downstream,
+Switch Gear,Room PDU,Downstream,
+Switch Gear,UPS,Downstream,
+Switch Gear,BESS,Downstream,
+Utility Feed,Rack PDU,Downstream,6
+Utility Feed,RPP,Downstream,5
+Utility Feed,Room PDU,Downstream,4
+Utility Feed,UPS,Downstream,3
+Utility Feed,BESS,Downstream,2
+Utility Feed,Switch Gear,Downstream,1
+Utility Feed,Rack,Load,
+Utility Feed,Row,Load,
+Utility Feed,Zone,Load,
+Utility Feed,Capacity Cell,Load,
+Utility Feed,Room Bundle,Load,
+Utility Feed,Room PDU Bundle,Load,
+Utility Feed,UPS Bundle,Load,
+Generator,Rack PDU,Downstream,6
+Generator,RPP,Downstream,5
+Generator,Room PDU,Downstream,4
+Generator,UPS,Downstream,3
+Generator,BESS,Downstream,2
+Generator,Switch Gear,Downstream,1
+Generator,Rack,Load,
+Generator,Row,Load,
+Generator,Zone,Load,
+Generator,Capacity Cell,Load,
+Generator,Room Bundle,Load,
+Generator,Room PDU Bundle,Load,
+Generator,UPS Bundle,Load,
+Liquid Loop,RDHx,Downstream,1
+Liquid Loop,DTC,Downstream,1
+Liquid Loop,Rack,Load,
+Liquid Loop,Row,Load,
+Liquid Loop,Zone,Load,
+Liquid Loop,Capacity Cell,Load,
+Liquid Loop,Room Bundle,Load,
+Liquid Loop,Room PDU Bundle,Load,
+Liquid Loop,UPS Bundle,Load,
+CDU,RDHx,Downstream,2
+CDU,DTC,Downstream,2
+CDU,Liquid Loop,Downstream,1
+Air Zone,Rack,Load,
+Air Zone,Row,Load,
+Air Zone,Zone,Load,
+Air Zone,Capacity Cell,Load,
+Air Zone,Room Bundle,Load,
+Air Zone,Room PDU Bundle,Load,
+Air Zone,UPS Bundle,Load,
+Air Cooling Unit,Air Zone,Downstream,1
+Cooling Distribution,RDHx,Downstream,3
+Cooling Distribution,DTC,Downstream,3
+Cooling Distribution,Air Zone,Downstream,2
+Cooling Distribution,Liquid Loop,Downstream,2
+Cooling Distribution,CDU,Downstream,1
+Cooling Distribution,Air Cooling Unit,Downstream,1
+Cooling Distribution,Rack,Load,
+Cooling Distribution,Row,Load,
+Cooling Distribution,Zone,Load,
+Cooling Distribution,Capacity Cell,Load,
+Cooling Distribution,Room Bundle,Load,
+Cooling Distribution,Room PDU Bundle,Load,
+Cooling Distribution,UPS Bundle,Load,
+Cooling Plant,RDHx,Downstream,4
+Cooling Plant,DTC,Downstream,4
+Cooling Plant,Air Zone,Downstream,3
+Cooling Plant,Liquid Loop,Downstream,3
+Cooling Plant,CDU,Downstream,2
+Cooling Plant,Air Cooling Unit,Downstream,2
+Cooling Plant,Cooling Distribution,Downstream,1
+Cooling Plant,Rack,Load,
+Cooling Plant,Row,Load,
+Cooling Plant,Zone,Load,
+Cooling Plant,Capacity Cell,Load,
+Cooling Plant,Room Bundle,Load,
+Cooling Plant,Room PDU Bundle,Load,
+Cooling Plant,UPS Bundle,Load,

@@ -11,7 +11,7 @@ import (
 )
 
 // Setup creates and configures the Gin engine with routes.
-func Setup(authHandler *handler.AuthHandler, jwtSecret string) *gin.Engine {
+func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.BlueprintHandler, jwtSecret string) *gin.Engine {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
@@ -35,11 +35,22 @@ func Setup(authHandler *handler.AuthHandler, jwtSecret string) *gin.Engine {
 		auth.POST("/refresh", authHandler.RefreshToken)
 	}
 
+	// Public blueprint read endpoints
+	blueprints := r.Group("/api/blueprints")
+	{
+		blueprints.GET("/types", blueprintHandler.ListTypes)
+		blueprints.GET("/nodes", blueprintHandler.ListNodes)
+		blueprints.GET("/nodes/:nodeId", blueprintHandler.GetNode)
+		blueprints.GET("/edges", blueprintHandler.ListEdges)
+		blueprints.GET("/tree/:typeSlug", blueprintHandler.GetTree)
+	}
+
 	// Protected routes
 	protected := r.Group("/api")
 	protected.Use(middleware.AuthRequired(jwtSecret))
 	{
 		protected.GET("/auth/me", authHandler.Me)
+		protected.POST("/blueprints/ingest", blueprintHandler.Ingest)
 	}
 
 	return r

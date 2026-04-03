@@ -1,0 +1,5 @@
+Node ID,Node Name,Node Role,Org Path,Node Type
+ROOT-01,Root Node,admin,/,Root
+CHILD-01,Child Node 1,,/Root,Child
+CHILD-02,Child Node 2,,/Root,Child
+LEAF-01,Leaf Node,operator,/Root/Child1,Leaf

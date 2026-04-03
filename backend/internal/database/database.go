@@ -31,5 +31,11 @@ func Connect(cfg *config.Config) (*gorm.DB, error) {
 
 // Migrate runs AutoMigrate for all models.
 func Migrate(db *gorm.DB) error {
-	return db.AutoMigrate(&model.User{})
+	return db.AutoMigrate(
+		&model.User{},
+		&model.BlueprintType{},
+		&model.BlueprintNode{},
+		&model.BlueprintNodeMembership{},
+		&model.BlueprintEdge{},
+	)
 }

@@ -35,7 +35,8 @@
 
 ### Configuration Layer
 - **`internal/config/config.go`** - Loads environment variables, validates config
-- Environment variables: `DB_*`, `JWT_SECRET`, `SERVER_PORT`
+- Environment variables: `DB_*`, `JWT_SECRET`, `SERVER_PORT`, `BLUEPRINT_DIR`
+  - `BLUEPRINT_DIR`: Path to blueprint CSV files (default: `./blueprint/Node & Edge`)
 
 ### Database Layer
 - **`internal/database/database.go`** - PostgreSQL connection pooling, migrations
@@ -214,6 +215,58 @@ Response: {user}
   "error": "Invalid email or password"
 }
 ```
+
+## Blueprint CSV Ingestion Feature
+
+### Overview
+Ingests hierarchical blueprint data from CSV files. Blueprint types (domains like Cooling, Electrical) contain nodes (entities) connected by edges (relationships). Supports recursive tree traversal.
+
+### Models
+- **BlueprintType** - Category/domain (e.g., Cooling, Electrical)
+  - Fields: `id`, `name`, `slug`, `folder_name`, `created_at`, `updated_at`
+- **BlueprintNode** - Entity within a type
+  - Fields: `id`, `node_id`, `blueprint_type_id`, `created_at`, `updated_at`
+  - `node_id`: Unique identifier per blueprint type
+- **BlueprintNodeMembership** - Hierarchical parent-child relationship
+  - Fields: `id`, `parent_node_id`, `child_node_id`, `created_at`
+- **BlueprintEdge** - Connection between two nodes
+  - Fields: `id`, `source_node_id`, `target_node_id`, `blueprint_type_id`, `created_at`
+
+### CSV Format
+Blueprint data stored in `./blueprint/Node & Edge/` directory:
+```
+{type}/
+  ├── Nodes.csv        # node_id
+  ├── Edges.csv        # source_node_id, target_node_id
+  └── Hierarchy.csv    # parent_node_id, child_node_id
+```
+
+### API Endpoints
+
+**Ingestion (Protected)**
+- `POST /api/blueprints/ingest` - Trigger full CSV ingestion, returns summary
+
+**Read-Only (Public)**
+- `GET /api/blueprints/types` - List all blueprint domains
+- `GET /api/blueprints/nodes?type=slug&limit=20&offset=0` - List nodes with type filter
+- `GET /api/blueprints/nodes/:nodeId` - Get single node + memberships
+- `GET /api/blueprints/edges?type=slug&limit=20&offset=0` - List edges for type
+- `GET /api/blueprints/tree/:typeSlug` - Recursive tree structure
+
+### Ingestion Service
+**`internal/service/blueprint_ingestion_service.go`**
+- `IngestAll(dir string)` - Orchestrates parsing & persistence
+- Reads all blueprint type folders
+- Parses Nodes, Edges, Hierarchy CSVs
+- Saves to database with transaction consistency
+- Returns summary: types count, nodes count, edges count
+
+### CSV Parser
+**`internal/service/blueprint_csv_parser.go`**
+- `ParseNodes(file, typeID)` - Extracts node_id rows
+- `ParseEdges(file, typeID)` - Extracts source/target edges
+- `ParseHierarchy(file)` - Extracts parent/child memberships
+- Handles malformed CSV gracefully with validation
 
 ## Data Flow Examples
 

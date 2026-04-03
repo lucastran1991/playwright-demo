@@ -1,0 +1,1208 @@
+node_id,node_type,name,Access State,Status,Occupancy State,Power State,Thermal State,Operational State,Link State,Health State,Connectivity State,Thermal_Limit,Rated_Power_Capacity,Effective_Power_Limit,Thermal_Limit,CPU Count,GPU Count
+AISLE-ROW-R1-Z1-R1,Aisle,Aisle for ROW-R1-Z1-R1,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-ROW-R1-Z1-R2,Aisle,Aisle for ROW-R1-Z1-R2,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-ROW-R1-Z2-R1,Aisle,Aisle for ROW-R1-Z2-R1,Maintenance,Maintenance,Occupied,Standby,Normal,,,,,,,,,,
+AISLE-ROW-R1-Z2-R2,Aisle,Aisle for ROW-R1-Z2-R2,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-ROW-R2-Z1-R1,Aisle,Aisle for ROW-R2-Z1-R1,Active,Active,Occupied,On,Warning,,,,,,,,,,
+AISLE-ROW-R2-Z1-R2,Aisle,Aisle for ROW-R2-Z1-R2,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-ROW-R2-Z2-R1,Aisle,Aisle for ROW-R2-Z2-R1,Active,Active,Available,Off,Normal,,,,,,,,,,
+AISLE-ROW-R2-Z2-R2,Aisle,Aisle for ROW-R2-Z2-R2,Active,Active,Occupied,On,Critical,,,,,,,,,,
+AISLE-R3-Z1W-R1H,Aisle,AISLE-R3-Z1W-R1H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z1W-R1R2C,Aisle,AISLE-R3-Z1W-R1R2C,Active,Active,Occupied,On,Critical,,,,,,,,,,
+AISLE-R3-Z2W-R1H,Aisle,AISLE-R3-Z2W-R1H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z2W-R1R2C,Aisle,AISLE-R3-Z2W-R1R2C,Maintenance,Maintenance,Reserved,On,Normal,,,,,,,,,,
+AISLE-R3-Z3W-R1H,Aisle,AISLE-R3-Z3W-R1H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z3W-R1R2C,Aisle,AISLE-R3-Z3W-R1R2C,Active,Active,Occupied,Off,Normal,,,,,,,,,,
+AISLE-R3-Z3W-R2H,Aisle,AISLE-R3-Z3W-R2H,Maintenance,Maintenance,Available,On,Normal,,,,,,,,,,
+AISLE-R3-Z4E-R1H,Aisle,AISLE-R3-Z4E-R1H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z4E-R1R2C,Aisle,AISLE-R3-Z4E-R1R2C,Active,Active,Available,On,Normal,,,,,,,,,,
+AISLE-R3-Z5E-R1H,Aisle,AISLE-R3-Z5E-R1H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z5E-R1R2C,Aisle,AISLE-R3-Z5E-R1R2C,Active,Active,Occupied,Off,Normal,,,,,,,,,,
+AISLE-R3-Z6E-R1H,Aisle,AISLE-R3-Z6E-R1H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z6E-R1R2C,Aisle,AISLE-R3-Z6E-R1R2C,Maintenance,Maintenance,Occupied,On,Normal,,,,,,,,,,
+AISLE-R3-Z6E-R2H,Aisle,AISLE-R3-Z6E-R2H,Active,Active,Occupied,On,Warning,,,,,,,,,,
+AISLE-R4-Z1-R1H,Aisle,AISLE-R4-Z1-R1H,Active,Active,Occupied,On,Warning,,,,,,,,,,
+AISLE-R4-Z1-R1R2C,Aisle,AISLE-R4-Z1-R1R2C,Active,Active,Occupied,On,Warning,,,,,,,,,,
+AISLE-R4-Z1-R2H,Aisle,AISLE-R4-Z1-R2H,Active,Active,Available,On,Critical,,,,,,,,,,
+AISLE-R5-Z1W-R1H,Aisle,AISLE-R5-Z1W-R1H,Active,Active,Available,On,Normal,,,,,,,,,,
+AISLE-R5-Z1W-R1R2C,Aisle,AISLE-R5-Z1W-R1R2C,Active,Active,Available,Off,Normal,,,,,,,,,,
+AISLE-R5-Z1W-R2H,Aisle,AISLE-R5-Z1W-R2H,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R5-Z2E-R1H,Aisle,AISLE-R5-Z2E-R1H,Active,Active,Reserved,On,Normal,,,,,,,,,,
+AISLE-R5-Z2E-R1R2C,Aisle,AISLE-R5-Z2E-R1R2C,Active,Active,Occupied,On,Normal,,,,,,,,,,
+AISLE-R5-Z2E-R2H,Aisle,AISLE-R5-Z2E-R2H,Active,Active,Available,On,Normal,,,,,,,,,,
+ND-R1-Z1-R1-01,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R1-01,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R1-02,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R1-02,,,,,,Degraded,Up,,,,,,,,
+ND-R1-Z1-R1-03,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R1-03,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R1-04,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R1-04,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R1-05,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R1-05,,,,,,Operational,Flapping,,,,,,,,
+ND-R1-Z1-R1-06,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R1-06,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R2-01,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R2-01,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R2-02,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R2-02,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R2-03,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R2-03,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R2-04,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R2-04,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z1-R2-05,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R2-05,,,,,,Operational,Flapping,,,,,,,,
+ND-R1-Z1-R2-06,Networking Device,Top-of-Rack Switch for RACK-R1-Z1-R2-06,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R1-01,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R1-01,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R1-02,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R1-02,,,,,,Operational,Flapping,,,,,,,,
+ND-R1-Z2-R1-03,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R1-03,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R1-04,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R1-04,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R1-05,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R1-05,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R1-06,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R1-06,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R2-01,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R2-01,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R2-02,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R2-02,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R2-03,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R2-03,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R2-04,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R2-04,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R2-05,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R2-05,,,,,,Operational,Up,,,,,,,,
+ND-R1-Z2-R2-06,Networking Device,Top-of-Rack Switch for RACK-R1-Z2-R2-06,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R1-01,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R1-01,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R1-02,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R1-02,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R1-03,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R1-03,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R1-04,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R1-04,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R1-05,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R1-05,,,,,,Operational,Flapping,,,,,,,,
+ND-R2-Z1-R1-06,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R1-06,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R2-01,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R2-01,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R2-02,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R2-02,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R2-03,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R2-03,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R2-04,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R2-04,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R2-05,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R2-05,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z1-R2-06,Networking Device,Top-of-Rack Switch for RACK-R2-Z1-R2-06,,,,,,Degraded,Up,,,,,,,,
+ND-R2-Z2-R1-01,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R1-01,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R1-02,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R1-02,,,,,,Operational,Flapping,,,,,,,,
+ND-R2-Z2-R1-03,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R1-03,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R1-04,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R1-04,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R1-05,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R1-05,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R1-06,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R1-06,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R2-01,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R2-01,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R2-02,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R2-02,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R2-03,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R2-03,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R2-04,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R2-04,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R2-05,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R2-05,,,,,,Operational,Up,,,,,,,,
+ND-R2-Z2-R2-06,Networking Device,Top-of-Rack Switch for RACK-R2-Z2-R2-06,,,,,,Operational,Up,,,,,,,,
+RACK-R1-Z1-R1-01,Rack,Rack 1 in ROW-R1-Z1-R1,,,,,,,,,,38,15,,,,
+RACK-R1-Z1-R1-02,Rack,Rack 2 in ROW-R1-Z1-R1,,,,,,,,,,32,10,,,,
+RACK-R1-Z1-R1-03,Rack,Rack 3 in ROW-R1-Z1-R1,,,,,,,,,,35,8,,,,
+RACK-R1-Z1-R1-04,Rack,Rack 4 in ROW-R1-Z1-R1,,,,,,,,,,35,8,,,,
+RACK-R1-Z1-R1-05,Rack,Rack 5 in ROW-R1-Z1-R1,,,,,,,,,,40,12,,,,
+RACK-R1-Z1-R1-06,Rack,Rack 6 in ROW-R1-Z1-R1,,,,,,,,,,38,10,,,,
+RACK-R1-Z1-R2-01,Rack,Rack 1 in ROW-R1-Z1-R2,,,,,,,,,,40,12,,,,
+RACK-R1-Z1-R2-02,Rack,Rack 2 in ROW-R1-Z1-R2,,,,,,,,,,32,8,,,,
+RACK-R1-Z1-R2-03,Rack,Rack 3 in ROW-R1-Z1-R2,,,,,,,,,,38,18,,,,
+RACK-R1-Z1-R2-04,Rack,Rack 4 in ROW-R1-Z1-R2,,,,,,,,,,32,10,,,,
+RACK-R1-Z1-R2-05,Rack,Rack 5 in ROW-R1-Z1-R2,,,,,,,,,,32,8,,,,
+RACK-R1-Z1-R2-06,Rack,Rack 6 in ROW-R1-Z1-R2,,,,,,,,,,35,15,,,,
+RACK-R1-Z2-R1-01,Rack,Rack 1 in ROW-R1-Z2-R1,,,,,,,,,,35,8,,,,
+RACK-R1-Z2-R1-02,Rack,Rack 2 in ROW-R1-Z2-R1,,,,,,,,,,38,10,,,,
+RACK-R1-Z2-R1-03,Rack,Rack 3 in ROW-R1-Z2-R1,,,,,,,,,,32,12,,,,
+RACK-R1-Z2-R1-04,Rack,Rack 4 in ROW-R1-Z2-R1,,,,,,,,,,38,18,,,,
+RACK-R1-Z2-R1-05,Rack,Rack 5 in ROW-R1-Z2-R1,,,,,,,,,,40,8,,,,
+RACK-R1-Z2-R1-06,Rack,Rack 6 in ROW-R1-Z2-R1,,,,,,,,,,40,8,,,,
+RACK-R1-Z2-R2-01,Rack,Rack 1 in ROW-R1-Z2-R2,,,,,,,,,,40,15,,,,
+RACK-R1-Z2-R2-02,Rack,Rack 2 in ROW-R1-Z2-R2,,,,,,,,,,38,18,,,,
+RACK-R1-Z2-R2-03,Rack,Rack 3 in ROW-R1-Z2-R2,,,,,,,,,,32,15,,,,
+RACK-R1-Z2-R2-04,Rack,Rack 4 in ROW-R1-Z2-R2,,,,,,,,,,32,8,,,,
+RACK-R1-Z2-R2-05,Rack,Rack 5 in ROW-R1-Z2-R2,,,,,,,,,,38,12,,,,
+RACK-R1-Z2-R2-06,Rack,Rack 6 in ROW-R1-Z2-R2,,,,,,,,,,35,10,,,,
+RACK-R2-Z1-R1-01,Rack,Rack 1 in ROW-R2-Z1-R1,,,,,,,,,,32,8,,,,
+RACK-R2-Z1-R1-02,Rack,Rack 2 in ROW-R2-Z1-R1,,,,,,,,,,40,12,,,,
+RACK-R2-Z1-R1-03,Rack,Rack 3 in ROW-R2-Z1-R1,,,,,,,,,,40,15,,,,
+RACK-R2-Z1-R1-04,Rack,Rack 4 in ROW-R2-Z1-R1,,,,,,,,,,35,15,,,,
+RACK-R2-Z1-R1-05,Rack,Rack 5 in ROW-R2-Z1-R1,,,,,,,,,,35,12,,,,
+RACK-R2-Z1-R1-06,Rack,Rack 6 in ROW-R2-Z1-R1,,,,,,,,,,32,10,,,,
+RACK-R2-Z1-R2-01,Rack,Rack 1 in ROW-R2-Z1-R2,,,,,,,,,,38,12,,,,
+RACK-R2-Z1-R2-02,Rack,Rack 2 in ROW-R2-Z1-R2,,,,,,,,,,40,10,,,,
+RACK-R2-Z1-R2-03,Rack,Rack 3 in ROW-R2-Z1-R2,,,,,,,,,,40,15,,,,
+RACK-R2-Z1-R2-04,Rack,Rack 4 in ROW-R2-Z1-R2,,,,,,,,,,40,15,,,,
+RACK-R2-Z1-R2-05,Rack,Rack 5 in ROW-R2-Z1-R2,,,,,,,,,,38,15,,,,
+RACK-R2-Z1-R2-06,Rack,Rack 6 in ROW-R2-Z1-R2,,,,,,,,,,35,8,,,,
+RACK-R2-Z2-R1-01,Rack,Rack 1 in ROW-R2-Z2-R1,,,,,,,,,,35,12,,,,
+RACK-R2-Z2-R1-02,Rack,Rack 2 in ROW-R2-Z2-R1,,,,,,,,,,35,10,,,,
+RACK-R2-Z2-R1-03,Rack,Rack 3 in ROW-R2-Z2-R1,,,,,,,,,,32,15,,,,
+RACK-R2-Z2-R1-04,Rack,Rack 4 in ROW-R2-Z2-R1,,,,,,,,,,40,12,,,,
+RACK-R2-Z2-R1-05,Rack,Rack 5 in ROW-R2-Z2-R1,,,,,,,,,,38,12,,,,
+RACK-R2-Z2-R1-06,Rack,Rack 6 in ROW-R2-Z2-R1,,,,,,,,,,40,18,,,,
+RACK-R2-Z2-R2-01,Rack,Rack 1 in ROW-R2-Z2-R2,,,,,,,,,,38,18,,,,
+RACK-R2-Z2-R2-02,Rack,Rack 2 in ROW-R2-Z2-R2,,,,,,,,,,32,10,,,,
+RACK-R2-Z2-R2-03,Rack,Rack 3 in ROW-R2-Z2-R2,,,,,,,,,,38,10,,,,
+RACK-R2-Z2-R2-04,Rack,Rack 4 in ROW-R2-Z2-R2,,,,,,,,,,38,18,,,,
+RACK-R2-Z2-R2-05,Rack,Rack 5 in ROW-R2-Z2-R2,,,,,,,,,,38,12,,,,
+RACK-R2-Z2-R2-06,Rack,Rack 6 in ROW-R2-Z2-R2,,,,,,,,,,40,12,,,,
+RACK-R4-Z1-R2-01,Rack,RACK-R4-Z1-R2-01,,,,,,,,,,35,18,,,,
+RACK-R4-Z1-R2-02,Rack,RACK-R4-Z1-R2-02,,,,,,,,,,32,8,,,,
+RACK-R4-Z1-R2-03,Rack,RACK-R4-Z1-R2-03,,,,,,,,,,32,10,,,,
+RACK-R4-Z1-R2-04,Rack,RACK-R4-Z1-R2-04,,,,,,,,,,38,12,,,,
+RACK-R4-Z1-R2-05,Rack,RACK-R4-Z1-R2-05,,,,,,,,,,38,12,,,,
+RACK-R4-Z1-R2-06,Rack,RACK-R4-Z1-R2-06,,,,,,,,,,40,8,,,,
+RACK-R4-Z1-R2-07,Rack,RACK-R4-Z1-R2-07,,,,,,,,,,38,10,,,,
+RACK-R4-Z1-R2-08,Rack,RACK-R4-Z1-R2-08,,,,,,,,,,40,12,,,,
+RACK-R4-Z1-R2-09,Rack,RACK-R4-Z1-R2-09,,,,,,,,,,38,8,,,,
+RACK-R4-Z1-R2-10,Rack,RACK-R4-Z1-R2-10,,,,,,,,,,40,8,,,,
+RACK-R4-Z1-R2-11,Rack,RACK-R4-Z1-R2-11,,,,,,,,,,32,12,,,,
+RACK-R4-Z1-R2-12,Rack,RACK-R4-Z1-R2-12,,,,,,,,,,40,18,,,,
+RACK-R3-Z1W-R1-01,Rack,RACK-R3-Z1W-R1-01,,,,,,,,,,40,8,,,,
+RACK-R3-Z1W-R1-02,Rack,RACK-R3-Z1W-R1-02,,,,,,,,,,40,12,,,,
+RACK-R3-Z1W-R1-03,Rack,RACK-R3-Z1W-R1-03,,,,,,,,,,32,12,,,,
+RACK-R3-Z1W-R1-04,Rack,RACK-R3-Z1W-R1-04,,,,,,,,,,40,18,,,,
+RACK-R3-Z1W-R1-05,Rack,RACK-R3-Z1W-R1-05,,,,,,,,,,38,18,,,,
+RACK-R3-Z1W-R1-06,Rack,RACK-R3-Z1W-R1-06,,,,,,,,,,32,15,,,,
+RACK-R3-Z1W-R1-07,Rack,RACK-R3-Z1W-R1-07,,,,,,,,,,35,10,,,,
+RACK-R3-Z1W-R1-08,Rack,RACK-R3-Z1W-R1-08,,,,,,,,,,32,8,,,,
+RACK-R3-Z1W-R1-09,Rack,RACK-R3-Z1W-R1-09,,,,,,,,,,38,15,,,,
+RACK-R3-Z1W-R1-10,Rack,RACK-R3-Z1W-R1-10,,,,,,,,,,40,15,,,,
+RACK-R3-Z1W-R1-11,Rack,RACK-R3-Z1W-R1-11,,,,,,,,,,40,18,,,,
+RACK-R3-Z1W-R1-12,Rack,RACK-R3-Z1W-R1-12,,,,,,,,,,38,8,,,,
+RACK-R3-Z1W-R2-01,Rack,RACK-R3-Z1W-R2-01,,,,,,,,,,40,12,,,,
+RACK-R3-Z1W-R2-02,Rack,RACK-R3-Z1W-R2-02,,,,,,,,,,32,8,,,,
+RACK-R3-Z1W-R2-03,Rack,RACK-R3-Z1W-R2-03,,,,,,,,,,40,8,,,,
+RACK-R3-Z1W-R2-04,Rack,RACK-R3-Z1W-R2-04,,,,,,,,,,32,12,,,,
+RACK-R3-Z1W-R2-05,Rack,RACK-R3-Z1W-R2-05,,,,,,,,,,35,12,,,,
+RACK-R3-Z1W-R2-06,Rack,RACK-R3-Z1W-R2-06,,,,,,,,,,40,10,,,,
+RACK-R3-Z1W-R2-07,Rack,RACK-R3-Z1W-R2-07,,,,,,,,,,38,18,,,,
+RACK-R3-Z1W-R2-08,Rack,RACK-R3-Z1W-R2-08,,,,,,,,,,38,15,,,,
+RACK-R3-Z1W-R2-09,Rack,RACK-R3-Z1W-R2-09,,,,,,,,,,32,12,,,,
+RACK-R3-Z1W-R2-10,Rack,RACK-R3-Z1W-R2-10,,,,,,,,,,38,8,,,,
+RACK-R3-Z1W-R2-11,Rack,RACK-R3-Z1W-R2-11,,,,,,,,,,35,15,,,,
+RACK-R3-Z1W-R2-12,Rack,RACK-R3-Z1W-R2-12,,,,,,,,,,32,12,,,,
+RACK-R3-Z2W-R1-01,Rack,RACK-R3-Z2W-R1-01,,,,,,,,,,40,8,,,,
+RACK-R3-Z2W-R1-02,Rack,RACK-R3-Z2W-R1-02,,,,,,,,,,40,8,,,,
+RACK-R3-Z2W-R1-03,Rack,RACK-R3-Z2W-R1-03,,,,,,,,,,40,8,,,,
+RACK-R3-Z2W-R1-04,Rack,RACK-R3-Z2W-R1-04,,,,,,,,,,40,15,,,,
+RACK-R3-Z2W-R1-05,Rack,RACK-R3-Z2W-R1-05,,,,,,,,,,38,8,,,,
+RACK-R3-Z2W-R1-06,Rack,RACK-R3-Z2W-R1-06,,,,,,,,,,40,12,,,,
+RACK-R3-Z2W-R1-07,Rack,RACK-R3-Z2W-R1-07,,,,,,,,,,32,18,,,,
+RACK-R3-Z2W-R1-08,Rack,RACK-R3-Z2W-R1-08,,,,,,,,,,40,8,,,,
+RACK-R3-Z2W-R1-09,Rack,RACK-R3-Z2W-R1-09,,,,,,,,,,32,10,,,,
+RACK-R3-Z2W-R1-10,Rack,RACK-R3-Z2W-R1-10,,,,,,,,,,35,12,,,,
+RACK-R3-Z2W-R1-11,Rack,RACK-R3-Z2W-R1-11,,,,,,,,,,38,10,,,,
+RACK-R3-Z2W-R1-12,Rack,RACK-R3-Z2W-R1-12,,,,,,,,,,38,15,,,,
+RACK-R3-Z2W-R2-01,Rack,RACK-R3-Z2W-R2-01,,,,,,,,,,38,18,,,,
+RACK-R3-Z2W-R2-02,Rack,RACK-R3-Z2W-R2-02,,,,,,,,,,35,18,,,,
+RACK-R3-Z2W-R2-03,Rack,RACK-R3-Z2W-R2-03,,,,,,,,,,40,8,,,,
+RACK-R3-Z2W-R2-04,Rack,RACK-R3-Z2W-R2-04,,,,,,,,,,40,15,,,,
+RACK-R3-Z2W-R2-05,Rack,RACK-R3-Z2W-R2-05,,,,,,,,,,35,10,,,,
+RACK-R3-Z2W-R2-06,Rack,RACK-R3-Z2W-R2-06,,,,,,,,,,40,15,,,,
+RACK-R3-Z2W-R2-07,Rack,RACK-R3-Z2W-R2-07,,,,,,,,,,40,10,,,,
+RACK-R3-Z2W-R2-08,Rack,RACK-R3-Z2W-R2-08,,,,,,,,,,35,10,,,,
+RACK-R3-Z2W-R2-09,Rack,RACK-R3-Z2W-R2-09,,,,,,,,,,32,12,,,,
+RACK-R3-Z2W-R2-10,Rack,RACK-R3-Z2W-R2-10,,,,,,,,,,40,10,,,,
+RACK-R3-Z2W-R2-11,Rack,RACK-R3-Z2W-R2-11,,,,,,,,,,40,12,,,,
+RACK-R3-Z2W-R2-12,Rack,RACK-R3-Z2W-R2-12,,,,,,,,,,40,18,,,,
+RACK-R3-Z3W-R1-01,Rack,RACK-R3-Z3W-R1-01,,,,,,,,,,32,8,,,,
+RACK-R3-Z3W-R1-02,Rack,RACK-R3-Z3W-R1-02,,,,,,,,,,35,10,,,,
+RACK-R3-Z3W-R1-03,Rack,RACK-R3-Z3W-R1-03,,,,,,,,,,40,18,,,,
+RACK-R3-Z3W-R1-04,Rack,RACK-R3-Z3W-R1-04,,,,,,,,,,38,8,,,,
+RACK-R3-Z3W-R1-05,Rack,RACK-R3-Z3W-R1-05,,,,,,,,,,32,8,,,,
+RACK-R3-Z3W-R1-06,Rack,RACK-R3-Z3W-R1-06,,,,,,,,,,40,18,,,,
+RACK-R3-Z3W-R1-07,Rack,RACK-R3-Z3W-R1-07,,,,,,,,,,38,18,,,,
+RACK-R3-Z3W-R1-08,Rack,RACK-R3-Z3W-R1-08,,,,,,,,,,35,10,,,,
+RACK-R3-Z3W-R1-09,Rack,RACK-R3-Z3W-R1-09,,,,,,,,,,40,12,,,,
+RACK-R3-Z3W-R1-10,Rack,RACK-R3-Z3W-R1-10,,,,,,,,,,32,15,,,,
+RACK-R3-Z3W-R1-11,Rack,RACK-R3-Z3W-R1-11,,,,,,,,,,38,12,,,,
+RACK-R3-Z3W-R1-12,Rack,RACK-R3-Z3W-R1-12,,,,,,,,,,40,15,,,,
+RACK-R3-Z3W-R2-01,Rack,RACK-R3-Z3W-R2-01,,,,,,,,,,40,18,,,,
+RACK-R3-Z3W-R2-02,Rack,RACK-R3-Z3W-R2-02,,,,,,,,,,40,10,,,,
+RACK-R3-Z3W-R2-03,Rack,RACK-R3-Z3W-R2-03,,,,,,,,,,35,8,,,,
+RACK-R3-Z3W-R2-04,Rack,RACK-R3-Z3W-R2-04,,,,,,,,,,38,8,,,,
+RACK-R3-Z3W-R2-05,Rack,RACK-R3-Z3W-R2-05,,,,,,,,,,40,10,,,,
+RACK-R3-Z3W-R2-06,Rack,RACK-R3-Z3W-R2-06,,,,,,,,,,32,15,,,,
+RACK-R3-Z3W-R2-07,Rack,RACK-R3-Z3W-R2-07,,,,,,,,,,38,12,,,,
+RACK-R3-Z3W-R2-08,Rack,RACK-R3-Z3W-R2-08,,,,,,,,,,32,15,,,,
+RACK-R3-Z3W-R2-09,Rack,RACK-R3-Z3W-R2-09,,,,,,,,,,32,18,,,,
+RACK-R3-Z3W-R2-10,Rack,RACK-R3-Z3W-R2-10,,,,,,,,,,35,18,,,,
+RACK-R3-Z3W-R2-11,Rack,RACK-R3-Z3W-R2-11,,,,,,,,,,40,12,,,,
+RACK-R3-Z3W-R2-12,Rack,RACK-R3-Z3W-R2-12,,,,,,,,,,40,10,,,,
+RACK-R3-Z4E-R1-01,Rack,RACK-R3-Z4E-R1-01,,,,,,,,,,38,15,,,,
+RACK-R3-Z4E-R1-02,Rack,RACK-R3-Z4E-R1-02,,,,,,,,,,35,10,,,,
+RACK-R3-Z4E-R1-03,Rack,RACK-R3-Z4E-R1-03,,,,,,,,,,38,15,,,,
+RACK-R3-Z4E-R1-04,Rack,RACK-R3-Z4E-R1-04,,,,,,,,,,38,15,,,,
+RACK-R3-Z4E-R1-05,Rack,RACK-R3-Z4E-R1-05,,,,,,,,,,40,18,,,,
+RACK-R3-Z4E-R1-06,Rack,RACK-R3-Z4E-R1-06,,,,,,,,,,38,12,,,,
+RACK-R3-Z4E-R1-07,Rack,RACK-R3-Z4E-R1-07,,,,,,,,,,38,10,,,,
+RACK-R3-Z4E-R1-08,Rack,RACK-R3-Z4E-R1-08,,,,,,,,,,40,18,,,,
+RACK-R3-Z4E-R1-09,Rack,RACK-R3-Z4E-R1-09,,,,,,,,,,38,8,,,,
+RACK-R3-Z4E-R1-10,Rack,RACK-R3-Z4E-R1-10,,,,,,,,,,40,15,,,,
+RACK-R3-Z4E-R1-11,Rack,RACK-R3-Z4E-R1-11,,,,,,,,,,38,15,,,,
+RACK-R3-Z4E-R1-12,Rack,RACK-R3-Z4E-R1-12,,,,,,,,,,32,12,,,,
+RACK-R3-Z4E-R2-01,Rack,RACK-R3-Z4E-R2-01,,,,,,,,,,40,15,,,,
+RACK-R3-Z4E-R2-02,Rack,RACK-R3-Z4E-R2-02,,,,,,,,,,40,10,,,,
+RACK-R3-Z4E-R2-03,Rack,RACK-R3-Z4E-R2-03,,,,,,,,,,35,8,,,,
+RACK-R3-Z4E-R2-04,Rack,RACK-R3-Z4E-R2-04,,,,,,,,,,35,15,,,,
+RACK-R3-Z4E-R2-05,Rack,RACK-R3-Z4E-R2-05,,,,,,,,,,38,15,,,,
+RACK-R3-Z4E-R2-06,Rack,RACK-R3-Z4E-R2-06,,,,,,,,,,32,12,,,,
+RACK-R3-Z4E-R2-07,Rack,RACK-R3-Z4E-R2-07,,,,,,,,,,40,18,,,,
+RACK-R3-Z4E-R2-08,Rack,RACK-R3-Z4E-R2-08,,,,,,,,,,32,18,,,,
+RACK-R3-Z4E-R2-09,Rack,RACK-R3-Z4E-R2-09,,,,,,,,,,35,12,,,,
+RACK-R3-Z4E-R2-10,Rack,RACK-R3-Z4E-R2-10,,,,,,,,,,35,18,,,,
+RACK-R3-Z4E-R2-11,Rack,RACK-R3-Z4E-R2-11,,,,,,,,,,40,12,,,,
+RACK-R3-Z4E-R2-12,Rack,RACK-R3-Z4E-R2-12,,,,,,,,,,38,10,,,,
+RACK-R3-Z5E-R1-01,Rack,RACK-R3-Z5E-R1-01,,,,,,,,,,32,18,,,,
+RACK-R3-Z5E-R1-02,Rack,RACK-R3-Z5E-R1-02,,,,,,,,,,38,10,,,,
+RACK-R3-Z5E-R1-03,Rack,RACK-R3-Z5E-R1-03,,,,,,,,,,38,12,,,,
+RACK-R3-Z5E-R1-04,Rack,RACK-R3-Z5E-R1-04,,,,,,,,,,38,18,,,,
+RACK-R3-Z5E-R1-05,Rack,RACK-R3-Z5E-R1-05,,,,,,,,,,40,10,,,,
+RACK-R3-Z5E-R1-06,Rack,RACK-R3-Z5E-R1-06,,,,,,,,,,32,15,,,,
+RACK-R3-Z5E-R1-07,Rack,RACK-R3-Z5E-R1-07,,,,,,,,,,35,12,,,,
+RACK-R3-Z5E-R1-08,Rack,RACK-R3-Z5E-R1-08,,,,,,,,,,35,18,,,,
+RACK-R3-Z5E-R1-09,Rack,RACK-R3-Z5E-R1-09,,,,,,,,,,38,8,,,,
+RACK-R3-Z5E-R1-10,Rack,RACK-R3-Z5E-R1-10,,,,,,,,,,32,10,,,,
+RACK-R3-Z5E-R1-11,Rack,RACK-R3-Z5E-R1-11,,,,,,,,,,32,18,,,,
+RACK-R3-Z5E-R1-12,Rack,RACK-R3-Z5E-R1-12,,,,,,,,,,32,8,,,,
+RACK-R3-Z5E-R2-01,Rack,RACK-R3-Z5E-R2-01,,,,,,,,,,40,8,,,,
+RACK-R3-Z5E-R2-02,Rack,RACK-R3-Z5E-R2-02,,,,,,,,,,32,15,,,,
+RACK-R3-Z5E-R2-03,Rack,RACK-R3-Z5E-R2-03,,,,,,,,,,40,10,,,,
+RACK-R3-Z5E-R2-04,Rack,RACK-R3-Z5E-R2-04,,,,,,,,,,32,15,,,,
+RACK-R3-Z5E-R2-05,Rack,RACK-R3-Z5E-R2-05,,,,,,,,,,40,18,,,,
+RACK-R3-Z5E-R2-06,Rack,RACK-R3-Z5E-R2-06,,,,,,,,,,35,12,,,,
+RACK-R3-Z5E-R2-07,Rack,RACK-R3-Z5E-R2-07,,,,,,,,,,32,18,,,,
+RACK-R3-Z5E-R2-08,Rack,RACK-R3-Z5E-R2-08,,,,,,,,,,40,8,,,,
+RACK-R3-Z5E-R2-09,Rack,RACK-R3-Z5E-R2-09,,,,,,,,,,35,18,,,,
+RACK-R3-Z5E-R2-10,Rack,RACK-R3-Z5E-R2-10,,,,,,,,,,38,12,,,,
+RACK-R3-Z5E-R2-11,Rack,RACK-R3-Z5E-R2-11,,,,,,,,,,35,15,,,,
+RACK-R3-Z5E-R2-12,Rack,RACK-R3-Z5E-R2-12,,,,,,,,,,32,15,,,,
+RACK-R3-Z6E-R1-01,Rack,RACK-R3-Z6E-R1-01,,,,,,,,,,32,10,,,,
+RACK-R3-Z6E-R1-02,Rack,RACK-R3-Z6E-R1-02,,,,,,,,,,38,15,,,,
+RACK-R3-Z6E-R1-03,Rack,RACK-R3-Z6E-R1-03,,,,,,,,,,40,10,,,,
+RACK-R3-Z6E-R1-04,Rack,RACK-R3-Z6E-R1-04,,,,,,,,,,38,8,,,,
+RACK-R3-Z6E-R1-05,Rack,RACK-R3-Z6E-R1-05,,,,,,,,,,32,18,,,,
+RACK-R3-Z6E-R1-06,Rack,RACK-R3-Z6E-R1-06,,,,,,,,,,35,12,,,,
+RACK-R3-Z6E-R1-07,Rack,RACK-R3-Z6E-R1-07,,,,,,,,,,32,15,,,,
+RACK-R3-Z6E-R1-08,Rack,RACK-R3-Z6E-R1-08,,,,,,,,,,40,18,,,,
+RACK-R3-Z6E-R1-09,Rack,RACK-R3-Z6E-R1-09,,,,,,,,,,35,8,,,,
+RACK-R3-Z6E-R1-10,Rack,RACK-R3-Z6E-R1-10,,,,,,,,,,40,10,,,,
+RACK-R3-Z6E-R1-11,Rack,RACK-R3-Z6E-R1-11,,,,,,,,,,35,8,,,,
+RACK-R3-Z6E-R1-12,Rack,RACK-R3-Z6E-R1-12,,,,,,,,,,32,12,,,,
+RACK-R3-Z6E-R2-01,Rack,RACK-R3-Z6E-R2-01,,,,,,,,,,40,10,,,,
+RACK-R3-Z6E-R2-02,Rack,RACK-R3-Z6E-R2-02,,,,,,,,,,38,12,,,,
+RACK-R3-Z6E-R2-03,Rack,RACK-R3-Z6E-R2-03,,,,,,,,,,40,18,,,,
+RACK-R3-Z6E-R2-04,Rack,RACK-R3-Z6E-R2-04,,,,,,,,,,35,8,,,,
+RACK-R3-Z6E-R2-05,Rack,RACK-R3-Z6E-R2-05,,,,,,,,,,40,15,,,,
+RACK-R3-Z6E-R2-06,Rack,RACK-R3-Z6E-R2-06,,,,,,,,,,32,12,,,,
+RACK-R3-Z6E-R2-07,Rack,RACK-R3-Z6E-R2-07,,,,,,,,,,38,12,,,,
+RACK-R3-Z6E-R2-08,Rack,RACK-R3-Z6E-R2-08,,,,,,,,,,40,18,,,,
+RACK-R3-Z6E-R2-09,Rack,RACK-R3-Z6E-R2-09,,,,,,,,,,35,8,,,,
+RACK-R3-Z6E-R2-10,Rack,RACK-R3-Z6E-R2-10,,,,,,,,,,35,10,,,,
+RACK-R3-Z6E-R2-11,Rack,RACK-R3-Z6E-R2-11,,,,,,,,,,38,12,,,,
+RACK-R3-Z6E-R2-12,Rack,RACK-R3-Z6E-R2-12,,,,,,,,,,40,12,,,,
+RACK-R4-Z1-R1-01,Rack,RACK-R4-Z1-R1-01,,,,,,,,,,38,18,,,,
+RACK-R4-Z1-R1-02,Rack,RACK-R4-Z1-R1-02,,,,,,,,,,35,10,,,,
+RACK-R4-Z1-R1-03,Rack,RACK-R4-Z1-R1-03,,,,,,,,,,38,15,,,,
+RACK-R4-Z1-R1-04,Rack,RACK-R4-Z1-R1-04,,,,,,,,,,40,8,,,,
+RACK-R4-Z1-R1-05,Rack,RACK-R4-Z1-R1-05,,,,,,,,,,32,15,,,,
+RACK-R4-Z1-R1-06,Rack,RACK-R4-Z1-R1-06,,,,,,,,,,38,15,,,,
+RACK-R4-Z1-R1-07,Rack,RACK-R4-Z1-R1-07,,,,,,,,,,35,10,,,,
+RACK-R4-Z1-R1-08,Rack,RACK-R4-Z1-R1-08,,,,,,,,,,38,12,,,,
+RACK-R4-Z1-R1-09,Rack,RACK-R4-Z1-R1-09,,,,,,,,,,38,15,,,,
+RACK-R4-Z1-R1-10,Rack,RACK-R4-Z1-R1-10,,,,,,,,,,40,10,,,,
+RACK-R4-Z1-R1-11,Rack,RACK-R4-Z1-R1-11,,,,,,,,,,32,10,,,,
+RACK-R4-Z1-R1-12,Rack,RACK-R4-Z1-R1-12,,,,,,,,,,35,8,,,,
+RACK-R5-Z1W-R1-01,Rack,RACK-R5-Z1W-R1-01,,,,,,,,,,40,12,,,,
+RACK-R5-Z1W-R1-02,Rack,RACK-R5-Z1W-R1-02,,,,,,,,,,35,8,,,,
+RACK-R5-Z1W-R1-03,Rack,RACK-R5-Z1W-R1-03,,,,,,,,,,35,10,,,,
+RACK-R5-Z1W-R1-04,Rack,RACK-R5-Z1W-R1-04,,,,,,,,,,40,8,,,,
+RACK-R5-Z1W-R1-05,Rack,RACK-R5-Z1W-R1-05,,,,,,,,,,40,10,,,,
+RACK-R5-Z1W-R1-06,Rack,RACK-R5-Z1W-R1-06,,,,,,,,,,38,12,,,,
+RACK-R5-Z1W-R1-07,Rack,RACK-R5-Z1W-R1-07,,,,,,,,,,38,15,,,,
+RACK-R5-Z1W-R1-08,Rack,RACK-R5-Z1W-R1-08,,,,,,,,,,40,18,,,,
+RACK-R5-Z1W-R1-09,Rack,RACK-R5-Z1W-R1-09,,,,,,,,,,40,15,,,,
+RACK-R5-Z1W-R1-10,Rack,RACK-R5-Z1W-R1-10,,,,,,,,,,32,10,,,,
+RACK-R5-Z1W-R1-11,Rack,RACK-R5-Z1W-R1-11,,,,,,,,,,35,18,,,,
+RACK-R5-Z1W-R1-12,Rack,RACK-R5-Z1W-R1-12,,,,,,,,,,38,10,,,,
+RACK-R5-Z1W-R2-01,Rack,RACK-R5-Z1W-R2-01,,,,,,,,,,35,18,,,,
+RACK-R5-Z1W-R2-02,Rack,RACK-R5-Z1W-R2-02,,,,,,,,,,40,15,,,,
+RACK-R5-Z1W-R2-03,Rack,RACK-R5-Z1W-R2-03,,,,,,,,,,32,15,,,,
+RACK-R5-Z1W-R2-04,Rack,RACK-R5-Z1W-R2-04,,,,,,,,,,40,12,,,,
+RACK-R5-Z1W-R2-05,Rack,RACK-R5-Z1W-R2-05,,,,,,,,,,35,12,,,,
+RACK-R5-Z1W-R2-06,Rack,RACK-R5-Z1W-R2-06,,,,,,,,,,40,12,,,,
+RACK-R5-Z1W-R2-07,Rack,RACK-R5-Z1W-R2-07,,,,,,,,,,40,12,,,,
+RACK-R5-Z1W-R2-08,Rack,RACK-R5-Z1W-R2-08,,,,,,,,,,40,10,,,,
+RACK-R5-Z1W-R2-09,Rack,RACK-R5-Z1W-R2-09,,,,,,,,,,38,12,,,,
+RACK-R5-Z1W-R2-10,Rack,RACK-R5-Z1W-R2-10,,,,,,,,,,40,18,,,,
+RACK-R5-Z1W-R2-11,Rack,RACK-R5-Z1W-R2-11,,,,,,,,,,38,12,,,,
+RACK-R5-Z1W-R2-12,Rack,RACK-R5-Z1W-R2-12,,,,,,,,,,32,15,,,,
+RACK-R5-Z2E-R1-01,Rack,RACK-R5-Z2E-R1-01,,,,,,,,,,40,15,,,,
+RACK-R5-Z2E-R1-02,Rack,RACK-R5-Z2E-R1-02,,,,,,,,,,35,15,,,,
+RACK-R5-Z2E-R1-03,Rack,RACK-R5-Z2E-R1-03,,,,,,,,,,40,10,,,,
+RACK-R5-Z2E-R1-04,Rack,RACK-R5-Z2E-R1-04,,,,,,,,,,35,10,,,,
+RACK-R5-Z2E-R1-05,Rack,RACK-R5-Z2E-R1-05,,,,,,,,,,32,8,,,,
+RACK-R5-Z2E-R1-06,Rack,RACK-R5-Z2E-R1-06,,,,,,,,,,32,10,,,,
+RACK-R5-Z2E-R1-07,Rack,RACK-R5-Z2E-R1-07,,,,,,,,,,40,8,,,,
+RACK-R5-Z2E-R1-08,Rack,RACK-R5-Z2E-R1-08,,,,,,,,,,40,8,,,,
+RACK-R5-Z2E-R1-09,Rack,RACK-R5-Z2E-R1-09,,,,,,,,,,40,8,,,,
+RACK-R5-Z2E-R1-10,Rack,RACK-R5-Z2E-R1-10,,,,,,,,,,40,10,,,,
+RACK-R5-Z2E-R1-11,Rack,RACK-R5-Z2E-R1-11,,,,,,,,,,32,8,,,,
+RACK-R5-Z2E-R1-12,Rack,RACK-R5-Z2E-R1-12,,,,,,,,,,38,18,,,,
+RACK-R5-Z2E-R2-01,Rack,RACK-R5-Z2E-R2-01,,,,,,,,,,38,18,,,,
+RACK-R5-Z2E-R2-02,Rack,RACK-R5-Z2E-R2-02,,,,,,,,,,40,15,,,,
+RACK-R5-Z2E-R2-03,Rack,RACK-R5-Z2E-R2-03,,,,,,,,,,40,10,,,,
+RACK-R5-Z2E-R2-04,Rack,RACK-R5-Z2E-R2-04,,,,,,,,,,40,18,,,,
+RACK-R5-Z2E-R2-05,Rack,RACK-R5-Z2E-R2-05,,,,,,,,,,38,15,,,,
+RACK-R5-Z2E-R2-06,Rack,RACK-R5-Z2E-R2-06,,,,,,,,,,38,10,,,,
+RACK-R5-Z2E-R2-07,Rack,RACK-R5-Z2E-R2-07,,,,,,,,,,32,8,,,,
+RACK-R5-Z2E-R2-08,Rack,RACK-R5-Z2E-R2-08,,,,,,,,,,35,15,,,,
+RACK-R5-Z2E-R2-09,Rack,RACK-R5-Z2E-R2-09,,,,,,,,,,32,8,,,,
+RACK-R5-Z2E-R2-10,Rack,RACK-R5-Z2E-R2-10,,,,,,,,,,38,15,,,,
+RACK-R5-Z2E-R2-11,Rack,RACK-R5-Z2E-R2-11,,,,,,,,,,40,15,,,,
+RACK-R5-Z2E-R2-12,Rack,RACK-R5-Z2E-R2-12,,,,,,,,,,32,12,,,,
+RACKPDU-RACK-R1-Z1-R1-01,Rack PDU,Rack PDU for RACK-R1-Z1-R1-01,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R1-02,Rack PDU,Rack PDU for RACK-R1-Z1-R1-02,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R1-03,Rack PDU,Rack PDU for RACK-R1-Z1-R1-03,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R1-04,Rack PDU,Rack PDU for RACK-R1-Z1-R1-04,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R1-05,Rack PDU,Rack PDU for RACK-R1-Z1-R1-05,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R1-06,Rack PDU,Rack PDU for RACK-R1-Z1-R1-06,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R2-01,Rack PDU,Rack PDU for RACK-R1-Z1-R2-01,,,Reserved,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R2-02,Rack PDU,Rack PDU for RACK-R1-Z1-R2-02,,,Occupied,Off,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R2-03,Rack PDU,Rack PDU for RACK-R1-Z1-R2-03,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R2-04,Rack PDU,Rack PDU for RACK-R1-Z1-R2-04,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R2-05,Rack PDU,Rack PDU for RACK-R1-Z1-R2-05,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z1-R2-06,Rack PDU,Rack PDU for RACK-R1-Z1-R2-06,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R1-01,Rack PDU,Rack PDU for RACK-R1-Z2-R1-01,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R1-02,Rack PDU,Rack PDU for RACK-R1-Z2-R1-02,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R1-03,Rack PDU,Rack PDU for RACK-R1-Z2-R1-03,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R1-04,Rack PDU,Rack PDU for RACK-R1-Z2-R1-04,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R1-05,Rack PDU,Rack PDU for RACK-R1-Z2-R1-05,,,Occupied,Standby,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R1-06,Rack PDU,Rack PDU for RACK-R1-Z2-R1-06,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R2-01,Rack PDU,Rack PDU for RACK-R1-Z2-R2-01,,,Available,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R2-02,Rack PDU,Rack PDU for RACK-R1-Z2-R2-02,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R2-03,Rack PDU,Rack PDU for RACK-R1-Z2-R2-03,,,Occupied,Off,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R2-04,Rack PDU,Rack PDU for RACK-R1-Z2-R2-04,,,Available,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R2-05,Rack PDU,Rack PDU for RACK-R1-Z2-R2-05,,,Occupied,Standby,Normal,,,,,,,,,,
+RACKPDU-RACK-R1-Z2-R2-06,Rack PDU,Rack PDU for RACK-R1-Z2-R2-06,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R1-01,Rack PDU,Rack PDU for RACK-R2-Z1-R1-01,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R1-02,Rack PDU,Rack PDU for RACK-R2-Z1-R1-02,,,Available,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R1-03,Rack PDU,Rack PDU for RACK-R2-Z1-R1-03,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R1-04,Rack PDU,Rack PDU for RACK-R2-Z1-R1-04,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R1-05,Rack PDU,Rack PDU for RACK-R2-Z1-R1-05,,,Reserved,Standby,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R1-06,Rack PDU,Rack PDU for RACK-R2-Z1-R1-06,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R2-01,Rack PDU,Rack PDU for RACK-R2-Z1-R2-01,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R2-02,Rack PDU,Rack PDU for RACK-R2-Z1-R2-02,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R2-03,Rack PDU,Rack PDU for RACK-R2-Z1-R2-03,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R2-04,Rack PDU,Rack PDU for RACK-R2-Z1-R2-04,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R2-05,Rack PDU,Rack PDU for RACK-R2-Z1-R2-05,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z1-R2-06,Rack PDU,Rack PDU for RACK-R2-Z1-R2-06,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R1-01,Rack PDU,Rack PDU for RACK-R2-Z2-R1-01,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R1-02,Rack PDU,Rack PDU for RACK-R2-Z2-R1-02,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R1-03,Rack PDU,Rack PDU for RACK-R2-Z2-R1-03,,,Occupied,On,Warning,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R1-04,Rack PDU,Rack PDU for RACK-R2-Z2-R1-04,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R1-05,Rack PDU,Rack PDU for RACK-R2-Z2-R1-05,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R1-06,Rack PDU,Rack PDU for RACK-R2-Z2-R1-06,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R2-01,Rack PDU,Rack PDU for RACK-R2-Z2-R2-01,,,Available,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R2-02,Rack PDU,Rack PDU for RACK-R2-Z2-R2-02,,,Occupied,On,Critical,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R2-03,Rack PDU,Rack PDU for RACK-R2-Z2-R2-03,,,Occupied,On,Critical,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R2-04,Rack PDU,Rack PDU for RACK-R2-Z2-R2-04,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R2-05,Rack PDU,Rack PDU for RACK-R2-Z2-R2-05,,,Occupied,On,Normal,,,,,,,,,,
+RACKPDU-RACK-R2-Z2-R2-06,Rack PDU,Rack PDU for RACK-R2-Z2-R2-06,,,Occupied,On,Normal,,,,,,,,,,
+SRV-R1-Z1-R1-01-001,Server,Server 1 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R1-01-002,Server,Server 2 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.55,75,1,0
+SRV-R1-Z1-R1-01-003,Server,Server 3 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.55,85,1,2
+SRV-R1-Z1-R1-01-004,Server,Server 4 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z1-R1-01-005,Server,Server 5 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z1-R1-01-006,Server,Server 6 in RACK-R1-Z1-R1-01,,,,,,,,,,,,1.6,95,1,8
+SRV-R1-Z1-R1-01-007,Server,Server 7 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.75,80,2,2
+SRV-R1-Z1-R1-01-008,Server,Server 8 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.7,85,2,2
+SRV-R1-Z1-R1-01-009,Server,Server 9 in RACK-R1-Z1-R1-01,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z1-R1-01-010,Server,Server 10 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.65,90,2,2
+SRV-R1-Z1-R1-01-011,Server,Server 11 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.7,90,2,2
+SRV-R1-Z1-R1-01-012,Server,Server 12 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R1-01-013,Server,Server 13 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R1-01-014,Server,Server 14 in RACK-R1-Z1-R1-01,,,,,,,,,,,,1.4,90,2,8
+SRV-R1-Z1-R1-01-015,Server,Server 15 in RACK-R1-Z1-R1-01,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z1-R1-01-016,Server,Server 16 in RACK-R1-Z1-R1-01,,,,,,,,,,,,1.1,85,2,4
+SRV-R1-Z1-R1-02-001,Server,Server 1 in RACK-R1-Z1-R1-02,,,,,,,,,,,,1.6,95,2,8
+SRV-R1-Z1-R1-02-002,Server,Server 2 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R1-02-003,Server,Server 3 in RACK-R1-Z1-R1-02,,,,,,,,,,,,1.6,90,2,8
+SRV-R1-Z1-R1-02-004,Server,Server 4 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R1-02-005,Server,Server 5 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.35,80,2,0
+SRV-R1-Z1-R1-02-006,Server,Server 6 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.75,85,2,2
+SRV-R1-Z1-R1-02-007,Server,Server 7 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.5,80,1,0
+SRV-R1-Z1-R1-02-008,Server,Server 8 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.75,90,2,2
+SRV-R1-Z1-R1-02-009,Server,Server 9 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R1-02-010,Server,Server 10 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.6,80,2,2
+SRV-R1-Z1-R1-02-011,Server,Server 11 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z1-R1-02-012,Server,Server 12 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.35,75,1,0
+SRV-R1-Z1-R1-02-013,Server,Server 13 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z1-R1-02-014,Server,Server 14 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.9,90,2,4
+SRV-R1-Z1-R1-02-015,Server,Server 15 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.6,85,1,2
+SRV-R1-Z1-R1-02-016,Server,Server 16 in RACK-R1-Z1-R1-02,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R1-03-001,Server,Server 1 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z1-R1-03-002,Server,Server 2 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.65,90,2,2
+SRV-R1-Z1-R1-03-003,Server,Server 3 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.8,95,2,4
+SRV-R1-Z1-R1-03-004,Server,Server 4 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.7,85,1,2
+SRV-R1-Z1-R1-03-005,Server,Server 5 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R1-03-006,Server,Server 6 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R1-03-007,Server,Server 7 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R1-03-008,Server,Server 8 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z1-R1-03-009,Server,Server 9 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R1-03-010,Server,Server 10 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.55,85,2,2
+SRV-R1-Z1-R1-03-011,Server,Server 11 in RACK-R1-Z1-R1-03,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z1-R1-03-012,Server,Server 12 in RACK-R1-Z1-R1-03,,,,,,,,,,,,1.1,85,2,4
+SRV-R1-Z1-R1-03-013,Server,Server 13 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.6,90,2,2
+SRV-R1-Z1-R1-03-014,Server,Server 14 in RACK-R1-Z1-R1-03,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z1-R1-03-015,Server,Server 15 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.4,85,1,0
+SRV-R1-Z1-R1-03-016,Server,Server 16 in RACK-R1-Z1-R1-03,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z1-R1-04-001,Server,Server 1 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R1-04-002,Server,Server 2 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.55,80,2,2
+SRV-R1-Z1-R1-04-003,Server,Server 3 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z1-R1-04-004,Server,Server 4 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.45,85,2,0
+SRV-R1-Z1-R1-04-005,Server,Server 5 in RACK-R1-Z1-R1-04,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z1-R1-04-006,Server,Server 6 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.4,75,1,0
+SRV-R1-Z1-R1-04-007,Server,Server 7 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.55,80,2,2
+SRV-R1-Z1-R1-04-008,Server,Server 8 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.7,80,2,2
+SRV-R1-Z1-R1-04-009,Server,Server 9 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R1-04-010,Server,Server 10 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z1-R1-04-011,Server,Server 11 in RACK-R1-Z1-R1-04,,,,,,,,,,,,1,95,2,4
+SRV-R1-Z1-R1-04-012,Server,Server 12 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.4,85,2,0
+SRV-R1-Z1-R1-04-013,Server,Server 13 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z1-R1-04-014,Server,Server 14 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.7,80,2,2
+SRV-R1-Z1-R1-04-015,Server,Server 15 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z1-R1-04-016,Server,Server 16 in RACK-R1-Z1-R1-04,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R1-05-001,Server,Server 1 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.8,95,2,4
+SRV-R1-Z1-R1-05-002,Server,Server 2 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z1-R1-05-003,Server,Server 3 in RACK-R1-Z1-R1-05,,,,,,,,,,,,1,85,2,4
+SRV-R1-Z1-R1-05-004,Server,Server 4 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.7,80,2,2
+SRV-R1-Z1-R1-05-005,Server,Server 5 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.65,90,2,2
+SRV-R1-Z1-R1-05-006,Server,Server 6 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.45,85,2,0
+SRV-R1-Z1-R1-05-007,Server,Server 7 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R1-05-008,Server,Server 8 in RACK-R1-Z1-R1-05,,,,,,,,,,,,1.1,95,2,4
+SRV-R1-Z1-R1-05-009,Server,Server 9 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R1-05-010,Server,Server 10 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z1-R1-05-011,Server,Server 11 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z1-R1-05-012,Server,Server 12 in RACK-R1-Z1-R1-05,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z1-R1-05-013,Server,Server 13 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.9,95,1,4
+SRV-R1-Z1-R1-05-014,Server,Server 14 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R1-05-015,Server,Server 15 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.7,80,2,2
+SRV-R1-Z1-R1-05-016,Server,Server 16 in RACK-R1-Z1-R1-05,,,,,,,,,,,,0.9,95,2,4
+SRV-R1-Z1-R1-06-001,Server,Server 1 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R1-06-002,Server,Server 2 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R1-06-003,Server,Server 3 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.55,75,1,0
+SRV-R1-Z1-R1-06-004,Server,Server 4 in RACK-R1-Z1-R1-06,,,,,,,,,,,,1.8,90,1,8
+SRV-R1-Z1-R1-06-005,Server,Server 5 in RACK-R1-Z1-R1-06,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z1-R1-06-006,Server,Server 6 in RACK-R1-Z1-R1-06,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z1-R1-06-007,Server,Server 7 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.45,75,2,0
+SRV-R1-Z1-R1-06-008,Server,Server 8 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z1-R1-06-009,Server,Server 9 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z1-R1-06-010,Server,Server 10 in RACK-R1-Z1-R1-06,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z1-R1-06-011,Server,Server 11 in RACK-R1-Z1-R1-06,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z1-R1-06-012,Server,Server 12 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z1-R1-06-013,Server,Server 13 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.55,80,2,2
+SRV-R1-Z1-R1-06-014,Server,Server 14 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R1-06-015,Server,Server 15 in RACK-R1-Z1-R1-06,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z1-R1-06-016,Server,Server 16 in RACK-R1-Z1-R1-06,,,,,,,,,,,,0.5,75,1,0
+SRV-R1-Z1-R2-01-001,Server,Server 1 in RACK-R1-Z1-R2-01,,,,,,,,,,,,1.6,90,2,8
+SRV-R1-Z1-R2-01-002,Server,Server 2 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z1-R2-01-003,Server,Server 3 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R2-01-004,Server,Server 4 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R2-01-005,Server,Server 5 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.75,80,2,2
+SRV-R1-Z1-R2-01-006,Server,Server 6 in RACK-R1-Z1-R2-01,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z1-R2-01-007,Server,Server 7 in RACK-R1-Z1-R2-01,,,,,,,,,,,,1.4,90,2,8
+SRV-R1-Z1-R2-01-008,Server,Server 8 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z1-R2-01-009,Server,Server 9 in RACK-R1-Z1-R2-01,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z1-R2-01-010,Server,Server 10 in RACK-R1-Z1-R2-01,,,,,,,,,,,,1,90,2,4
+SRV-R1-Z1-R2-01-011,Server,Server 11 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R2-01-012,Server,Server 12 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.6,80,1,2
+SRV-R1-Z1-R2-01-013,Server,Server 13 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R2-01-014,Server,Server 14 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.6,85,2,2
+SRV-R1-Z1-R2-01-015,Server,Server 15 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z1-R2-01-016,Server,Server 16 in RACK-R1-Z1-R2-01,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R2-02-001,Server,Server 1 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.9,85,2,4
+SRV-R1-Z1-R2-02-002,Server,Server 2 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.55,80,1,0
+SRV-R1-Z1-R2-02-003,Server,Server 3 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z1-R2-02-004,Server,Server 4 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.7,90,2,2
+SRV-R1-Z1-R2-02-005,Server,Server 5 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z1-R2-02-006,Server,Server 6 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z1-R2-02-007,Server,Server 7 in RACK-R1-Z1-R2-02,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z1-R2-02-008,Server,Server 8 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R2-02-009,Server,Server 9 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z1-R2-02-010,Server,Server 10 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.75,80,2,2
+SRV-R1-Z1-R2-02-011,Server,Server 11 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z1-R2-02-012,Server,Server 12 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z1-R2-02-013,Server,Server 13 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R2-02-014,Server,Server 14 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.4,85,2,0
+SRV-R1-Z1-R2-02-015,Server,Server 15 in RACK-R1-Z1-R2-02,,,,,,,,,,,,1,95,1,4
+SRV-R1-Z1-R2-02-016,Server,Server 16 in RACK-R1-Z1-R2-02,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R2-03-001,Server,Server 1 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R2-03-002,Server,Server 2 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R2-03-003,Server,Server 3 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R2-03-004,Server,Server 4 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R2-03-005,Server,Server 5 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.4,85,1,0
+SRV-R1-Z1-R2-03-006,Server,Server 6 in RACK-R1-Z1-R2-03,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z1-R2-03-007,Server,Server 7 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z1-R2-03-008,Server,Server 8 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R2-03-009,Server,Server 9 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R2-03-010,Server,Server 10 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R2-03-011,Server,Server 11 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.8,95,2,4
+SRV-R1-Z1-R2-03-012,Server,Server 12 in RACK-R1-Z1-R2-03,,,,,,,,,,,,1.1,85,2,4
+SRV-R1-Z1-R2-03-013,Server,Server 13 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R2-03-014,Server,Server 14 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z1-R2-03-015,Server,Server 15 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.7,85,2,2
+SRV-R1-Z1-R2-03-016,Server,Server 16 in RACK-R1-Z1-R2-03,,,,,,,,,,,,0.75,85,2,2
+SRV-R1-Z1-R2-04-001,Server,Server 1 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.45,80,1,0
+SRV-R1-Z1-R2-04-002,Server,Server 2 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z1-R2-04-003,Server,Server 3 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.65,85,2,2
+SRV-R1-Z1-R2-04-004,Server,Server 4 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R2-04-005,Server,Server 5 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z1-R2-04-006,Server,Server 6 in RACK-R1-Z1-R2-04,,,,,,,,,,,,1,90,1,4
+SRV-R1-Z1-R2-04-007,Server,Server 7 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R2-04-008,Server,Server 8 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z1-R2-04-009,Server,Server 9 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R2-04-010,Server,Server 10 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R2-04-011,Server,Server 11 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.7,80,1,2
+SRV-R1-Z1-R2-04-012,Server,Server 12 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.7,80,2,2
+SRV-R1-Z1-R2-04-013,Server,Server 13 in RACK-R1-Z1-R2-04,,,,,,,,,,,,1.1,95,1,4
+SRV-R1-Z1-R2-04-014,Server,Server 14 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.45,80,1,0
+SRV-R1-Z1-R2-04-015,Server,Server 15 in RACK-R1-Z1-R2-04,,,,,,,,,,,,1.6,95,2,8
+SRV-R1-Z1-R2-04-016,Server,Server 16 in RACK-R1-Z1-R2-04,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z1-R2-05-001,Server,Server 1 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.4,80,1,0
+SRV-R1-Z1-R2-05-002,Server,Server 2 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z1-R2-05-003,Server,Server 3 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.55,80,1,0
+SRV-R1-Z1-R2-05-004,Server,Server 4 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.65,85,2,2
+SRV-R1-Z1-R2-05-005,Server,Server 5 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z1-R2-05-006,Server,Server 6 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z1-R2-05-007,Server,Server 7 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z1-R2-05-008,Server,Server 8 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.7,85,2,2
+SRV-R1-Z1-R2-05-009,Server,Server 9 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R2-05-010,Server,Server 10 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.45,85,2,0
+SRV-R1-Z1-R2-05-011,Server,Server 11 in RACK-R1-Z1-R2-05,,,,,,,,,,,,1.4,90,2,8
+SRV-R1-Z1-R2-05-012,Server,Server 12 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.8,90,1,4
+SRV-R1-Z1-R2-05-013,Server,Server 13 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R2-05-014,Server,Server 14 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.35,80,2,0
+SRV-R1-Z1-R2-05-015,Server,Server 15 in RACK-R1-Z1-R2-05,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z1-R2-05-016,Server,Server 16 in RACK-R1-Z1-R2-05,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z1-R2-06-001,Server,Server 1 in RACK-R1-Z1-R2-06,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z1-R2-06-002,Server,Server 2 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z1-R2-06-003,Server,Server 3 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z1-R2-06-004,Server,Server 4 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.55,90,2,2
+SRV-R1-Z1-R2-06-005,Server,Server 5 in RACK-R1-Z1-R2-06,,,,,,,,,,,,1.1,95,2,4
+SRV-R1-Z1-R2-06-006,Server,Server 6 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.35,80,2,0
+SRV-R1-Z1-R2-06-007,Server,Server 7 in RACK-R1-Z1-R2-06,,,,,,,,,,,,1.8,95,2,8
+SRV-R1-Z1-R2-06-008,Server,Server 8 in RACK-R1-Z1-R2-06,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z1-R2-06-009,Server,Server 9 in RACK-R1-Z1-R2-06,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z1-R2-06-010,Server,Server 10 in RACK-R1-Z1-R2-06,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z1-R2-06-011,Server,Server 11 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z1-R2-06-012,Server,Server 12 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z1-R2-06-013,Server,Server 13 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z1-R2-06-014,Server,Server 14 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.45,75,1,0
+SRV-R1-Z1-R2-06-015,Server,Server 15 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z1-R2-06-016,Server,Server 16 in RACK-R1-Z1-R2-06,,,,,,,,,,,,0.6,75,1,0
+SRV-R1-Z2-R1-01-001,Server,Server 1 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z2-R1-01-002,Server,Server 2 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R1-01-003,Server,Server 3 in RACK-R1-Z2-R1-01,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z2-R1-01-004,Server,Server 4 in RACK-R1-Z2-R1-01,,,,,,,,,,,,1.8,95,2,8
+SRV-R1-Z2-R1-01-005,Server,Server 5 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.45,85,2,0
+SRV-R1-Z2-R1-01-006,Server,Server 6 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z2-R1-01-007,Server,Server 7 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z2-R1-01-008,Server,Server 8 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.9,95,2,4
+SRV-R1-Z2-R1-01-009,Server,Server 9 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z2-R1-01-010,Server,Server 10 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z2-R1-01-011,Server,Server 11 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z2-R1-01-012,Server,Server 12 in RACK-R1-Z2-R1-01,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z2-R1-01-013,Server,Server 13 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z2-R1-01-014,Server,Server 14 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.6,90,2,2
+SRV-R1-Z2-R1-01-015,Server,Server 15 in RACK-R1-Z2-R1-01,,,,,,,,,,,,0.4,85,2,0
+SRV-R1-Z2-R1-01-016,Server,Server 16 in RACK-R1-Z2-R1-01,,,,,,,,,,,,1,90,2,4
+SRV-R1-Z2-R1-02-001,Server,Server 1 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R1-02-002,Server,Server 2 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R1-02-003,Server,Server 3 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.7,90,2,2
+SRV-R1-Z2-R1-02-004,Server,Server 4 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R1-02-005,Server,Server 5 in RACK-R1-Z2-R1-02,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z2-R1-02-006,Server,Server 6 in RACK-R1-Z2-R1-02,,,,,,,,,,,,1.8,95,2,8
+SRV-R1-Z2-R1-02-007,Server,Server 7 in RACK-R1-Z2-R1-02,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z2-R1-02-008,Server,Server 8 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.6,75,2,0
+SRV-R1-Z2-R1-02-009,Server,Server 9 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.55,90,2,2
+SRV-R1-Z2-R1-02-010,Server,Server 10 in RACK-R1-Z2-R1-02,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z2-R1-02-011,Server,Server 11 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R1-02-012,Server,Server 12 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z2-R1-02-013,Server,Server 13 in RACK-R1-Z2-R1-02,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z2-R1-02-014,Server,Server 14 in RACK-R1-Z2-R1-02,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z2-R1-02-015,Server,Server 15 in RACK-R1-Z2-R1-02,,,,,,,,,,,,1.4,90,2,8
+SRV-R1-Z2-R1-02-016,Server,Server 16 in RACK-R1-Z2-R1-02,,,,,,,,,,,,1,85,2,4
+SRV-R1-Z2-R1-03-001,Server,Server 1 in RACK-R1-Z2-R1-03,,,,,,,,,,,,1.8,90,2,8
+SRV-R1-Z2-R1-03-002,Server,Server 2 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z2-R1-03-003,Server,Server 3 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z2-R1-03-004,Server,Server 4 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.5,85,1,0
+SRV-R1-Z2-R1-03-005,Server,Server 5 in RACK-R1-Z2-R1-03,,,,,,,,,,,,1.8,95,2,8
+SRV-R1-Z2-R1-03-006,Server,Server 6 in RACK-R1-Z2-R1-03,,,,,,,,,,,,1.1,85,2,4
+SRV-R1-Z2-R1-03-007,Server,Server 7 in RACK-R1-Z2-R1-03,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z2-R1-03-008,Server,Server 8 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z2-R1-03-009,Server,Server 9 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.5,80,2,0
+SRV-R1-Z2-R1-03-010,Server,Server 10 in RACK-R1-Z2-R1-03,,,,,,,,,,,,1,85,2,4
+SRV-R1-Z2-R1-03-011,Server,Server 11 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R1-03-012,Server,Server 12 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.45,85,1,0
+SRV-R1-Z2-R1-03-013,Server,Server 13 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R1-03-014,Server,Server 14 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z2-R1-03-015,Server,Server 15 in RACK-R1-Z2-R1-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z2-R1-03-016,Server,Server 16 in RACK-R1-Z2-R1-03,,,,,,,,,,,,1.4,90,2,8
+SRV-R1-Z2-R1-04-001,Server,Server 1 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z2-R1-04-002,Server,Server 2 in RACK-R1-Z2-R1-04,,,,,,,,,,,,1.4,95,2,8
+SRV-R1-Z2-R1-04-003,Server,Server 3 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z2-R1-04-004,Server,Server 4 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R1-04-005,Server,Server 5 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.8,95,2,4
+SRV-R1-Z2-R1-04-006,Server,Server 6 in RACK-R1-Z2-R1-04,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z2-R1-04-007,Server,Server 7 in RACK-R1-Z2-R1-04,,,,,,,,,,,,1.8,95,2,8
+SRV-R1-Z2-R1-04-008,Server,Server 8 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.8,90,2,4
+SRV-R1-Z2-R1-04-009,Server,Server 9 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.6,75,1,0
+SRV-R1-Z2-R1-04-010,Server,Server 10 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.65,80,2,2
+SRV-R1-Z2-R1-04-011,Server,Server 11 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.35,80,2,0
+SRV-R1-Z2-R1-04-012,Server,Server 12 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.75,85,2,2
+SRV-R1-Z2-R1-04-013,Server,Server 13 in RACK-R1-Z2-R1-04,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z2-R1-04-014,Server,Server 14 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R1-04-015,Server,Server 15 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.75,90,2,2
+SRV-R1-Z2-R1-04-016,Server,Server 16 in RACK-R1-Z2-R1-04,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R1-05-001,Server,Server 1 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1.1,85,2,4
+SRV-R1-Z2-R1-05-002,Server,Server 2 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z2-R1-05-003,Server,Server 3 in RACK-R1-Z2-R1-05,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z2-R1-05-004,Server,Server 4 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1.4,95,1,8
+SRV-R1-Z2-R1-05-005,Server,Server 5 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R1-05-006,Server,Server 6 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1.1,95,2,4
+SRV-R1-Z2-R1-05-007,Server,Server 7 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.55,85,1,0
+SRV-R1-Z2-R1-05-008,Server,Server 8 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1,85,2,4
+SRV-R1-Z2-R1-05-009,Server,Server 9 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.8,95,2,4
+SRV-R1-Z2-R1-05-010,Server,Server 10 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R1-05-011,Server,Server 11 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z2-R1-05-012,Server,Server 12 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1,85,2,4
+SRV-R1-Z2-R1-05-013,Server,Server 13 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1.6,90,2,8
+SRV-R1-Z2-R1-05-014,Server,Server 14 in RACK-R1-Z2-R1-05,,,,,,,,,,,,1.8,90,2,8
+SRV-R1-Z2-R1-05-015,Server,Server 15 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z2-R1-05-016,Server,Server 16 in RACK-R1-Z2-R1-05,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z2-R1-06-001,Server,Server 1 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.35,80,1,0
+SRV-R1-Z2-R1-06-002,Server,Server 2 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z2-R1-06-003,Server,Server 3 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.4,85,2,0
+SRV-R1-Z2-R1-06-004,Server,Server 4 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.9,90,2,4
+SRV-R1-Z2-R1-06-005,Server,Server 5 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.35,80,2,0
+SRV-R1-Z2-R1-06-006,Server,Server 6 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.8,95,2,4
+SRV-R1-Z2-R1-06-007,Server,Server 7 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.45,80,2,0
+SRV-R1-Z2-R1-06-008,Server,Server 8 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.9,95,2,4
+SRV-R1-Z2-R1-06-009,Server,Server 9 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.35,80,2,0
+SRV-R1-Z2-R1-06-010,Server,Server 10 in RACK-R1-Z2-R1-06,,,,,,,,,,,,1.1,95,2,4
+SRV-R1-Z2-R1-06-011,Server,Server 11 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z2-R1-06-012,Server,Server 12 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.8,90,2,4
+SRV-R1-Z2-R1-06-013,Server,Server 13 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z2-R1-06-014,Server,Server 14 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R1-06-015,Server,Server 15 in RACK-R1-Z2-R1-06,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z2-R1-06-016,Server,Server 16 in RACK-R1-Z2-R1-06,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-01-001,Server,Server 1 in RACK-R1-Z2-R2-01,,,,,,,,,,,,1.8,95,2,8
+SRV-R1-Z2-R2-01-002,Server,Server 2 in RACK-R1-Z2-R2-01,,,,,,,,,,,,1,90,2,4
+SRV-R1-Z2-R2-01-003,Server,Server 3 in RACK-R1-Z2-R2-01,,,,,,,,,,,,1.6,95,1,8
+SRV-R1-Z2-R2-01-004,Server,Server 4 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.45,85,2,0
+SRV-R1-Z2-R2-01-005,Server,Server 5 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z2-R2-01-006,Server,Server 6 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.75,85,2,2
+SRV-R1-Z2-R2-01-007,Server,Server 7 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z2-R2-01-008,Server,Server 8 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.6,85,1,0
+SRV-R1-Z2-R2-01-009,Server,Server 9 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z2-R2-01-010,Server,Server 10 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.7,85,2,2
+SRV-R1-Z2-R2-01-011,Server,Server 11 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.9,90,1,4
+SRV-R1-Z2-R2-01-012,Server,Server 12 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-01-013,Server,Server 13 in RACK-R1-Z2-R2-01,,,,,,,,,,,,1.8,90,2,8
+SRV-R1-Z2-R2-01-014,Server,Server 14 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z2-R2-01-015,Server,Server 15 in RACK-R1-Z2-R2-01,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z2-R2-01-016,Server,Server 16 in RACK-R1-Z2-R2-01,,,,,,,,,,,,2,95,1,8
+SRV-R1-Z2-R2-02-001,Server,Server 1 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z2-R2-02-002,Server,Server 2 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R2-02-003,Server,Server 3 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.75,80,2,2
+SRV-R1-Z2-R2-02-004,Server,Server 4 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.45,75,2,0
+SRV-R1-Z2-R2-02-005,Server,Server 5 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.4,85,2,0
+SRV-R1-Z2-R2-02-006,Server,Server 6 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.65,85,2,2
+SRV-R1-Z2-R2-02-007,Server,Server 7 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z2-R2-02-008,Server,Server 8 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.4,80,1,0
+SRV-R1-Z2-R2-02-009,Server,Server 9 in RACK-R1-Z2-R2-02,,,,,,,,,,,,1.6,90,2,8
+SRV-R1-Z2-R2-02-010,Server,Server 10 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.6,80,2,2
+SRV-R1-Z2-R2-02-011,Server,Server 11 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.55,85,1,0
+SRV-R1-Z2-R2-02-012,Server,Server 12 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z2-R2-02-013,Server,Server 13 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R2-02-014,Server,Server 14 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.7,80,2,2
+SRV-R1-Z2-R2-02-015,Server,Server 15 in RACK-R1-Z2-R2-02,,,,,,,,,,,,0.55,85,1,0
+SRV-R1-Z2-R2-02-016,Server,Server 16 in RACK-R1-Z2-R2-02,,,,,,,,,,,,1.1,90,2,4
+SRV-R1-Z2-R2-03-001,Server,Server 1 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-03-002,Server,Server 2 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R2-03-003,Server,Server 3 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.75,80,1,2
+SRV-R1-Z2-R2-03-004,Server,Server 4 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.75,80,2,2
+SRV-R1-Z2-R2-03-005,Server,Server 5 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z2-R2-03-006,Server,Server 6 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R2-03-007,Server,Server 7 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.6,90,2,2
+SRV-R1-Z2-R2-03-008,Server,Server 8 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-03-009,Server,Server 9 in RACK-R1-Z2-R2-03,,,,,,,,,,,,1.6,90,2,8
+SRV-R1-Z2-R2-03-010,Server,Server 10 in RACK-R1-Z2-R2-03,,,,,,,,,,,,1.8,90,2,8
+SRV-R1-Z2-R2-03-011,Server,Server 11 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z2-R2-03-012,Server,Server 12 in RACK-R1-Z2-R2-03,,,,,,,,,,,,2,95,2,8
+SRV-R1-Z2-R2-03-013,Server,Server 13 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.9,90,2,4
+SRV-R1-Z2-R2-03-014,Server,Server 14 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.6,80,1,0
+SRV-R1-Z2-R2-03-015,Server,Server 15 in RACK-R1-Z2-R2-03,,,,,,,,,,,,0.55,85,2,2
+SRV-R1-Z2-R2-03-016,Server,Server 16 in RACK-R1-Z2-R2-03,,,,,,,,,,,,1,90,2,4
+SRV-R1-Z2-R2-04-001,Server,Server 1 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.55,80,2,0
+SRV-R1-Z2-R2-04-002,Server,Server 2 in RACK-R1-Z2-R2-04,,,,,,,,,,,,1.8,90,2,8
+SRV-R1-Z2-R2-04-003,Server,Server 3 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z2-R2-04-004,Server,Server 4 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-04-005,Server,Server 5 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.75,80,2,2
+SRV-R1-Z2-R2-04-006,Server,Server 6 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.65,80,2,2
+SRV-R1-Z2-R2-04-007,Server,Server 7 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.65,80,2,2
+SRV-R1-Z2-R2-04-008,Server,Server 8 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.5,85,2,0
+SRV-R1-Z2-R2-04-009,Server,Server 9 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.65,80,1,2
+SRV-R1-Z2-R2-04-010,Server,Server 10 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R2-04-011,Server,Server 11 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.65,90,2,2
+SRV-R1-Z2-R2-04-012,Server,Server 12 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.35,75,2,0
+SRV-R1-Z2-R2-04-013,Server,Server 13 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.55,80,2,2
+SRV-R1-Z2-R2-04-014,Server,Server 14 in RACK-R1-Z2-R2-04,,,,,,,,,,,,1,95,2,4
+SRV-R1-Z2-R2-04-015,Server,Server 15 in RACK-R1-Z2-R2-04,,,,,,,,,,,,2,90,2,8
+SRV-R1-Z2-R2-04-016,Server,Server 16 in RACK-R1-Z2-R2-04,,,,,,,,,,,,0.55,85,1,2
+SRV-R1-Z2-R2-05-001,Server,Server 1 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.75,85,2,2
+SRV-R1-Z2-R2-05-002,Server,Server 2 in RACK-R1-Z2-R2-05,,,,,,,,,,,,1.1,85,2,4
+SRV-R1-Z2-R2-05-003,Server,Server 3 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.55,85,2,2
+SRV-R1-Z2-R2-05-004,Server,Server 4 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.35,85,1,0
+SRV-R1-Z2-R2-05-005,Server,Server 5 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.8,85,2,4
+SRV-R1-Z2-R2-05-006,Server,Server 6 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.5,75,2,0
+SRV-R1-Z2-R2-05-007,Server,Server 7 in RACK-R1-Z2-R2-05,,,,,,,,,,,,1,90,2,4
+SRV-R1-Z2-R2-05-008,Server,Server 8 in RACK-R1-Z2-R2-05,,,,,,,,,,,,2,95,1,8
+SRV-R1-Z2-R2-05-009,Server,Server 9 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.35,85,2,0
+SRV-R1-Z2-R2-05-010,Server,Server 10 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.75,85,1,2
+SRV-R1-Z2-R2-05-011,Server,Server 11 in RACK-R1-Z2-R2-05,,,,,,,,,,,,1.4,90,2,8
+SRV-R1-Z2-R2-05-012,Server,Server 12 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.7,90,2,2
+SRV-R1-Z2-R2-05-013,Server,Server 13 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.75,85,2,2
+SRV-R1-Z2-R2-05-014,Server,Server 14 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-05-015,Server,Server 15 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.45,80,1,0
+SRV-R1-Z2-R2-05-016,Server,Server 16 in RACK-R1-Z2-R2-05,,,,,,,,,,,,0.7,85,2,2
+SRV-R1-Z2-R2-06-001,Server,Server 1 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.4,80,2,0
+SRV-R1-Z2-R2-06-002,Server,Server 2 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.75,90,2,2
+SRV-R1-Z2-R2-06-003,Server,Server 3 in RACK-R1-Z2-R2-06,,,,,,,,,,,,1.6,90,2,8
+SRV-R1-Z2-R2-06-004,Server,Server 4 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.6,85,2,0
+SRV-R1-Z2-R2-06-005,Server,Server 5 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.65,85,2,2
+SRV-R1-Z2-R2-06-006,Server,Server 6 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.55,85,2,0
+SRV-R1-Z2-R2-06-007,Server,Server 7 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.4,75,2,0
+SRV-R1-Z2-R2-06-008,Server,Server 8 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.9,95,2,4
+SRV-R1-Z2-R2-06-009,Server,Server 9 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.6,80,2,0
+SRV-R1-Z2-R2-06-010,Server,Server 10 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.35,75,1,0
+SRV-R1-Z2-R2-06-011,Server,Server 11 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.6,85,2,2
+SRV-R1-Z2-R2-06-012,Server,Server 12 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.55,85,2,2
+SRV-R1-Z2-R2-06-013,Server,Server 13 in RACK-R1-Z2-R2-06,,,,,,,,,,,,1.8,90,2,8
+SRV-R1-Z2-R2-06-014,Server,Server 14 in RACK-R1-Z2-R2-06,,,,,,,,,,,,1,95,2,4
+SRV-R1-Z2-R2-06-015,Server,Server 15 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.55,75,2,0
+SRV-R1-Z2-R2-06-016,Server,Server 16 in RACK-R1-Z2-R2-06,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R1-01-001,Server,Server 1 in RACK-R2-Z1-R1-01,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z1-R1-01-002,Server,Server 2 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z1-R1-01-003,Server,Server 3 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.75,85,2,2
+SRV-R2-Z1-R1-01-004,Server,Server 4 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.35,75,1,0
+SRV-R2-Z1-R1-01-005,Server,Server 5 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.7,80,2,2
+SRV-R2-Z1-R1-01-006,Server,Server 6 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.55,80,1,0
+SRV-R2-Z1-R1-01-007,Server,Server 7 in RACK-R2-Z1-R1-01,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R1-01-008,Server,Server 8 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z1-R1-01-009,Server,Server 9 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z1-R1-01-010,Server,Server 10 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z1-R1-01-011,Server,Server 11 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.6,75,2,0
+SRV-R2-Z1-R1-01-012,Server,Server 12 in RACK-R2-Z1-R1-01,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z1-R1-01-013,Server,Server 13 in RACK-R2-Z1-R1-01,,,,,,,,,,,,1.8,90,1,8
+SRV-R2-Z1-R1-01-014,Server,Server 14 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z1-R1-01-015,Server,Server 15 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z1-R1-01-016,Server,Server 16 in RACK-R2-Z1-R1-01,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z1-R1-02-001,Server,Server 1 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.6,85,2,2
+SRV-R2-Z1-R1-02-002,Server,Server 2 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.7,90,2,2
+SRV-R2-Z1-R1-02-003,Server,Server 3 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.55,80,2,0
+SRV-R2-Z1-R1-02-004,Server,Server 4 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z1-R1-02-005,Server,Server 5 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z1-R1-02-006,Server,Server 6 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.6,75,1,0
+SRV-R2-Z1-R1-02-007,Server,Server 7 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z1-R1-02-008,Server,Server 8 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.75,80,2,2
+SRV-R2-Z1-R1-02-009,Server,Server 9 in RACK-R2-Z1-R1-02,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z1-R1-02-010,Server,Server 10 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.55,80,2,2
+SRV-R2-Z1-R1-02-011,Server,Server 11 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.75,85,2,2
+SRV-R2-Z1-R1-02-012,Server,Server 12 in RACK-R2-Z1-R1-02,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R1-02-013,Server,Server 13 in RACK-R2-Z1-R1-02,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R1-02-014,Server,Server 14 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R1-02-015,Server,Server 15 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-02-016,Server,Server 16 in RACK-R2-Z1-R1-02,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-03-001,Server,Server 1 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.55,85,1,2
+SRV-R2-Z1-R1-03-002,Server,Server 2 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z1-R1-03-003,Server,Server 3 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.4,75,1,0
+SRV-R2-Z1-R1-03-004,Server,Server 4 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R1-03-005,Server,Server 5 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.55,85,2,2
+SRV-R2-Z1-R1-03-006,Server,Server 6 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z1-R1-03-007,Server,Server 7 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.45,75,2,0
+SRV-R2-Z1-R1-03-008,Server,Server 8 in RACK-R2-Z1-R1-03,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z1-R1-03-009,Server,Server 9 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.6,75,2,0
+SRV-R2-Z1-R1-03-010,Server,Server 10 in RACK-R2-Z1-R1-03,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R1-03-011,Server,Server 11 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.55,80,2,0
+SRV-R2-Z1-R1-03-012,Server,Server 12 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z1-R1-03-013,Server,Server 13 in RACK-R2-Z1-R1-03,,,,,,,,,,,,1,85,1,4
+SRV-R2-Z1-R1-03-014,Server,Server 14 in RACK-R2-Z1-R1-03,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z1-R1-03-015,Server,Server 15 in RACK-R2-Z1-R1-03,,,,,,,,,,,,1,95,2,4
+SRV-R2-Z1-R1-03-016,Server,Server 16 in RACK-R2-Z1-R1-03,,,,,,,,,,,,0.5,75,1,0
+SRV-R2-Z1-R1-04-001,Server,Server 1 in RACK-R2-Z1-R1-04,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R1-04-002,Server,Server 2 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R1-04-003,Server,Server 3 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.6,90,2,2
+SRV-R2-Z1-R1-04-004,Server,Server 4 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z1-R1-04-005,Server,Server 5 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R1-04-006,Server,Server 6 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z1-R1-04-007,Server,Server 7 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z1-R1-04-008,Server,Server 8 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.8,95,1,4
+SRV-R2-Z1-R1-04-009,Server,Server 9 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.9,85,2,4
+SRV-R2-Z1-R1-04-010,Server,Server 10 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z1-R1-04-011,Server,Server 11 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.35,80,1,0
+SRV-R2-Z1-R1-04-012,Server,Server 12 in RACK-R2-Z1-R1-04,,,,,,,,,,,,1,85,2,4
+SRV-R2-Z1-R1-04-013,Server,Server 13 in RACK-R2-Z1-R1-04,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z1-R1-04-014,Server,Server 14 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.4,80,1,0
+SRV-R2-Z1-R1-04-015,Server,Server 15 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R1-04-016,Server,Server 16 in RACK-R2-Z1-R1-04,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z1-R1-05-001,Server,Server 1 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.45,85,1,0
+SRV-R2-Z1-R1-05-002,Server,Server 2 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z1-R1-05-003,Server,Server 3 in RACK-R2-Z1-R1-05,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z1-R1-05-004,Server,Server 4 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.7,85,1,2
+SRV-R2-Z1-R1-05-005,Server,Server 5 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-05-006,Server,Server 6 in RACK-R2-Z1-R1-05,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R1-05-007,Server,Server 7 in RACK-R2-Z1-R1-05,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z1-R1-05-008,Server,Server 8 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z1-R1-05-009,Server,Server 9 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z1-R1-05-010,Server,Server 10 in RACK-R2-Z1-R1-05,,,,,,,,,,,,1.6,90,1,8
+SRV-R2-Z1-R1-05-011,Server,Server 11 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z1-R1-05-012,Server,Server 12 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-05-013,Server,Server 13 in RACK-R2-Z1-R1-05,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R1-05-014,Server,Server 14 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.45,80,2,0
+SRV-R2-Z1-R1-05-015,Server,Server 15 in RACK-R2-Z1-R1-05,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R1-05-016,Server,Server 16 in RACK-R2-Z1-R1-05,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-06-001,Server,Server 1 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.55,85,2,2
+SRV-R2-Z1-R1-06-002,Server,Server 2 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.7,90,2,2
+SRV-R2-Z1-R1-06-003,Server,Server 3 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R1-06-004,Server,Server 4 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z1-R1-06-005,Server,Server 5 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.55,90,2,2
+SRV-R2-Z1-R1-06-006,Server,Server 6 in RACK-R2-Z1-R1-06,,,,,,,,,,,,1,90,2,4
+SRV-R2-Z1-R1-06-007,Server,Server 7 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z1-R1-06-008,Server,Server 8 in RACK-R2-Z1-R1-06,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R1-06-009,Server,Server 9 in RACK-R2-Z1-R1-06,,,,,,,,,,,,1.4,95,2,8
+SRV-R2-Z1-R1-06-010,Server,Server 10 in RACK-R2-Z1-R1-06,,,,,,,,,,,,1,85,1,4
+SRV-R2-Z1-R1-06-011,Server,Server 11 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-06-012,Server,Server 12 in RACK-R2-Z1-R1-06,,,,,,,,,,,,1,95,2,4
+SRV-R2-Z1-R1-06-013,Server,Server 13 in RACK-R2-Z1-R1-06,,,,,,,,,,,,2,95,1,8
+SRV-R2-Z1-R1-06-014,Server,Server 14 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R1-06-015,Server,Server 15 in RACK-R2-Z1-R1-06,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z1-R1-06-016,Server,Server 16 in RACK-R2-Z1-R1-06,,,,,,,,,,,,0.6,80,2,2
+SRV-R2-Z1-R2-01-001,Server,Server 1 in RACK-R2-Z1-R2-01,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z1-R2-01-002,Server,Server 2 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z1-R2-01-003,Server,Server 3 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.55,90,2,2
+SRV-R2-Z1-R2-01-004,Server,Server 4 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.55,85,2,2
+SRV-R2-Z1-R2-01-005,Server,Server 5 in RACK-R2-Z1-R2-01,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z1-R2-01-006,Server,Server 6 in RACK-R2-Z1-R2-01,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R2-01-007,Server,Server 7 in RACK-R2-Z1-R2-01,,,,,,,,,,,,1,90,1,4
+SRV-R2-Z1-R2-01-008,Server,Server 8 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R2-01-009,Server,Server 9 in RACK-R2-Z1-R2-01,,,,,,,,,,,,2,95,1,8
+SRV-R2-Z1-R2-01-010,Server,Server 10 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z1-R2-01-011,Server,Server 11 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.4,75,2,0
+SRV-R2-Z1-R2-01-012,Server,Server 12 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R2-01-013,Server,Server 13 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.65,85,2,2
+SRV-R2-Z1-R2-01-014,Server,Server 14 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.65,90,2,2
+SRV-R2-Z1-R2-01-015,Server,Server 15 in RACK-R2-Z1-R2-01,,,,,,,,,,,,0.55,80,2,0
+SRV-R2-Z1-R2-01-016,Server,Server 16 in RACK-R2-Z1-R2-01,,,,,,,,,,,,1,95,2,4
+SRV-R2-Z1-R2-02-001,Server,Server 1 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.45,75,2,0
+SRV-R2-Z1-R2-02-002,Server,Server 2 in RACK-R2-Z1-R2-02,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R2-02-003,Server,Server 3 in RACK-R2-Z1-R2-02,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R2-02-004,Server,Server 4 in RACK-R2-Z1-R2-02,,,,,,,,,,,,1.4,90,1,8
+SRV-R2-Z1-R2-02-005,Server,Server 5 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.55,80,2,2
+SRV-R2-Z1-R2-02-006,Server,Server 6 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R2-02-007,Server,Server 7 in RACK-R2-Z1-R2-02,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R2-02-008,Server,Server 8 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z1-R2-02-009,Server,Server 9 in RACK-R2-Z1-R2-02,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R2-02-010,Server,Server 10 in RACK-R2-Z1-R2-02,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z1-R2-02-011,Server,Server 11 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.4,80,1,0
+SRV-R2-Z1-R2-02-012,Server,Server 12 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.9,95,1,4
+SRV-R2-Z1-R2-02-013,Server,Server 13 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.6,90,1,2
+SRV-R2-Z1-R2-02-014,Server,Server 14 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.6,80,2,2
+SRV-R2-Z1-R2-02-015,Server,Server 15 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.55,90,2,2
+SRV-R2-Z1-R2-02-016,Server,Server 16 in RACK-R2-Z1-R2-02,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z1-R2-03-001,Server,Server 1 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.7,80,2,2
+SRV-R2-Z1-R2-03-002,Server,Server 2 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.45,80,2,0
+SRV-R2-Z1-R2-03-003,Server,Server 3 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z1-R2-03-004,Server,Server 4 in RACK-R2-Z1-R2-03,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R2-03-005,Server,Server 5 in RACK-R2-Z1-R2-03,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z1-R2-03-006,Server,Server 6 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.65,90,1,2
+SRV-R2-Z1-R2-03-007,Server,Server 7 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.4,85,1,0
+SRV-R2-Z1-R2-03-008,Server,Server 8 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R2-03-009,Server,Server 9 in RACK-R2-Z1-R2-03,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z1-R2-03-010,Server,Server 10 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.5,75,1,0
+SRV-R2-Z1-R2-03-011,Server,Server 11 in RACK-R2-Z1-R2-03,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z1-R2-03-012,Server,Server 12 in RACK-R2-Z1-R2-03,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R2-03-013,Server,Server 13 in RACK-R2-Z1-R2-03,,,,,,,,,,,,1.1,95,1,4
+SRV-R2-Z1-R2-03-014,Server,Server 14 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z1-R2-03-015,Server,Server 15 in RACK-R2-Z1-R2-03,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z1-R2-03-016,Server,Server 16 in RACK-R2-Z1-R2-03,,,,,,,,,,,,0.8,90,2,4
+SRV-R2-Z1-R2-04-001,Server,Server 1 in RACK-R2-Z1-R2-04,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R2-04-002,Server,Server 2 in RACK-R2-Z1-R2-04,,,,,,,,,,,,1.6,90,2,8
+SRV-R2-Z1-R2-04-003,Server,Server 3 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.9,85,2,4
+SRV-R2-Z1-R2-04-004,Server,Server 4 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.65,90,2,2
+SRV-R2-Z1-R2-04-005,Server,Server 5 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.7,90,2,2
+SRV-R2-Z1-R2-04-006,Server,Server 6 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.45,80,1,0
+SRV-R2-Z1-R2-04-007,Server,Server 7 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R2-04-008,Server,Server 8 in RACK-R2-Z1-R2-04,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R2-04-009,Server,Server 9 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z1-R2-04-010,Server,Server 10 in RACK-R2-Z1-R2-04,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z1-R2-04-011,Server,Server 11 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.4,85,1,0
+SRV-R2-Z1-R2-04-012,Server,Server 12 in RACK-R2-Z1-R2-04,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z1-R2-04-013,Server,Server 13 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.55,85,2,2
+SRV-R2-Z1-R2-04-014,Server,Server 14 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z1-R2-04-015,Server,Server 15 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z1-R2-04-016,Server,Server 16 in RACK-R2-Z1-R2-04,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z1-R2-05-001,Server,Server 1 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z1-R2-05-002,Server,Server 2 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.75,80,2,2
+SRV-R2-Z1-R2-05-003,Server,Server 3 in RACK-R2-Z1-R2-05,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z1-R2-05-004,Server,Server 4 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z1-R2-05-005,Server,Server 5 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.7,90,2,2
+SRV-R2-Z1-R2-05-006,Server,Server 6 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.45,75,2,0
+SRV-R2-Z1-R2-05-007,Server,Server 7 in RACK-R2-Z1-R2-05,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z1-R2-05-008,Server,Server 8 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z1-R2-05-009,Server,Server 9 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.9,95,2,4
+SRV-R2-Z1-R2-05-010,Server,Server 10 in RACK-R2-Z1-R2-05,,,,,,,,,,,,1.6,90,1,8
+SRV-R2-Z1-R2-05-011,Server,Server 11 in RACK-R2-Z1-R2-05,,,,,,,,,,,,1.1,90,2,4
+SRV-R2-Z1-R2-05-012,Server,Server 12 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.9,95,2,4
+SRV-R2-Z1-R2-05-013,Server,Server 13 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.55,80,2,0
+SRV-R2-Z1-R2-05-014,Server,Server 14 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z1-R2-05-015,Server,Server 15 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.45,80,2,0
+SRV-R2-Z1-R2-05-016,Server,Server 16 in RACK-R2-Z1-R2-05,,,,,,,,,,,,0.75,80,2,2
+SRV-R2-Z1-R2-06-001,Server,Server 1 in RACK-R2-Z1-R2-06,,,,,,,,,,,,1.1,90,2,4
+SRV-R2-Z1-R2-06-002,Server,Server 2 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.65,85,2,2
+SRV-R2-Z1-R2-06-003,Server,Server 3 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z1-R2-06-004,Server,Server 4 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z1-R2-06-005,Server,Server 5 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z1-R2-06-006,Server,Server 6 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.45,75,1,0
+SRV-R2-Z1-R2-06-007,Server,Server 7 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.75,80,1,2
+SRV-R2-Z1-R2-06-008,Server,Server 8 in RACK-R2-Z1-R2-06,,,,,,,,,,,,1,90,2,4
+SRV-R2-Z1-R2-06-009,Server,Server 9 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z1-R2-06-010,Server,Server 10 in RACK-R2-Z1-R2-06,,,,,,,,,,,,2,95,2,8
+SRV-R2-Z1-R2-06-011,Server,Server 11 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.5,80,1,0
+SRV-R2-Z1-R2-06-012,Server,Server 12 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z1-R2-06-013,Server,Server 13 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z1-R2-06-014,Server,Server 14 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.6,75,2,0
+SRV-R2-Z1-R2-06-015,Server,Server 15 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.45,75,1,0
+SRV-R2-Z1-R2-06-016,Server,Server 16 in RACK-R2-Z1-R2-06,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z2-R1-01-001,Server,Server 1 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.75,85,2,2
+SRV-R2-Z2-R1-01-002,Server,Server 2 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.8,90,1,4
+SRV-R2-Z2-R1-01-003,Server,Server 3 in RACK-R2-Z2-R1-01,,,,,,,,,,,,1,85,2,4
+SRV-R2-Z2-R1-01-004,Server,Server 4 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.6,75,2,0
+SRV-R2-Z2-R1-01-005,Server,Server 5 in RACK-R2-Z2-R1-01,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z2-R1-01-006,Server,Server 6 in RACK-R2-Z2-R1-01,,,,,,,,,,,,1.4,95,2,8
+SRV-R2-Z2-R1-01-007,Server,Server 7 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z2-R1-01-008,Server,Server 8 in RACK-R2-Z2-R1-01,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R1-01-009,Server,Server 9 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.8,90,2,4
+SRV-R2-Z2-R1-01-010,Server,Server 10 in RACK-R2-Z2-R1-01,,,,,,,,,,,,1.4,95,2,8
+SRV-R2-Z2-R1-01-011,Server,Server 11 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.65,80,2,2
+SRV-R2-Z2-R1-01-012,Server,Server 12 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.65,85,2,2
+SRV-R2-Z2-R1-01-013,Server,Server 13 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.9,85,2,4
+SRV-R2-Z2-R1-01-014,Server,Server 14 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.65,80,2,2
+SRV-R2-Z2-R1-01-015,Server,Server 15 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.75,90,2,2
+SRV-R2-Z2-R1-01-016,Server,Server 16 in RACK-R2-Z2-R1-01,,,,,,,,,,,,0.55,75,1,0
+SRV-R2-Z2-R1-02-001,Server,Server 1 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.8,90,1,4
+SRV-R2-Z2-R1-02-002,Server,Server 2 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.6,90,2,2
+SRV-R2-Z2-R1-02-003,Server,Server 3 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.75,90,2,2
+SRV-R2-Z2-R1-02-004,Server,Server 4 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z2-R1-02-005,Server,Server 5 in RACK-R2-Z2-R1-02,,,,,,,,,,,,2,95,2,8
+SRV-R2-Z2-R1-02-006,Server,Server 6 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.55,90,2,2
+SRV-R2-Z2-R1-02-007,Server,Server 7 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.55,75,1,0
+SRV-R2-Z2-R1-02-008,Server,Server 8 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z2-R1-02-009,Server,Server 9 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z2-R1-02-010,Server,Server 10 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.6,75,2,0
+SRV-R2-Z2-R1-02-011,Server,Server 11 in RACK-R2-Z2-R1-02,,,,,,,,,,,,1.1,90,1,4
+SRV-R2-Z2-R1-02-012,Server,Server 12 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.6,75,2,0
+SRV-R2-Z2-R1-02-013,Server,Server 13 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R1-02-014,Server,Server 14 in RACK-R2-Z2-R1-02,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z2-R1-02-015,Server,Server 15 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.9,90,2,4
+SRV-R2-Z2-R1-02-016,Server,Server 16 in RACK-R2-Z2-R1-02,,,,,,,,,,,,0.55,85,1,0
+SRV-R2-Z2-R1-03-001,Server,Server 1 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.65,80,2,2
+SRV-R2-Z2-R1-03-002,Server,Server 2 in RACK-R2-Z2-R1-03,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R1-03-003,Server,Server 3 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z2-R1-03-004,Server,Server 4 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.6,90,1,2
+SRV-R2-Z2-R1-03-005,Server,Server 5 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.45,75,2,0
+SRV-R2-Z2-R1-03-006,Server,Server 6 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.55,90,2,2
+SRV-R2-Z2-R1-03-007,Server,Server 7 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z2-R1-03-008,Server,Server 8 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.75,80,2,2
+SRV-R2-Z2-R1-03-009,Server,Server 9 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z2-R1-03-010,Server,Server 10 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.5,80,1,0
+SRV-R2-Z2-R1-03-011,Server,Server 11 in RACK-R2-Z2-R1-03,,,,,,,,,,,,1,95,2,4
+SRV-R2-Z2-R1-03-012,Server,Server 12 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z2-R1-03-013,Server,Server 13 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.6,80,2,2
+SRV-R2-Z2-R1-03-014,Server,Server 14 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z2-R1-03-015,Server,Server 15 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z2-R1-03-016,Server,Server 16 in RACK-R2-Z2-R1-03,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z2-R1-04-001,Server,Server 1 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.35,80,1,0
+SRV-R2-Z2-R1-04-002,Server,Server 2 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z2-R1-04-003,Server,Server 3 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z2-R1-04-004,Server,Server 4 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.55,80,2,0
+SRV-R2-Z2-R1-04-005,Server,Server 5 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.9,95,2,4
+SRV-R2-Z2-R1-04-006,Server,Server 6 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.5,85,2,0
+SRV-R2-Z2-R1-04-007,Server,Server 7 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z2-R1-04-008,Server,Server 8 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.5,85,2,0
+SRV-R2-Z2-R1-04-009,Server,Server 9 in RACK-R2-Z2-R1-04,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z2-R1-04-010,Server,Server 10 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.7,80,2,2
+SRV-R2-Z2-R1-04-011,Server,Server 11 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R1-04-012,Server,Server 12 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.7,80,2,2
+SRV-R2-Z2-R1-04-013,Server,Server 13 in RACK-R2-Z2-R1-04,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z2-R1-04-014,Server,Server 14 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.7,90,2,2
+SRV-R2-Z2-R1-04-015,Server,Server 15 in RACK-R2-Z2-R1-04,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z2-R1-04-016,Server,Server 16 in RACK-R2-Z2-R1-04,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z2-R1-05-001,Server,Server 1 in RACK-R2-Z2-R1-05,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z2-R1-05-002,Server,Server 2 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.8,95,1,4
+SRV-R2-Z2-R1-05-003,Server,Server 3 in RACK-R2-Z2-R1-05,,,,,,,,,,,,2,95,1,8
+SRV-R2-Z2-R1-05-004,Server,Server 4 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.9,90,2,4
+SRV-R2-Z2-R1-05-005,Server,Server 5 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.55,75,2,0
+SRV-R2-Z2-R1-05-006,Server,Server 6 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.55,80,2,2
+SRV-R2-Z2-R1-05-007,Server,Server 7 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R1-05-008,Server,Server 8 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z2-R1-05-009,Server,Server 9 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.75,80,2,2
+SRV-R2-Z2-R1-05-010,Server,Server 10 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.7,80,2,2
+SRV-R2-Z2-R1-05-011,Server,Server 11 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.55,80,1,0
+SRV-R2-Z2-R1-05-012,Server,Server 12 in RACK-R2-Z2-R1-05,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z2-R1-05-013,Server,Server 13 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.55,85,1,0
+SRV-R2-Z2-R1-05-014,Server,Server 14 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z2-R1-05-015,Server,Server 15 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z2-R1-05-016,Server,Server 16 in RACK-R2-Z2-R1-05,,,,,,,,,,,,0.9,85,2,4
+SRV-R2-Z2-R1-06-001,Server,Server 1 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.8,90,2,4
+SRV-R2-Z2-R1-06-002,Server,Server 2 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.5,85,2,0
+SRV-R2-Z2-R1-06-003,Server,Server 3 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.4,75,2,0
+SRV-R2-Z2-R1-06-004,Server,Server 4 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z2-R1-06-005,Server,Server 5 in RACK-R2-Z2-R1-06,,,,,,,,,,,,1.4,90,2,8
+SRV-R2-Z2-R1-06-006,Server,Server 6 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z2-R1-06-007,Server,Server 7 in RACK-R2-Z2-R1-06,,,,,,,,,,,,1,95,2,4
+SRV-R2-Z2-R1-06-008,Server,Server 8 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.65,80,1,2
+SRV-R2-Z2-R1-06-009,Server,Server 9 in RACK-R2-Z2-R1-06,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z2-R1-06-010,Server,Server 10 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.55,85,2,2
+SRV-R2-Z2-R1-06-011,Server,Server 11 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.45,75,2,0
+SRV-R2-Z2-R1-06-012,Server,Server 12 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.65,80,1,2
+SRV-R2-Z2-R1-06-013,Server,Server 13 in RACK-R2-Z2-R1-06,,,,,,,,,,,,1,90,1,4
+SRV-R2-Z2-R1-06-014,Server,Server 14 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.4,75,1,0
+SRV-R2-Z2-R1-06-015,Server,Server 15 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z2-R1-06-016,Server,Server 16 in RACK-R2-Z2-R1-06,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z2-R2-01-001,Server,Server 1 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.55,85,2,2
+SRV-R2-Z2-R2-01-002,Server,Server 2 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R2-01-003,Server,Server 3 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z2-R2-01-004,Server,Server 4 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1.6,90,1,8
+SRV-R2-Z2-R2-01-005,Server,Server 5 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.8,95,2,4
+SRV-R2-Z2-R2-01-006,Server,Server 6 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z2-R2-01-007,Server,Server 7 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.6,85,2,0
+SRV-R2-Z2-R2-01-008,Server,Server 8 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z2-R2-01-009,Server,Server 9 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.55,80,2,2
+SRV-R2-Z2-R2-01-010,Server,Server 10 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1.8,95,2,8
+SRV-R2-Z2-R2-01-011,Server,Server 11 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R2-01-012,Server,Server 12 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1,90,2,4
+SRV-R2-Z2-R2-01-013,Server,Server 13 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.65,90,2,2
+SRV-R2-Z2-R2-01-014,Server,Server 14 in RACK-R2-Z2-R2-01,,,,,,,,,,,,0.45,75,1,0
+SRV-R2-Z2-R2-01-015,Server,Server 15 in RACK-R2-Z2-R2-01,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z2-R2-01-016,Server,Server 16 in RACK-R2-Z2-R2-01,,,,,,,,,,,,1.1,95,1,4
+SRV-R2-Z2-R2-02-001,Server,Server 1 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.75,90,2,2
+SRV-R2-Z2-R2-02-002,Server,Server 2 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.7,90,2,2
+SRV-R2-Z2-R2-02-003,Server,Server 3 in RACK-R2-Z2-R2-02,,,,,,,,,,,,1.4,95,2,8
+SRV-R2-Z2-R2-02-004,Server,Server 4 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.9,85,2,4
+SRV-R2-Z2-R2-02-005,Server,Server 5 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z2-R2-02-006,Server,Server 6 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R2-02-007,Server,Server 7 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.55,80,1,0
+SRV-R2-Z2-R2-02-008,Server,Server 8 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.5,85,2,0
+SRV-R2-Z2-R2-02-009,Server,Server 9 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.6,90,2,2
+SRV-R2-Z2-R2-02-010,Server,Server 10 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.4,85,2,0
+SRV-R2-Z2-R2-02-011,Server,Server 11 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.6,85,2,2
+SRV-R2-Z2-R2-02-012,Server,Server 12 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.75,80,2,2
+SRV-R2-Z2-R2-02-013,Server,Server 13 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.55,85,1,0
+SRV-R2-Z2-R2-02-014,Server,Server 14 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.45,80,2,0
+SRV-R2-Z2-R2-02-015,Server,Server 15 in RACK-R2-Z2-R2-02,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z2-R2-02-016,Server,Server 16 in RACK-R2-Z2-R2-02,,,,,,,,,,,,0.75,90,2,2
+SRV-R2-Z2-R2-03-001,Server,Server 1 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.75,90,2,2
+SRV-R2-Z2-R2-03-002,Server,Server 2 in RACK-R2-Z2-R2-03,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R2-03-003,Server,Server 3 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.45,85,2,0
+SRV-R2-Z2-R2-03-004,Server,Server 4 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.9,85,2,4
+SRV-R2-Z2-R2-03-005,Server,Server 5 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.6,80,2,2
+SRV-R2-Z2-R2-03-006,Server,Server 6 in RACK-R2-Z2-R2-03,,,,,,,,,,,,1,90,2,4
+SRV-R2-Z2-R2-03-007,Server,Server 7 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z2-R2-03-008,Server,Server 8 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.6,90,2,2
+SRV-R2-Z2-R2-03-009,Server,Server 9 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z2-R2-03-010,Server,Server 10 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z2-R2-03-011,Server,Server 11 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z2-R2-03-012,Server,Server 12 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z2-R2-03-013,Server,Server 13 in RACK-R2-Z2-R2-03,,,,,,,,,,,,1.6,95,1,8
+SRV-R2-Z2-R2-03-014,Server,Server 14 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.55,85,1,0
+SRV-R2-Z2-R2-03-015,Server,Server 15 in RACK-R2-Z2-R2-03,,,,,,,,,,,,1,85,2,4
+SRV-R2-Z2-R2-03-016,Server,Server 16 in RACK-R2-Z2-R2-03,,,,,,,,,,,,0.45,75,2,0
+SRV-R2-Z2-R2-04-001,Server,Server 1 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1.1,85,2,4
+SRV-R2-Z2-R2-04-002,Server,Server 2 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z2-R2-04-003,Server,Server 3 in RACK-R2-Z2-R2-04,,,,,,,,,,,,2,95,2,8
+SRV-R2-Z2-R2-04-004,Server,Server 4 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z2-R2-04-005,Server,Server 5 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z2-R2-04-006,Server,Server 6 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.55,85,2,0
+SRV-R2-Z2-R2-04-007,Server,Server 7 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.6,85,1,0
+SRV-R2-Z2-R2-04-008,Server,Server 8 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1.8,95,1,8
+SRV-R2-Z2-R2-04-009,Server,Server 9 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.35,80,2,0
+SRV-R2-Z2-R2-04-010,Server,Server 10 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.8,90,2,4
+SRV-R2-Z2-R2-04-011,Server,Server 11 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.75,90,2,2
+SRV-R2-Z2-R2-04-012,Server,Server 12 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1.6,90,1,8
+SRV-R2-Z2-R2-04-013,Server,Server 13 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R2-04-014,Server,Server 14 in RACK-R2-Z2-R2-04,,,,,,,,,,,,0.5,85,2,0
+SRV-R2-Z2-R2-04-015,Server,Server 15 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1.4,95,2,8
+SRV-R2-Z2-R2-04-016,Server,Server 16 in RACK-R2-Z2-R2-04,,,,,,,,,,,,1,90,1,4
+SRV-R2-Z2-R2-05-001,Server,Server 1 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z2-R2-05-002,Server,Server 2 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.5,75,2,0
+SRV-R2-Z2-R2-05-003,Server,Server 3 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z2-R2-05-004,Server,Server 4 in RACK-R2-Z2-R2-05,,,,,,,,,,,,1.6,95,2,8
+SRV-R2-Z2-R2-05-005,Server,Server 5 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z2-R2-05-006,Server,Server 6 in RACK-R2-Z2-R2-05,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R2-05-007,Server,Server 7 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.6,80,2,0
+SRV-R2-Z2-R2-05-008,Server,Server 8 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z2-R2-05-009,Server,Server 9 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z2-R2-05-010,Server,Server 10 in RACK-R2-Z2-R2-05,,,,,,,,,,,,1.4,95,2,8
+SRV-R2-Z2-R2-05-011,Server,Server 11 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.55,80,2,2
+SRV-R2-Z2-R2-05-012,Server,Server 12 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.75,90,1,2
+SRV-R2-Z2-R2-05-013,Server,Server 13 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.8,85,2,4
+SRV-R2-Z2-R2-05-014,Server,Server 14 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.35,80,1,0
+SRV-R2-Z2-R2-05-015,Server,Server 15 in RACK-R2-Z2-R2-05,,,,,,,,,,,,1,90,2,4
+SRV-R2-Z2-R2-05-016,Server,Server 16 in RACK-R2-Z2-R2-05,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z2-R2-06-001,Server,Server 1 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z2-R2-06-002,Server,Server 2 in RACK-R2-Z2-R2-06,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R2-06-003,Server,Server 3 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.4,80,2,0
+SRV-R2-Z2-R2-06-004,Server,Server 4 in RACK-R2-Z2-R2-06,,,,,,,,,,,,2,90,2,8
+SRV-R2-Z2-R2-06-005,Server,Server 5 in RACK-R2-Z2-R2-06,,,,,,,,,,,,1.8,90,2,8
+SRV-R2-Z2-R2-06-006,Server,Server 6 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.9,90,2,4
+SRV-R2-Z2-R2-06-007,Server,Server 7 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.35,75,2,0
+SRV-R2-Z2-R2-06-008,Server,Server 8 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.9,95,2,4
+SRV-R2-Z2-R2-06-009,Server,Server 9 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.65,85,2,2
+SRV-R2-Z2-R2-06-010,Server,Server 10 in RACK-R2-Z2-R2-06,,,,,,,,,,,,1.1,95,2,4
+SRV-R2-Z2-R2-06-011,Server,Server 11 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.5,80,2,0
+SRV-R2-Z2-R2-06-012,Server,Server 12 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.35,85,2,0
+SRV-R2-Z2-R2-06-013,Server,Server 13 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.55,80,2,0
+SRV-R2-Z2-R2-06-014,Server,Server 14 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.65,90,2,2
+SRV-R2-Z2-R2-06-015,Server,Server 15 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.65,85,2,2
+SRV-R2-Z2-R2-06-016,Server,Server 16 in RACK-R2-Z2-R2-06,,,,,,,,,,,,0.4,80,2,0
+STOR-R1-Z1-R1-01,Storage Device,Storage in RACK-R1-Z1-R1-01,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z1-R1-02,Storage Device,Storage in RACK-R1-Z1-R1-02,,,,,,,,Warning,Connected,,,,,,
+STOR-R1-Z1-R1-03,Storage Device,Storage in RACK-R1-Z1-R1-03,,,,,,,,Healthy,Intermittent,,,,,,
+STOR-R1-Z1-R1-04,Storage Device,Storage in RACK-R1-Z1-R1-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z1-R1-05,Storage Device,Storage in RACK-R1-Z1-R1-05,,,,,,,,Healthy,Intermittent,,,,,,
+STOR-R1-Z1-R1-06,Storage Device,Storage in RACK-R1-Z1-R1-06,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z1-R2-01,Storage Device,Storage in RACK-R1-Z1-R2-01,,,,,,,,Warning,Connected,,,,,,
+STOR-R1-Z1-R2-02,Storage Device,Storage in RACK-R1-Z1-R2-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z1-R2-03,Storage Device,Storage in RACK-R1-Z1-R2-03,,,,,,,,Warning,Connected,,,,,,
+STOR-R1-Z1-R2-04,Storage Device,Storage in RACK-R1-Z1-R2-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z1-R2-05,Storage Device,Storage in RACK-R1-Z1-R2-05,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z1-R2-06,Storage Device,Storage in RACK-R1-Z1-R2-06,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R1-01,Storage Device,Storage in RACK-R1-Z2-R1-01,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R1-02,Storage Device,Storage in RACK-R1-Z2-R1-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R1-03,Storage Device,Storage in RACK-R1-Z2-R1-03,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R1-04,Storage Device,Storage in RACK-R1-Z2-R1-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R1-05,Storage Device,Storage in RACK-R1-Z2-R1-05,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R1-06,Storage Device,Storage in RACK-R1-Z2-R1-06,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R2-01,Storage Device,Storage in RACK-R1-Z2-R2-01,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R2-02,Storage Device,Storage in RACK-R1-Z2-R2-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R2-03,Storage Device,Storage in RACK-R1-Z2-R2-03,,,,,,,,Warning,Connected,,,,,,
+STOR-R1-Z2-R2-04,Storage Device,Storage in RACK-R1-Z2-R2-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R1-Z2-R2-05,Storage Device,Storage in RACK-R1-Z2-R2-05,,,,,,,,Warning,Connected,,,,,,
+STOR-R1-Z2-R2-06,Storage Device,Storage in RACK-R1-Z2-R2-06,,,,,,,,Healthy,Intermittent,,,,,,
+STOR-R2-Z1-R1-01,Storage Device,Storage in RACK-R2-Z1-R1-01,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R1-02,Storage Device,Storage in RACK-R2-Z1-R1-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R1-03,Storage Device,Storage in RACK-R2-Z1-R1-03,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R1-04,Storage Device,Storage in RACK-R2-Z1-R1-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R1-05,Storage Device,Storage in RACK-R2-Z1-R1-05,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R1-06,Storage Device,Storage in RACK-R2-Z1-R1-06,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R2-01,Storage Device,Storage in RACK-R2-Z1-R2-01,,,,,,,,Warning,Connected,,,,,,
+STOR-R2-Z1-R2-02,Storage Device,Storage in RACK-R2-Z1-R2-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R2-03,Storage Device,Storage in RACK-R2-Z1-R2-03,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R2-04,Storage Device,Storage in RACK-R2-Z1-R2-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R2-05,Storage Device,Storage in RACK-R2-Z1-R2-05,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z1-R2-06,Storage Device,Storage in RACK-R2-Z1-R2-06,,,,,,,,Critical,Disconnected,,,,,,
+STOR-R2-Z2-R1-01,Storage Device,Storage in RACK-R2-Z2-R1-01,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R1-02,Storage Device,Storage in RACK-R2-Z2-R1-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R1-03,Storage Device,Storage in RACK-R2-Z2-R1-03,,,,,,,,Healthy,Intermittent,,,,,,
+STOR-R2-Z2-R1-04,Storage Device,Storage in RACK-R2-Z2-R1-04,,,,,,,,Healthy,Intermittent,,,,,,
+STOR-R2-Z2-R1-05,Storage Device,Storage in RACK-R2-Z2-R1-05,,,,,,,,Warning,Connected,,,,,,
+STOR-R2-Z2-R1-06,Storage Device,Storage in RACK-R2-Z2-R1-06,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R2-01,Storage Device,Storage in RACK-R2-Z2-R2-01,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R2-02,Storage Device,Storage in RACK-R2-Z2-R2-02,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R2-03,Storage Device,Storage in RACK-R2-Z2-R2-03,,,,,,,,Warning,Connected,,,,,,
+STOR-R2-Z2-R2-04,Storage Device,Storage in RACK-R2-Z2-R2-04,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R2-05,Storage Device,Storage in RACK-R2-Z2-R2-05,,,,,,,,Healthy,Connected,,,,,,
+STOR-R2-Z2-R2-06,Storage Device,Storage in RACK-R2-Z2-R2-06,,,,,,,,Critical,Connected,,,,,,

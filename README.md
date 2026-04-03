@@ -58,6 +58,7 @@ App starts on `http://localhost:3000`.
 
 ## API Endpoints
 
+### Authentication
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
 | GET | `/health` | No | Health check |
@@ -65,6 +66,16 @@ App starts on `http://localhost:3000`.
 | POST | `/api/auth/login` | No | Login |
 | POST | `/api/auth/refresh` | No | Refresh tokens |
 | GET | `/api/auth/me` | Yes | Get current user |
+
+### Blueprints (Public Read)
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/api/blueprints/ingest` | Yes | Trigger CSV ingestion |
+| GET | `/api/blueprints/types` | No | List blueprint domains |
+| GET | `/api/blueprints/nodes?type=slug` | No | List nodes with filter |
+| GET | `/api/blueprints/nodes/:nodeId` | No | Get node with memberships |
+| GET | `/api/blueprints/edges?type=slug` | No | List edges for type |
+| GET | `/api/blueprints/tree/:typeSlug` | No | Recursive tree structure |
 
 ## Project Structure
 

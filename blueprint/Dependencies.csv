@@ -1,0 +1,147 @@
+Node Type,Dependency Node Type,Relationship Type,Topological Relationship,Upstream Level
+Rack,RPP,Dependency,Upstream,1
+Rack,Room PDU,Dependency,Upstream,2
+Rack,UPS,Dependency,Upstream,3
+Rack,BESS,Dependency,Upstream,4
+Rack,Switch Gear,Dependency,Upstream,5
+Rack,Utility Feed,Dependency,Upstream,6
+Rack,Generator,Dependency,Upstream,6
+Rack,Air Zone,Dependency,Upstream,1
+Rack,Air Cooling Unit,Dependency,Upstream,2
+Rack,Liquid Loop,Dependency,Upstream,1
+Rack,CDU,Dependency,Upstream,2
+Rack,Cooling Distribution,Dependency,Upstream,3
+Rack,Cooling Plant,Dependency,Upstream,4
+Rack,RDHx,Dependency,Local,
+Rack,DTC,Dependency,Local,
+Row,RPP,Dependency,Upstream,1
+Row,Room PDU,Dependency,Upstream,2
+Row,UPS,Dependency,Upstream,3
+Row,BESS,Dependency,Upstream,4
+Row,Switch Gear,Dependency,Upstream,5
+Row,Utility Feed,Dependency,Upstream,6
+Row,Generator,Dependency,Upstream,6
+Row,Air Zone,Dependency,Upstream,1
+Row,Air Cooling Unit,Dependency,Upstream,2
+Row,Liquid Loop,Dependency,Upstream,1
+Row,CDU,Dependency,Upstream,2
+Row,Cooling Distribution,Dependency,Upstream,3
+Row,Cooling Plant,Dependency,Upstream,4
+Row,RDHx,Dependency,Local,
+Row,DTC,Dependency,Local,
+Zone,RPP,Dependency,Upstream,1
+Zone,Room PDU,Dependency,Upstream,2
+Zone,UPS,Dependency,Upstream,3
+Zone,BESS,Dependency,Upstream,4
+Zone,Switch Gear,Dependency,Upstream,5
+Zone,Utility Feed,Dependency,Upstream,6
+Zone,Generator,Dependency,Upstream,6
+Zone,Air Zone,Dependency,Upstream,1
+Zone,Air Cooling Unit,Dependency,Upstream,2
+Zone,Liquid Loop,Dependency,Upstream,1
+Zone,CDU,Dependency,Upstream,2
+Zone,Cooling Distribution,Dependency,Upstream,3
+Zone,Cooling Plant,Dependency,Upstream,4
+Zone,RDHx,Dependency,Local,
+Zone,DTC,Dependency,Local,
+Capacity Cell,RPP,Dependency,Local,
+Capacity Cell,Room PDU,Dependency,Upstream,1
+Capacity Cell,UPS,Dependency,Upstream,2
+Capacity Cell,BESS,Dependency,Upstream,3
+Capacity Cell,Switch Gear,Dependency,Upstream,4
+Capacity Cell,Utility Feed,Dependency,Upstream,5
+Capacity Cell,Generator,Dependency,Upstream,5
+Capacity Cell,Air Zone,Dependency,Local,
+Capacity Cell,Air Cooling Unit,Dependency,Upstream,1
+Capacity Cell,Liquid Loop,Dependency,Local,
+Capacity Cell,CDU,Dependency,Upstream,1
+Capacity Cell,Cooling Distribution,Dependency,Upstream,2
+Capacity Cell,Cooling Plant,Dependency,Upstream,3
+Capacity Cell,RDHx,Dependency,Local,
+Capacity Cell,DTC,Dependency,Local,
+Room Bundle,RPP,Dependency,Local,
+Room Bundle,Room PDU,Dependency,Upstream,1
+Room Bundle,UPS,Dependency,Upstream,2
+Room Bundle,BESS,Dependency,Upstream,3
+Room Bundle,Switch Gear,Dependency,Upstream,4
+Room Bundle,Utility Feed,Dependency,Upstream,5
+Room Bundle,Generator,Dependency,Upstream,5
+Room Bundle,Air Zone,Dependency,Local,
+Room Bundle,Air Cooling Unit,Dependency,Upstream,1
+Room Bundle,Liquid Loop,Dependency,Local,
+Room Bundle,CDU,Dependency,Upstream,1
+Room Bundle,Cooling Distribution,Dependency,Upstream,2
+Room Bundle,Cooling Plant,Dependency,Upstream,3
+Room Bundle,RDHx,Dependency,Local,
+Room Bundle,DTC,Dependency,Local,
+Room PDU Bundle,RPP,Dependency,Local,
+Room PDU Bundle,Room PDU,Dependency,Local,
+Room PDU Bundle,UPS,Dependency,Upstream,1
+Room PDU Bundle,BESS,Dependency,Upstream,2
+Room PDU Bundle,Switch Gear,Dependency,Upstream,3
+Room PDU Bundle,Utility Feed,Dependency,Upstream,4
+Room PDU Bundle,Generator,Dependency,Upstream,4
+Room PDU Bundle,Air Zone,Dependency,Local,
+Room PDU Bundle,Air Cooling Unit,Dependency,Upstream,1
+Room PDU Bundle,Liquid Loop,Dependency,Local,
+Room PDU Bundle,CDU,Dependency,Upstream,1
+Room PDU Bundle,Cooling Distribution,Dependency,Upstream,2
+Room PDU Bundle,Cooling Plant,Dependency,Upstream,3
+Room PDU Bundle,RDHx,Dependency,Local,
+Room PDU Bundle,DTC,Dependency,Local,
+UPS Bundle,RPP,Dependency,Local,
+UPS Bundle,Room PDU,Dependency,Local,
+UPS Bundle,UPS,Dependency,Local,
+UPS Bundle,BESS,Dependency,Upstream,1
+UPS Bundle,Switch Gear,Dependency,Upstream,2
+UPS Bundle,Utility Feed,Dependency,Upstream,3
+UPS Bundle,Generator,Dependency,Upstream,3
+UPS Bundle,Air Zone,Dependency,Local,
+UPS Bundle,Air Cooling Unit,Dependency,Upstream,1
+UPS Bundle,Liquid Loop,Dependency,Local,
+UPS Bundle,CDU,Dependency,Upstream,1
+UPS Bundle,Cooling Distribution,Dependency,Upstream,2
+UPS Bundle,Cooling Plant,Dependency,Upstream,3
+UPS Bundle,RDHx,Dependency,Local,
+UPS Bundle,DTC,Dependency,Local,
+Rack PDU,RPP,Dependency,Upstream,1
+Rack PDU,Room PDU,Dependency,Upstream,2
+Rack PDU,UPS,Dependency,Upstream,3
+Rack PDU,BESS,Dependency,Upstream,4
+Rack PDU,Switch Gear,Dependency,Upstream,5
+Rack PDU,Utility Feed,Dependency,Upstream,6
+Rack PDU,Generator,Dependency,Upstream,6
+RPP,Room PDU,Dependency,Upstream,1
+RPP,UPS,Dependency,Upstream,2
+RPP,BESS,Dependency,Upstream,3
+RPP,Switch Gear,Dependency,Upstream,4
+RPP,Utility Feed,Dependency,Upstream,5
+RPP,Generator,Dependency,Upstream,5
+Room PDU,UPS,Dependency,Upstream,1
+Room PDU,BESS,Dependency,Upstream,2
+Room PDU,Switch Gear,Dependency,Upstream,3
+Room PDU,Utility Feed,Dependency,Upstream,4
+Room PDU,Generator,Dependency,Upstream,4
+UPS,BESS,Dependency,Upstream,1
+UPS,Switch Gear,Dependency,Upstream,2
+UPS,Utility Feed,Dependency,Upstream,3
+UPS,Generator,Dependency,Upstream,3
+BESS,Switch Gear,Dependency,Upstream,1
+BESS,Utility Feed,Dependency,Upstream,2
+BESS,Generator,Dependency,Upstream,2
+RDHx,Liquid Loop,Dependency,Upstream,1
+RDHx,CDU,Dependency,Upstream,2
+RDHx,Cooling Distribution,Dependency,Upstream,3
+RDHx,Cooling Plant,Dependency,Upstream,4
+DTC,Liquid Loop,Dependency,Upstream,1
+DTC,CDU,Dependency,Upstream,2
+DTC,Cooling Distribution,Dependency,Upstream,3
+DTC,Cooling Plant,Dependency,Upstream,4
+CDU,Cooling Distribution,Dependency,Upstream,1
+CDU,Cooling Plant,Dependency,Upstream,2
+Air Zone,Air Cooling Unit,Dependency,Upstream,1
+Air Zone,Cooling Distribution,Dependency,Upstream,2
+Air Zone,Cooling Plant,Dependency,Upstream,3
+Air Cooling Unit,Cooling Distribution,Dependency,Upstream,1
+Air Cooling Unit,Cooling Plant,Dependency,Upstream,2
+Cooling Distribution,Cooling Plant,Dependency,Upstream,1
