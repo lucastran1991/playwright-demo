@@ -2,7 +2,7 @@
 
 ## Overview
 - **Priority:** P1
-- **Status:** Not Started
+- **Status:** Complete
 - Remove `@ts-nocheck` from 3 files and add proper TypeScript types
 
 ## Related Code Files
@@ -35,10 +35,10 @@
 3. Type the `ApiWrapper` properly or replace with direct typing
 
 ## Todo
-- [ ] dag-edge.tsx: remove @ts-nocheck, add EdgeProps type
-- [ ] dag-node.tsx: remove @ts-nocheck, use NodeProps generic
-- [ ] dependency-impact-dag.tsx: remove @ts-nocheck, fix type errors
-- [ ] Run `pnpm tsc --noEmit` to verify zero type errors in tracer files
+- [x] dag-edge.tsx: remove @ts-nocheck, add EdgeProps type
+- [x] dag-node.tsx: remove @ts-nocheck, use NodeProps generic
+- [x] dependency-impact-dag.tsx: remove @ts-nocheck, fix type errors
+- [x] Run `pnpm tsc --noEmit` to verify zero type errors in tracer files
 
 ## Success Criteria
 - No `@ts-nocheck` in any tracer file

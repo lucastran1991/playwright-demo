@@ -7,9 +7,9 @@ Refactor tracer page for mobile-first responsive layout and fix touch drag on sm
 
 | # | Phase | Status | Priority |
 |---|-------|--------|----------|
-| 1 | Fix touch drag on small devices | Not Started | P0 |
-| 2 | Responsive layout refactor | Not Started | P0 |
-| 3 | Type safety cleanup | Not Started | P1 |
+| 1 | Fix touch drag on small devices | Complete | P0 |
+| 2 | Responsive layout refactor | Complete | P0 |
+| 3 | Type safety cleanup | Complete | P1 |
 
 ## Key Dependencies
 - @xyflow/react ^12.10.2

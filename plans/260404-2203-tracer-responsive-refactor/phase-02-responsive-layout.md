@@ -54,12 +54,12 @@
 3. These are initial positions — `fitView()` auto-scales anyway
 
 ## Todo
-- [ ] layout.tsx: `h-screen` → `h-dvh`
-- [ ] dependency-impact-dag.tsx: `h-screen` → `h-dvh`, toolbar padding
-- [ ] dag-search.tsx: type filter icon-only on mobile, full-width dropdowns
-- [ ] dag-node.tsx: smaller min-width
-- [ ] dag-detail-popup.tsx: full-width on mobile, scrollable, 2-col pills
-- [ ] dag-helpers.tsx: tighter layout constants
+- [x] layout.tsx: `h-screen` → `h-dvh`
+- [x] dependency-impact-dag.tsx: `h-screen` → `h-dvh`, toolbar padding
+- [x] dag-search.tsx: type filter icon-only on mobile, full-width dropdowns
+- [x] dag-node.tsx: smaller min-width
+- [x] dag-detail-popup.tsx: full-width on mobile, scrollable, 2-col pills
+- [x] dag-helpers.tsx: tighter layout constants
 
 ## Success Criteria
 - Toolbar usable on 360px viewport without overflow
