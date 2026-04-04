@@ -88,9 +88,9 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
 
   return (
     <div ref={containerRef} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[calc(100%-2rem)] max-w-[480px]">
-      <div className="flex gap-0">
+      <div className="flex gap-0 min-w-0">
         {/* Search input */}
-        <div className="relative flex items-center flex-1 rounded-l-lg border border-r-0 border-border bg-card shadow-lg">
+        <div className="relative flex items-center flex-1 min-w-0 rounded-l-lg border border-r-0 border-border bg-card shadow-lg overflow-hidden">
           <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
           {selectedLabel && !inputValue ? (
             <div className="flex-1 px-10 py-2.5 text-sm truncate text-foreground">{selectedLabel}</div>
