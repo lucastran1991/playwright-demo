@@ -160,7 +160,7 @@ function DependencyImpactDAGInner() {
         </div>
       )}
 
-      <div className="flex-1 relative">
+      <div className="flex-1 relative touch-none">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -171,6 +171,9 @@ function DependencyImpactDAGInner() {
           defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
           minZoom={0.2}
           maxZoom={2}
+          panOnScroll={false}
+          panOnDrag
+          zoomOnPinch
           proOptions={{ hideAttribution: true }}
         >
           <Background gap={20} size={1} color="hsl(var(--border) / 0.3)" />
