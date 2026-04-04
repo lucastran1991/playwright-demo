@@ -36,6 +36,8 @@ func (h *TracerHandler) IngestModels(c *gin.Context) {
 		response.Error(c, http.StatusInternalServerError, "Model ingestion failed: "+err.Error())
 		return
 	}
+	// Refresh cached topology lookups so trace API uses freshly ingested data
+	h.tracer.RefreshLookups()
 	response.Success(c, http.StatusOK, summary)
 }
 

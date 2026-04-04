@@ -10,7 +10,7 @@ Generator,Electrical System,True,True
 RDHx,Cooling System,False,False
 DTC,Cooling System,False,False
 Air Zone,Cooling System,True,True
-Liquid Lood,Cooling System,True,True
+Liquid Loop,Cooling System,True,True
 Air Cooling Unit,Cooling System,False,False
 CDU,Cooling System,False,False
 Cooling Distribution,Cooling System,True,True
