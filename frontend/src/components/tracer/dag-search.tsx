@@ -87,10 +87,10 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
   const showDropdown = isOpen && hasQuery
 
   return (
-    <div ref={containerRef} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[calc(100%-2rem)] max-w-[480px]">
+    <div ref={containerRef} className="relative flex-1 min-w-0">
       <div className="flex gap-0 min-w-0">
         {/* Search input */}
-        <div className="relative flex items-center flex-1 min-w-0 rounded-l-lg border border-r-0 border-border bg-card shadow-lg overflow-hidden">
+        <div className="relative flex items-center flex-1 min-w-0 rounded-l-lg border border-r-0 border-border bg-card overflow-hidden">
           <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
           {selectedLabel && !inputValue ? (
             <div className="flex-1 px-10 py-2.5 text-sm truncate text-foreground">{selectedLabel}</div>
@@ -118,7 +118,7 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
         {/* Type filter button */}
         <button
           onClick={() => setShowTypeDropdown((v) => !v)}
-          className="flex items-center gap-1.5 px-3 py-2.5 rounded-r-lg border border-border bg-card shadow-lg text-xs font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
+          className="flex items-center gap-1.5 px-3 py-2.5 rounded-r-lg border border-border bg-card text-xs font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
         >
           <Filter className="h-3.5 w-3.5" />
           <span className="max-w-[80px] truncate">{typeFilter === "All Types" ? "Type" : typeFilter}</span>

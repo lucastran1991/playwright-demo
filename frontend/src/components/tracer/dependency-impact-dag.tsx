@@ -106,35 +106,38 @@ function DependencyImpactDAGInner() {
   const isEmpty = !selectedNodeId
 
   return (
-    <div className="relative h-screen overflow-hidden bg-card">
-      {/* Theme toggle - below search on mobile, top-right on sm+ */}
-      <div className="absolute top-16 right-4 sm:top-4 z-10">
-        <ThemeToggle />
-      </div>
+    <div className="relative h-screen overflow-hidden bg-card flex flex-col">
+      {/* Top toolbar: depth + search + theme toggle in one row */}
+      <div className="relative z-10 flex items-center gap-2 px-3 py-2 border-b border-border bg-card shrink-0">
+        {/* Depth control */}
+        <div className="flex items-center gap-1 rounded-lg border border-border bg-card px-1.5 py-1 shrink-0">
+          <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-xs font-medium text-muted-foreground hidden sm:inline">Depth</span>
+          <button
+            onClick={() => setDepth((d) => Math.max(1, d - 1))}
+            disabled={depth <= 1}
+            className="h-6 w-6 flex items-center justify-center rounded hover:bg-muted disabled:opacity-30 transition-colors"
+          >
+            <Minus className="h-3 w-3" />
+          </button>
+          <span className="text-sm font-bold w-4 text-center">{depth}</span>
+          <button
+            onClick={() => setDepth((d) => Math.min(6, d + 1))}
+            disabled={depth >= 6}
+            className="h-6 w-6 flex items-center justify-center rounded hover:bg-muted disabled:opacity-30 transition-colors"
+          >
+            <Plus className="h-3 w-3" />
+          </button>
+        </div>
 
-      {/* Depth control - below search on mobile, top-left on sm+ */}
-      <div className="absolute top-16 left-4 sm:top-4 z-10 flex items-center gap-1.5 rounded-lg border border-border bg-card shadow-lg px-2 py-1.5">
-        <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-        <span className="text-xs font-medium text-muted-foreground">Depth</span>
-        <button
-          onClick={() => setDepth((d) => Math.max(1, d - 1))}
-          disabled={depth <= 1}
-          className="h-6 w-6 flex items-center justify-center rounded hover:bg-muted disabled:opacity-30 transition-colors"
-        >
-          <Minus className="h-3 w-3" />
-        </button>
-        <span className="text-sm font-bold w-4 text-center">{depth}</span>
-        <button
-          onClick={() => setDepth((d) => Math.min(6, d + 1))}
-          disabled={depth >= 6}
-          className="h-6 w-6 flex items-center justify-center rounded hover:bg-muted disabled:opacity-30 transition-colors"
-        >
-          <Plus className="h-3 w-3" />
-        </button>
-      </div>
+        {/* Search bar - takes remaining space */}
+        <DAGSearch onSelect={handleSelect} onClear={handleClear} />
 
-      {/* Search bar overlay */}
-      <DAGSearch onSelect={handleSelect} onClear={handleClear} />
+        {/* Theme toggle */}
+        <div className="shrink-0">
+          <ThemeToggle />
+        </div>
+      </div>
 
       {/* Loading overlay */}
       {isLoading && (
@@ -157,23 +160,25 @@ function DependencyImpactDAGInner() {
         </div>
       )}
 
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
-        minZoom={0.2}
-        maxZoom={2}
-        proOptions={{ hideAttribution: true }}
-      >
-        <Background gap={20} size={1} color="hsl(var(--border) / 0.3)" />
-        <Controls
-          className="!bg-card !border-border !shadow-lg [&>button]:!bg-card [&>button]:!border-border [&>button]:!fill-foreground"
-        />
-      </ReactFlow>
+      <div className="flex-1 relative">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
+          minZoom={0.2}
+          maxZoom={2}
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background gap={20} size={1} color="hsl(var(--border) / 0.3)" />
+          <Controls
+            className="!bg-card !border-border !shadow-lg [&>button]:!bg-card [&>button]:!border-border [&>button]:!fill-foreground"
+          />
+        </ReactFlow>
+      </div>
 
       {/* Node detail popup */}
       {popupData && <DagDetailPopup data={popupData} onClose={() => setPopupData(null)} />}
