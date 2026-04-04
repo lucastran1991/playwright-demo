@@ -1,7 +1,6 @@
-// @ts-nocheck
 'use client'
 
-import { BaseEdge, getSmoothStepPath } from "@xyflow/react"
+import { BaseEdge, getSmoothStepPath, type EdgeProps } from "@xyflow/react"
 
 export default function TracerEdge({
   id,
@@ -13,7 +12,7 @@ export default function TracerEdge({
   targetPosition,
   style = {},
   markerEnd,
-}) {
+}: EdgeProps) {
   const [edgePath] = getSmoothStepPath({
     sourceX,
     sourceY,
@@ -32,7 +31,7 @@ export default function TracerEdge({
         path={edgePath}
         style={{
           ...style,
-          strokeWidth: (style.strokeWidth ?? 2) + 4,
+          strokeWidth: (Number(style.strokeWidth) || 2) + 4,
           strokeOpacity: 0.15,
           strokeDasharray: style.strokeDasharray,
         }}

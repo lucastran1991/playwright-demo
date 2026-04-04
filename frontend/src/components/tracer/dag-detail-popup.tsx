@@ -22,7 +22,7 @@ export default function DagDetailPopup({ data, onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className="w-[calc(100%-2rem)] max-w-[360px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
+        className="w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-[360px] max-h-[80dvh] overflow-x-hidden overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with topology color bar */}
@@ -55,7 +55,7 @@ export default function DagDetailPopup({ data, onClose }: Props) {
           </div>
 
           {/* Status indicators */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <StatusPill
               label={data.isSource ? "SOURCE" : data.isLocal ? "LOCAL" : `L${data.level}`}
               color={data.isSource ? "#FBBF24" : data.isLocal ? "#6B7280" : color}

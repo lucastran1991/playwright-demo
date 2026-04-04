@@ -1,11 +1,10 @@
-// @ts-nocheck
 'use client'
 
-import { Handle, Position } from "@xyflow/react"
+import { Handle, Position, type NodeProps, type Node } from "@xyflow/react"
 import { TOPOLOGY_CONFIG, getTopologyKey } from "./dag-helpers"
 import type { TracerNodeData } from "./dag-types"
 
-export default function TracerNode({ data }: { data: TracerNodeData }) {
+export default function TracerNode({ data }: NodeProps<Node<TracerNodeData>>) {
   const topoKey = getTopologyKey(data.topology)
   const config = TOPOLOGY_CONFIG[topoKey] ?? TOPOLOGY_CONFIG.default
   const { color, bg, icon } = config
@@ -16,7 +15,7 @@ export default function TracerNode({ data }: { data: TracerNodeData }) {
 
   return (
     <div
-      className={`relative flex flex-col gap-0.5 rounded-lg px-3 py-2 border-2 ${borderStyle} ${sourceRing} min-w-[180px] max-w-[200px] transition-all cursor-pointer hover:scale-[1.03] hover:shadow-lg`}
+      className={`relative flex flex-col gap-0.5 rounded-lg px-2.5 sm:px-3 py-1.5 sm:py-2 border-2 ${borderStyle} ${sourceRing} min-w-[140px] sm:min-w-[180px] max-w-[200px] transition-all cursor-pointer hover:scale-[1.03] hover:shadow-lg`}
       style={{ borderColor: color, backgroundColor: bg }}
       onClick={() => data.onNodeClick?.(data)}
     >

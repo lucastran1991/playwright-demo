@@ -121,13 +121,13 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
           className="flex items-center gap-1.5 px-3 py-2.5 rounded-r-lg border border-border bg-card text-xs font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
         >
           <Filter className="h-3.5 w-3.5" />
-          <span className="max-w-[80px] truncate">{typeFilter === "All Types" ? "Type" : typeFilter}</span>
+          <span className="hidden sm:inline max-w-[80px] truncate">{typeFilter === "All Types" ? "Type" : typeFilter}</span>
         </button>
       </div>
 
       {/* Type dropdown */}
       {showTypeDropdown && (
-        <div className="absolute top-full right-0 mt-1 w-[180px] rounded-lg border border-border bg-card shadow-xl overflow-hidden max-h-64 overflow-y-auto">
+        <div className="absolute top-full right-0 mt-1 w-full sm:w-[180px] rounded-lg border border-border bg-card shadow-xl overflow-hidden max-h-64 overflow-y-auto z-50">
           {NODE_TYPES.map((t) => (
             <button
               key={t}
@@ -144,7 +144,7 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
 
       {/* Search results dropdown */}
       {showDropdown && (
-        <div className="mt-1 rounded-lg border border-border bg-card shadow-xl overflow-hidden max-h-64 overflow-y-auto">
+        <div className="absolute left-0 right-0 mt-1 rounded-lg border border-border bg-card shadow-xl overflow-hidden max-h-64 overflow-y-auto z-50">
           {results.length === 0 && !isFetching ? (
             <div className="px-4 py-3 text-sm text-muted-foreground">
               No {typeFilter !== "All Types" ? `${typeFilter} ` : ""}nodes found

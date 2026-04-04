@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import "@xyflow/react/dist/style.css"
@@ -12,6 +11,8 @@ import {
   Controls,
   useNodesState,
   useEdgesState,
+  type Node,
+  type Edge,
 } from "@xyflow/react"
 import { Loader2, Minus, Plus, Layers } from "lucide-react"
 import { apiFetch } from "@/lib/api-client"
@@ -35,8 +36,8 @@ function DependencyImpactDAGInner() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [depth, setDepth] = useState(2)
   const [popupData, setPopupData] = useState<TracerNodeData | null>(null)
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
   const { fitView } = useReactFlow()
 
   // Fetch dependency trace (upstream + local)
@@ -106,9 +107,9 @@ function DependencyImpactDAGInner() {
   const isEmpty = !selectedNodeId
 
   return (
-    <div className="relative h-screen overflow-hidden bg-card flex flex-col">
+    <div className="relative h-screen h-dvh overflow-hidden bg-card flex flex-col">
       {/* Top toolbar: depth + search + theme toggle in one row */}
-      <div className="relative z-10 flex items-center gap-2 px-3 py-2 border-b border-border bg-card shrink-0">
+      <div className="relative z-10 flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 border-b border-border bg-card shrink-0">
         {/* Depth control */}
         <div className="flex items-center gap-1 rounded-lg border border-border bg-card px-1.5 py-1 shrink-0">
           <Layers className="h-3.5 w-3.5 text-muted-foreground" />
@@ -174,10 +175,14 @@ function DependencyImpactDAGInner() {
           panOnScroll={false}
           panOnDrag
           zoomOnPinch
+          nodesDraggable={false}
+          nodesConnectable={false}
+          elementsSelectable={false}
           proOptions={{ hideAttribution: true }}
         >
           <Background gap={20} size={1} color="hsl(var(--border) / 0.3)" />
           <Controls
+            position="bottom-right"
             className="!bg-card !border-border !shadow-lg [&>button]:!bg-card [&>button]:!border-border [&>button]:!fill-foreground"
           />
         </ReactFlow>

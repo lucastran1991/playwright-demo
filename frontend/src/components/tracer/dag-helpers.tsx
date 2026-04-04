@@ -30,9 +30,8 @@ const UPSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: "#06B6D4", width:
 const DOWNSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: "#F97316", width: 16, height: 16 }
 const LOCAL_MARKER = { type: MarkerType.ArrowClosed, color: "#6B7280", width: 12, height: 12 }
 
-const NODE_WIDTH = 200
-const NODE_HEIGHT = 80
-const GROUP_PADDING = 20
+const NODE_WIDTH = 180
+const NODE_HEIGHT = 72
 
 function makeNode(id: string, name: string, nodeType: string, topology: string, ring: number, isSource: boolean, isLocal: boolean, level?: number, parentId?: string): Node {
   const data: TracerNodeData = { nodeId: id, name, nodeType, topology, isSource, isLocal, ring, level: level ?? 0 }
@@ -186,7 +185,7 @@ export function layoutDAG(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges:
 
   const g = new dagre.graphlib.Graph()
   g.setDefaultEdgeLabel(() => ({}))
-  g.setGraph({ rankdir: "LR", ranksep: 160, nodesep: 60, marginx: 40, marginy: 40 })
+  g.setGraph({ rankdir: "LR", ranksep: 120, nodesep: 50, marginx: 30, marginy: 30 })
 
   for (const node of topLevel) {
     const w = node.style?.width ? Number(node.style.width) : NODE_WIDTH
