@@ -1,13 +1,25 @@
-// PM2 ecosystem config -- reads from system.cfg.json
+// PM2 ecosystem config -- reads from system.cfg.json with env override support
 const path = require('path')
 const fs = require('fs')
 const cfg = require('./system.cfg.json')
 
+// Apply production overrides if binary exists (prod build indicator)
+const backendBinExists = fs.existsSync(path.resolve(__dirname, cfg.backend.cwd, 'server'))
+const nextBuildExists = fs.existsSync(path.resolve(__dirname, cfg.frontend.cwd, '.next'))
+const isProd = backendBinExists && nextBuildExists
+if (isProd && cfg.environments && cfg.environments.production) {
+  const env = cfg.environments.production
+  if (env.backend) Object.assign(cfg.backend, env.backend)
+  if (env.frontend) Object.assign(cfg.frontend, env.frontend)
+  if (env.api) Object.assign(cfg.api, env.api)
+  if (env.host) cfg.host = env.host
+}
+
 const { execSync } = require('child_process')
 const backendCwd = path.resolve(__dirname, cfg.backend.cwd)
 const frontendCwd = path.resolve(__dirname, cfg.frontend.cwd)
-const hasBinary = fs.existsSync(path.join(backendCwd, 'server'))
-const hasNextBuild = fs.existsSync(path.join(frontendCwd, '.next'))
+const hasBinary = backendBinExists
+const hasNextBuild = nextBuildExists
 // Detect package manager: prefer pnpm, fallback to npm
 let pkg = 'npm'
 try { execSync('pnpm --version', { stdio: 'ignore' }); pkg = 'pnpm' } catch {}

@@ -130,6 +130,27 @@ func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, inclu
 			continue
 		}
 		filtered := filterByTypes(nodes, allowedTypes)
+
+		// If no matching upstream found, also trace from this node's direct children
+		// in the same topology. This handles cases like Rack→RACKPDU in electrical
+		// where RPP feeds RACKPDU (not Rack directly).
+		if len(filtered) == 0 {
+			children, err := t.repo.FindDownstreamNodes(node.ID, slug, 1)
+			if err == nil {
+				for _, child := range children {
+					childUpstream, err := t.repo.FindUpstreamNodes(child.ID, slug, maxLevels)
+					if err != nil {
+						continue
+					}
+					// Shift levels +1 since we went through a child first
+					for i := range childUpstream {
+						childUpstream[i].Level++
+					}
+					filtered = append(filtered, filterByTypes(childUpstream, allowedTypes)...)
+				}
+			}
+		}
+
 		resp.Upstream = append(resp.Upstream, groupByLevel(filtered, topo)...)
 	}
 

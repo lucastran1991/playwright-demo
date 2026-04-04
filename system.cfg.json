@@ -47,5 +47,13 @@
       "dependencies": "/api/trace/dependencies/:nodeId",
       "impacts": "/api/trace/impacts/:nodeId"
     }
+  },
+  "environments": {
+    "production": {
+      "host": "18.225.254.190",
+      "backend": { "url": "http://18.225.254.190:8889" },
+      "frontend": { "url": "http://18.225.254.190:8089" },
+      "api": { "base_url": "http://18.225.254.190:8889" }
+    }
   }
 }
