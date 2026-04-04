@@ -22,7 +22,7 @@ export default function DagDetailPopup({ data, onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className="w-[360px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
+        className="w-[calc(100%-2rem)] max-w-[360px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with topology color bar */}

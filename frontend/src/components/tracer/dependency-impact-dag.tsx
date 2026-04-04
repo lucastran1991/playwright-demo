@@ -107,13 +107,13 @@ function DependencyImpactDAGInner() {
 
   return (
     <div className="relative h-screen overflow-hidden bg-card">
-      {/* Theme toggle - top right */}
-      <div className="absolute top-4 right-4 z-10">
+      {/* Theme toggle - below search on mobile, top-right on sm+ */}
+      <div className="absolute top-16 right-4 sm:top-4 z-10">
         <ThemeToggle />
       </div>
 
-      {/* Depth control - top left */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 rounded-lg border border-border bg-card shadow-lg px-2 py-1.5">
+      {/* Depth control - below search on mobile, top-left on sm+ */}
+      <div className="absolute top-16 left-4 sm:top-4 z-10 flex items-center gap-1.5 rounded-lg border border-border bg-card shadow-lg px-2 py-1.5">
         <Layers className="h-3.5 w-3.5 text-muted-foreground" />
         <span className="text-xs font-medium text-muted-foreground">Depth</span>
         <button

@@ -87,7 +87,7 @@ export default function DAGSearch({ onSelect, onClear }: DAGSearchProps) {
   const showDropdown = isOpen && hasQuery
 
   return (
-    <div ref={containerRef} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[480px]">
+    <div ref={containerRef} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 w-[calc(100%-2rem)] max-w-[480px]">
       <div className="flex gap-0">
         {/* Search input */}
         <div className="relative flex items-center flex-1 rounded-l-lg border border-r-0 border-border bg-card shadow-lg">
