@@ -1,0 +1,2223 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>server: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/user/app/cmd/server/main.go (0.0%)</option>
+				
+				<option value="file1">github.com/user/app/internal/config/config.go (0.0%)</option>
+				
+				<option value="file2">github.com/user/app/internal/database/database.go (0.0%)</option>
+				
+				<option value="file3">github.com/user/app/internal/handler/auth_handler.go (0.0%)</option>
+				
+				<option value="file4">github.com/user/app/internal/handler/blueprint_handler.go (0.0%)</option>
+				
+				<option value="file5">github.com/user/app/internal/handler/tracer_handler.go (0.0%)</option>
+				
+				<option value="file6">github.com/user/app/internal/middleware/auth_middleware.go (0.0%)</option>
+				
+				<option value="file7">github.com/user/app/internal/repository/blueprint_repository.go (0.0%)</option>
+				
+				<option value="file8">github.com/user/app/internal/repository/tracer_repository.go (0.0%)</option>
+				
+				<option value="file9">github.com/user/app/internal/repository/user_repository.go (0.0%)</option>
+				
+				<option value="file10">github.com/user/app/internal/router/router.go (0.0%)</option>
+				
+				<option value="file11">github.com/user/app/internal/service/auth_service.go (0.0%)</option>
+				
+				<option value="file12">github.com/user/app/internal/service/blueprint_csv_parser.go (97.1%)</option>
+				
+				<option value="file13">github.com/user/app/internal/service/blueprint_ingestion_service.go (0.0%)</option>
+				
+				<option value="file14">github.com/user/app/internal/service/dependency_tracer.go (46.5%)</option>
+				
+				<option value="file15">github.com/user/app/internal/service/model_csv_parser.go (93.6%)</option>
+				
+				<option value="file16">github.com/user/app/internal/service/model_ingestion_service.go (0.0%)</option>
+				
+				<option value="file17">github.com/user/app/pkg/response/response.go (0.0%)</option>
+				
+				<option value="file18">github.com/user/app/pkg/token/token.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "log"
+
+        "github.com/user/app/internal/config"
+        "github.com/user/app/internal/database"
+        "github.com/user/app/internal/handler"
+        "github.com/user/app/internal/repository"
+        "github.com/user/app/internal/router"
+        "github.com/user/app/internal/service"
+)
+
+func main() <span class="cov0" title="0">{
+        cfg, err := config.Load()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to load config: ", err)
+        }</span>
+
+        <span class="cov0" title="0">db, err := database.Connect(cfg)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to connect to database: ", err)
+        }</span>
+
+        <span class="cov0" title="0">if err := database.Migrate(db); err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to run migrations: ", err)
+        }</span>
+        <span class="cov0" title="0">log.Println("Database connected and migrated")
+
+        // Wire dependencies
+        userRepo := repository.NewUserRepository(db)
+        authService := service.NewAuthService(userRepo, cfg.JWTSecret)
+        authHandler := handler.NewAuthHandler(authService)
+
+        blueprintRepo := repository.NewBlueprintRepository(db)
+        ingestionSvc := service.NewBlueprintIngestionService(blueprintRepo, db)
+        blueprintHandler := handler.NewBlueprintHandler(ingestionSvc, blueprintRepo, cfg.BlueprintDir)
+
+        tracerRepo := repository.NewTracerRepository(db)
+        modelIngestionSvc := service.NewModelIngestionService(db)
+        depTracer := service.NewDependencyTracer(tracerRepo)
+        tracerHandler := handler.NewTracerHandler(modelIngestionSvc, depTracer, tracerRepo, cfg.ModelDir)
+
+        r := router.Setup(authHandler, blueprintHandler, tracerHandler, cfg.JWTSecret)
+
+        log.Printf("Server starting on :%s", cfg.ServerPort)
+        if err := r.Run(":" + cfg.ServerPort); err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Failed to start server: ", err)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package config
+
+import (
+        "fmt"
+        "os"
+
+        "github.com/joho/godotenv"
+)
+
+// Config holds all application configuration loaded from environment variables.
+type Config struct {
+        DBHost     string
+        DBPort     string
+        DBUser     string
+        DBPassword string
+        DBName     string
+        DBSSLMode  string
+        JWTSecret  string
+        ServerPort   string
+        BlueprintDir string
+        ModelDir     string
+}
+
+// Load reads .env file and returns a validated Config.
+func Load() (*Config, error) <span class="cov0" title="0">{
+        godotenv.Load()
+
+        cfg := &amp;Config{
+                DBHost:     getEnv("DB_HOST", "localhost"),
+                DBPort:     getEnv("DB_PORT", "5432"),
+                DBUser:     getEnv("DB_USER", ""),
+                DBPassword: getEnv("DB_PASSWORD", ""),
+                DBName:     getEnv("DB_NAME", ""),
+                DBSSLMode:  getEnv("DB_SSLMODE", "disable"),
+                JWTSecret:  getEnv("JWT_SECRET", ""),
+                ServerPort:   getEnv("SERVER_PORT", "8080"),
+                BlueprintDir: getEnv("BLUEPRINT_DIR", "./blueprint/Node &amp; Edge"),
+                ModelDir:     getEnv("MODEL_DIR", "./blueprint"),
+        }
+
+        if cfg.DBUser == "" || cfg.DBPassword == "" || cfg.DBName == "" </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("DB_USER, DB_PASSWORD, and DB_NAME are required")
+        }</span>
+        <span class="cov0" title="0">if cfg.JWTSecret == "" </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("JWT_SECRET is required")
+        }</span>
+
+        <span class="cov0" title="0">return cfg, nil</span>
+}
+
+// DSN returns the PostgreSQL connection string.
+func (c *Config) DSN() string <span class="cov0" title="0">{
+        return fmt.Sprintf(
+                "host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+                c.DBHost, c.DBPort, c.DBUser, c.DBPassword, c.DBName, c.DBSSLMode,
+        )
+}</span>
+
+func getEnv(key, fallback string) string <span class="cov0" title="0">{
+        if val := os.Getenv(key); val != "" </span><span class="cov0" title="0">{
+                return val
+        }</span>
+        <span class="cov0" title="0">return fallback</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package database
+
+import (
+        "fmt"
+        "time"
+
+        "github.com/user/app/internal/config"
+        "github.com/user/app/internal/model"
+        "gorm.io/driver/postgres"
+        "gorm.io/gorm"
+)
+
+// Connect establishes a connection to PostgreSQL and configures the pool.
+func Connect(cfg *config.Config) (*gorm.DB, error) <span class="cov0" title="0">{
+        db, err := gorm.Open(postgres.Open(cfg.DSN()), &amp;gorm.Config{})
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to connect to database: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">sqlDB, err := db.DB()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to get underlying sql.DB: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">sqlDB.SetMaxOpenConns(25)
+        sqlDB.SetMaxIdleConns(5)
+        sqlDB.SetConnMaxLifetime(5 * time.Minute)
+
+        return db, nil</span>
+}
+
+// Migrate runs AutoMigrate for all models.
+func Migrate(db *gorm.DB) error <span class="cov0" title="0">{
+        return db.AutoMigrate(
+                &amp;model.User{},
+                &amp;model.BlueprintType{},
+                &amp;model.BlueprintNode{},
+                &amp;model.BlueprintNodeMembership{},
+                &amp;model.BlueprintEdge{},
+                &amp;model.CapacityNodeType{},
+                &amp;model.DependencyRule{},
+                &amp;model.ImpactRule{},
+        )
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package handler
+
+import (
+        "errors"
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+        "github.com/user/app/internal/service"
+        "github.com/user/app/pkg/response"
+)
+
+// RegisterRequest is the payload for user registration.
+type RegisterRequest struct {
+        Name     string `json:"name" binding:"required,min=2,max=100"`
+        Email    string `json:"email" binding:"required,email"`
+        Password string `json:"password" binding:"required,min=8"`
+}
+
+// LoginRequest is the payload for user login.
+type LoginRequest struct {
+        Email    string `json:"email" binding:"required,email"`
+        Password string `json:"password" binding:"required"`
+}
+
+// RefreshRequest is the payload for token refresh.
+type RefreshRequest struct {
+        RefreshToken string `json:"refresh_token" binding:"required"`
+}
+
+// AuthHandler handles authentication HTTP requests.
+type AuthHandler struct {
+        authService *service.AuthService
+}
+
+// NewAuthHandler creates a new AuthHandler instance.
+func NewAuthHandler(authService *service.AuthService) *AuthHandler <span class="cov0" title="0">{
+        return &amp;AuthHandler{authService: authService}
+}</span>
+
+// Register handles POST /api/auth/register
+func (h *AuthHandler) Register(c *gin.Context) <span class="cov0" title="0">{
+        var req RegisterRequest
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusBadRequest, err.Error())
+                return
+        }</span>
+
+        <span class="cov0" title="0">user, accessToken, refreshToken, err := h.authService.Register(req.Name, req.Email, req.Password)
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, service.ErrUserExists) </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusConflict, "User with this email already exists")
+                        return
+                }</span>
+                <span class="cov0" title="0">response.Error(c, http.StatusInternalServerError, "Failed to register user")
+                return</span>
+        }
+
+        <span class="cov0" title="0">c.JSON(http.StatusCreated, gin.H{
+                "access_token":  accessToken,
+                "refresh_token": refreshToken,
+                "user":          user,
+        })</span>
+}
+
+// Login handles POST /api/auth/login
+func (h *AuthHandler) Login(c *gin.Context) <span class="cov0" title="0">{
+        var req LoginRequest
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusBadRequest, err.Error())
+                return
+        }</span>
+
+        <span class="cov0" title="0">user, accessToken, refreshToken, err := h.authService.Login(req.Email, req.Password)
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, service.ErrInvalidCredentials) </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusUnauthorized, "Invalid email or password")
+                        return
+                }</span>
+                <span class="cov0" title="0">response.Error(c, http.StatusInternalServerError, "Failed to login")
+                return</span>
+        }
+
+        <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{
+                "access_token":  accessToken,
+                "refresh_token": refreshToken,
+                "user":          user,
+        })</span>
+}
+
+// RefreshToken handles POST /api/auth/refresh
+func (h *AuthHandler) RefreshToken(c *gin.Context) <span class="cov0" title="0">{
+        var req RefreshRequest
+        if err := c.ShouldBindJSON(&amp;req); err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusBadRequest, err.Error())
+                return
+        }</span>
+
+        <span class="cov0" title="0">accessToken, refreshToken, err := h.authService.RefreshToken(req.RefreshToken)
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusUnauthorized, "Invalid or expired refresh token")
+                return
+        }</span>
+
+        <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{
+                "access_token":  accessToken,
+                "refresh_token": refreshToken,
+        })</span>
+}
+
+// Me handles GET /api/auth/me -- returns the authenticated user.
+func (h *AuthHandler) Me(c *gin.Context) <span class="cov0" title="0">{
+        val, exists := c.Get("userID")
+        if !exists </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusUnauthorized, "User not found in context")
+                return
+        }</span>
+
+        <span class="cov0" title="0">userID, ok := val.(uint)
+        if !ok </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Invalid user ID in context")
+                return
+        }</span>
+
+        <span class="cov0" title="0">user, err := h.authService.GetUser(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, service.ErrUserNotFound) </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusNotFound, "User not found")
+                        return
+                }</span>
+                <span class="cov0" title="0">response.Error(c, http.StatusInternalServerError, "Failed to get user")
+                return</span>
+        }
+
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, user)</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package handler
+
+import (
+        "net/http"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+        "github.com/user/app/internal/repository"
+        "github.com/user/app/internal/service"
+        "github.com/user/app/pkg/response"
+        "gorm.io/gorm"
+)
+
+// BlueprintHandler handles blueprint HTTP requests.
+type BlueprintHandler struct {
+        ingestionService *service.BlueprintIngestionService
+        repo             *repository.BlueprintRepository
+        blueprintDir     string
+}
+
+// NewBlueprintHandler creates a new BlueprintHandler instance.
+func NewBlueprintHandler(svc *service.BlueprintIngestionService, repo *repository.BlueprintRepository, dir string) *BlueprintHandler <span class="cov0" title="0">{
+        return &amp;BlueprintHandler{ingestionService: svc, repo: repo, blueprintDir: dir}
+}</span>
+
+// Ingest handles POST /api/blueprints/ingest -- triggers full CSV ingestion.
+func (h *BlueprintHandler) Ingest(c *gin.Context) <span class="cov0" title="0">{
+        summary, err := h.ingestionService.IngestAll(h.blueprintDir)
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Ingestion failed: "+err.Error())
+                return
+        }</span>
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, summary)</span>
+}
+
+// ListTypes handles GET /api/blueprints/types -- returns all blueprint domains.
+func (h *BlueprintHandler) ListTypes(c *gin.Context) <span class="cov0" title="0">{
+        types, err := h.repo.ListTypes()
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Failed to list types")
+                return
+        }</span>
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, types)</span>
+}
+
+// ListNodes handles GET /api/blueprints/nodes -- returns nodes with optional type filter.
+func (h *BlueprintHandler) ListNodes(c *gin.Context) <span class="cov0" title="0">{
+        typeSlug := c.Query("type")
+        limit, offset := parsePagination(c)
+
+        nodes, total, err := h.repo.ListNodes(typeSlug, limit, offset)
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Failed to list nodes")
+                return
+        }</span>
+        <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"data": nodes, "total": total, "limit": limit, "offset": offset})</span>
+}
+
+// GetNode handles GET /api/blueprints/nodes/:nodeId -- returns a node with memberships.
+func (h *BlueprintHandler) GetNode(c *gin.Context) <span class="cov0" title="0">{
+        nodeID := c.Param("nodeId")
+        node, memberships, err := h.repo.GetNodeByNodeID(nodeID)
+        if err != nil </span><span class="cov0" title="0">{
+                if err == gorm.ErrRecordNotFound </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusNotFound, "Node not found")
+                        return
+                }</span>
+                <span class="cov0" title="0">response.Error(c, http.StatusInternalServerError, "Failed to get node")
+                return</span>
+        }
+        <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"data": node, "memberships": memberships})</span>
+}
+
+// ListEdges handles GET /api/blueprints/edges -- returns edges for a blueprint type.
+func (h *BlueprintHandler) ListEdges(c *gin.Context) <span class="cov0" title="0">{
+        typeSlug := c.Query("type")
+        if typeSlug == "" </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusBadRequest, "Query param 'type' is required")
+                return
+        }</span>
+        <span class="cov0" title="0">limit, offset := parsePagination(c)
+
+        edges, total, err := h.repo.ListEdges(typeSlug, limit, offset)
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Failed to list edges")
+                return
+        }</span>
+        <span class="cov0" title="0">c.JSON(http.StatusOK, gin.H{"data": edges, "total": total, "limit": limit, "offset": offset})</span>
+}
+
+// GetTree handles GET /api/blueprints/tree/:typeSlug -- returns recursive tree.
+func (h *BlueprintHandler) GetTree(c *gin.Context) <span class="cov0" title="0">{
+        typeSlug := c.Param("typeSlug")
+        tree, err := h.repo.GetTree(typeSlug)
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Failed to get tree")
+                return
+        }</span>
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, tree)</span>
+}
+
+// parsePagination extracts limit/offset from query params with defaults.
+func parsePagination(c *gin.Context) (int, int) <span class="cov0" title="0">{
+        limit := 100
+        offset := 0
+        if l, err := strconv.Atoi(c.Query("limit")); err == nil &amp;&amp; l &gt; 0 &amp;&amp; l &lt;= 1000 </span><span class="cov0" title="0">{
+                limit = l
+        }</span>
+        <span class="cov0" title="0">if o, err := strconv.Atoi(c.Query("offset")); err == nil &amp;&amp; o &gt;= 0 </span><span class="cov0" title="0">{
+                offset = o
+        }</span>
+        <span class="cov0" title="0">return limit, offset</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package handler
+
+import (
+        "net/http"
+        "strconv"
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/user/app/internal/repository"
+        "github.com/user/app/internal/service"
+        "github.com/user/app/pkg/response"
+)
+
+// TracerHandler handles model ingestion and dependency/impact tracing HTTP requests.
+type TracerHandler struct {
+        ingestionService *service.ModelIngestionService
+        tracer           *service.DependencyTracer
+        repo             *repository.TracerRepository
+        modelDir         string
+}
+
+// NewTracerHandler creates a new TracerHandler instance.
+func NewTracerHandler(
+        svc *service.ModelIngestionService,
+        tracer *service.DependencyTracer,
+        repo *repository.TracerRepository,
+        modelDir string,
+) *TracerHandler <span class="cov0" title="0">{
+        return &amp;TracerHandler{ingestionService: svc, tracer: tracer, repo: repo, modelDir: modelDir}
+}</span>
+
+// IngestModels handles POST /api/models/ingest -- triggers ingestion of 3 model CSVs.
+func (h *TracerHandler) IngestModels(c *gin.Context) <span class="cov0" title="0">{
+        summary, err := h.ingestionService.IngestAll(h.modelDir)
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Model ingestion failed: "+err.Error())
+                return
+        }</span>
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, summary)</span>
+}
+
+// ListCapacityNodes handles GET /api/models/capacity-nodes.
+func (h *TracerHandler) ListCapacityNodes(c *gin.Context) <span class="cov0" title="0">{
+        types, err := h.repo.ListCapacityNodeTypes()
+        if err != nil </span><span class="cov0" title="0">{
+                response.Error(c, http.StatusInternalServerError, "Failed to list capacity node types")
+                return
+        }</span>
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, types)</span>
+}
+
+// TraceDependencies handles GET /api/trace/dependencies/:nodeId.
+func (h *TracerHandler) TraceDependencies(c *gin.Context) <span class="cov0" title="0">{
+        nodeID := c.Param("nodeId")
+        levels := parseIntParam(c, "levels", 2, 10)
+        includeLocal := c.DefaultQuery("include_local", "true")
+
+        result, err := h.tracer.TraceDependencies(nodeID, levels, strings.EqualFold(includeLocal, "true"))
+        if err != nil </span><span class="cov0" title="0">{
+                if strings.Contains(err.Error(), "node not found") </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusNotFound, err.Error())
+                        return
+                }</span>
+                <span class="cov0" title="0">response.Error(c, http.StatusInternalServerError, "Failed to trace dependencies")
+                return</span>
+        }
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, result)</span>
+}
+
+// TraceImpacts handles GET /api/trace/impacts/:nodeId.
+func (h *TracerHandler) TraceImpacts(c *gin.Context) <span class="cov0" title="0">{
+        nodeID := c.Param("nodeId")
+        levels := parseIntParam(c, "levels", 2, 10)
+
+        result, err := h.tracer.TraceImpacts(nodeID, levels)
+        if err != nil </span><span class="cov0" title="0">{
+                if strings.Contains(err.Error(), "node not found") </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusNotFound, err.Error())
+                        return
+                }</span>
+                <span class="cov0" title="0">response.Error(c, http.StatusInternalServerError, "Failed to trace impacts")
+                return</span>
+        }
+        <span class="cov0" title="0">response.Success(c, http.StatusOK, result)</span>
+}
+
+func parseIntParam(c *gin.Context, key string, defaultVal, maxVal int) int <span class="cov0" title="0">{
+        if v, err := strconv.Atoi(c.Query(key)); err == nil &amp;&amp; v &gt; 0 </span><span class="cov0" title="0">{
+                if v &gt; maxVal </span><span class="cov0" title="0">{
+                        return maxVal
+                }</span>
+                <span class="cov0" title="0">return v</span>
+        }
+        <span class="cov0" title="0">return defaultVal</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package middleware
+
+import (
+        "net/http"
+        "strings"
+
+        "github.com/gin-gonic/gin"
+        "github.com/user/app/pkg/response"
+        "github.com/user/app/pkg/token"
+)
+
+// AuthRequired validates the JWT Bearer token and sets user context.
+func AuthRequired(jwtSecret string) gin.HandlerFunc <span class="cov0" title="0">{
+        return func(c *gin.Context) </span><span class="cov0" title="0">{
+                authHeader := c.GetHeader("Authorization")
+                if authHeader == "" </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusUnauthorized, "Authorization header required")
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">parts := strings.SplitN(authHeader, " ", 2)
+                if len(parts) != 2 || parts[0] != "Bearer" </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusUnauthorized, "Invalid authorization format")
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">claims, err := token.ValidateToken(parts[1], jwtSecret)
+                if err != nil </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusUnauthorized, "Invalid or expired token")
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if claims.TokenType != "access" </span><span class="cov0" title="0">{
+                        response.Error(c, http.StatusUnauthorized, "Invalid token type")
+                        c.Abort()
+                        return
+                }</span>
+
+                <span class="cov0" title="0">c.Set("userID", claims.UserID)
+                c.Set("userEmail", claims.Email)
+                c.Next()</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package repository
+
+import (
+        "github.com/user/app/internal/model"
+        "gorm.io/gorm"
+        "gorm.io/gorm/clause"
+)
+
+// BlueprintRepository handles database operations for blueprint models.
+type BlueprintRepository struct {
+        db *gorm.DB
+}
+
+// NewBlueprintRepository creates a new BlueprintRepository instance.
+func NewBlueprintRepository(db *gorm.DB) *BlueprintRepository <span class="cov0" title="0">{
+        return &amp;BlueprintRepository{db: db}
+}</span>
+
+// UpsertType inserts or updates a BlueprintType by name.
+func (r *BlueprintRepository) UpsertType(tx *gorm.DB, bt *model.BlueprintType) error <span class="cov0" title="0">{
+        return tx.Clauses(clause.OnConflict{
+                Columns:   []clause.Column{{Name: "slug"}},
+                DoUpdates: clause.AssignmentColumns([]string{"name", "folder_name", "updated_at"}),
+        }).Create(bt).Error
+}</span>
+
+// UpsertNode inserts or updates a BlueprintNode by node_id.
+// Ensures node.ID is populated after upsert for downstream edge resolution.
+func (r *BlueprintRepository) UpsertNode(tx *gorm.DB, node *model.BlueprintNode) error <span class="cov0" title="0">{
+        err := tx.Clauses(clause.OnConflict{
+                Columns:   []clause.Column{{Name: "node_id"}},
+                DoUpdates: clause.AssignmentColumns([]string{"name", "node_type", "node_role", "updated_at"}),
+        }).Create(node).Error
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">if node.ID == 0 </span><span class="cov0" title="0">{
+                return tx.Where("node_id = ?", node.NodeID).First(node).Error
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// UpsertMembership inserts or updates a BlueprintNodeMembership.
+func (r *BlueprintRepository) UpsertMembership(tx *gorm.DB, m *model.BlueprintNodeMembership) error <span class="cov0" title="0">{
+        return tx.Clauses(clause.OnConflict{
+                Columns:   []clause.Column{{Name: "blueprint_type_id"}, {Name: "blueprint_node_id"}},
+                DoUpdates: clause.AssignmentColumns([]string{"org_path", "updated_at"}),
+        }).Create(m).Error
+}</span>
+
+// UpsertEdge inserts or ignores a BlueprintEdge (no update needed on conflict).
+func (r *BlueprintRepository) UpsertEdge(tx *gorm.DB, e *model.BlueprintEdge) error <span class="cov0" title="0">{
+        return tx.Clauses(clause.OnConflict{
+                Columns:   []clause.Column{{Name: "blueprint_type_id"}, {Name: "from_node_id"}, {Name: "to_node_id"}},
+                DoNothing: true,
+        }).Create(e).Error
+}</span>
+
+// FindNodeByNodeID looks up a BlueprintNode by its string node_id.
+func (r *BlueprintRepository) FindNodeByNodeID(tx *gorm.DB, nodeID string) (*model.BlueprintNode, error) <span class="cov0" title="0">{
+        var node model.BlueprintNode
+        if err := tx.Where("node_id = ?", nodeID).First(&amp;node).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return &amp;node, nil</span>
+}
+
+// ListTypes returns all blueprint types.
+func (r *BlueprintRepository) ListTypes() ([]model.BlueprintType, error) <span class="cov0" title="0">{
+        var types []model.BlueprintType
+        if err := r.db.Order("name").Find(&amp;types).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return types, nil</span>
+}
+
+// ListNodes returns nodes with optional type filter and pagination.
+func (r *BlueprintRepository) ListNodes(typeSlug string, limit, offset int) ([]model.BlueprintNode, int64, error) <span class="cov0" title="0">{
+        query := r.db.Model(&amp;model.BlueprintNode{})
+        if typeSlug != "" </span><span class="cov0" title="0">{
+                query = query.Where("id IN (?)",
+                        r.db.Model(&amp;model.BlueprintNodeMembership{}).Select("blueprint_node_id").
+                                Joins("JOIN blueprint_types ON blueprint_types.id = blueprint_node_memberships.blueprint_type_id").
+                                Where("blueprint_types.slug = ?", typeSlug),
+                )
+        }</span>
+
+        <span class="cov0" title="0">var total int64
+        if err := query.Count(&amp;total).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, 0, err
+        }</span>
+
+        <span class="cov0" title="0">var nodes []model.BlueprintNode
+        if err := query.Limit(limit).Offset(offset).Order("node_id").Find(&amp;nodes).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, 0, err
+        }</span>
+        <span class="cov0" title="0">return nodes, total, nil</span>
+}
+
+// GetNodeByNodeID returns a single node with its memberships preloaded.
+func (r *BlueprintRepository) GetNodeByNodeID(nodeID string) (*model.BlueprintNode, []model.BlueprintNodeMembership, error) <span class="cov0" title="0">{
+        var node model.BlueprintNode
+        if err := r.db.Where("node_id = ?", nodeID).First(&amp;node).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, nil, err
+        }</span>
+
+        <span class="cov0" title="0">var memberships []model.BlueprintNodeMembership
+        if err := r.db.Where("blueprint_node_id = ?", node.ID).
+                Preload("BlueprintType").Find(&amp;memberships).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, nil, err
+        }</span>
+        <span class="cov0" title="0">return &amp;node, memberships, nil</span>
+}
+
+// ListEdges returns edges for a blueprint type with pagination.
+func (r *BlueprintRepository) ListEdges(typeSlug string, limit, offset int) ([]model.BlueprintEdge, int64, error) <span class="cov0" title="0">{
+        query := r.db.Model(&amp;model.BlueprintEdge{}).
+                Joins("JOIN blueprint_types ON blueprint_types.id = blueprint_edges.blueprint_type_id").
+                Where("blueprint_types.slug = ?", typeSlug)
+
+        var total int64
+        if err := query.Count(&amp;total).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, 0, err
+        }</span>
+
+        <span class="cov0" title="0">var edges []model.BlueprintEdge
+        if err := r.db.Preload("FromNode").Preload("ToNode").
+                Joins("JOIN blueprint_types ON blueprint_types.id = blueprint_edges.blueprint_type_id").
+                Where("blueprint_types.slug = ?", typeSlug).
+                Limit(limit).Offset(offset).Find(&amp;edges).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, 0, err
+        }</span>
+        <span class="cov0" title="0">return edges, total, nil</span>
+}
+
+// TreeNode represents a node in the recursive tree response.
+type TreeNode struct {
+        NodeID   string     `json:"node_id"`
+        Name     string     `json:"name"`
+        NodeType string     `json:"node_type"`
+        OrgPath  string     `json:"org_path"`
+        Children []TreeNode `json:"children,omitempty"`
+}
+
+// GetTree returns the full tree for a blueprint type using recursive CTE.
+func (r *BlueprintRepository) GetTree(typeSlug string) ([]TreeNode, error) <span class="cov0" title="0">{
+        // Find root nodes (nodes that are parents but not children in this domain)
+        type flatRow struct {
+                NodeID       string
+                Name         string
+                NodeType     string
+                OrgPath      string
+                ParentNodeID *string
+        }
+
+        var rows []flatRow
+        err := r.db.Raw(`
+                WITH domain_edges AS (
+                        SELECT be.from_node_id, be.to_node_id
+                        FROM blueprint_edges be
+                        JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+                        WHERE bt.slug = ?
+                )
+                SELECT
+                        bn.node_id,
+                        bn.name,
+                        bn.node_type,
+                        bnm.org_path,
+                        parent.node_id AS parent_node_id
+                FROM blueprint_node_memberships bnm
+                JOIN blueprint_types bt ON bt.id = bnm.blueprint_type_id
+                JOIN blueprint_nodes bn ON bn.id = bnm.blueprint_node_id
+                LEFT JOIN domain_edges de ON de.to_node_id = bn.id
+                LEFT JOIN blueprint_nodes parent ON parent.id = de.from_node_id
+                WHERE bt.slug = ?
+                ORDER BY bnm.org_path
+        `, typeSlug, typeSlug).Scan(&amp;rows).Error
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        // Build tree from flat rows
+        <span class="cov0" title="0">nodeMap := make(map[string]*TreeNode)
+        childrenMap := make(map[string][]string) // parent_node_id -&gt; child node_ids
+
+        for _, row := range rows </span><span class="cov0" title="0">{
+                nodeMap[row.NodeID] = &amp;TreeNode{
+                        NodeID:   row.NodeID,
+                        Name:     row.Name,
+                        NodeType: row.NodeType,
+                        OrgPath:  row.OrgPath,
+                }
+                if row.ParentNodeID != nil </span><span class="cov0" title="0">{
+                        childrenMap[*row.ParentNodeID] = append(childrenMap[*row.ParentNodeID], row.NodeID)
+                }</span>
+        }
+
+        // Recursive build with cycle detection
+        <span class="cov0" title="0">visited := make(map[string]bool)
+        var buildChildren func(nodeID string) []TreeNode
+        buildChildren = func(nodeID string) []TreeNode </span><span class="cov0" title="0">{
+                if visited[nodeID] </span><span class="cov0" title="0">{
+                        return nil
+                }</span>
+                <span class="cov0" title="0">visited[nodeID] = true
+                childIDs := childrenMap[nodeID]
+                if len(childIDs) == 0 </span><span class="cov0" title="0">{
+                        return nil
+                }</span>
+                <span class="cov0" title="0">children := make([]TreeNode, 0, len(childIDs))
+                for _, cid := range childIDs </span><span class="cov0" title="0">{
+                        if n, ok := nodeMap[cid]; ok </span><span class="cov0" title="0">{
+                                child := *n
+                                child.Children = buildChildren(cid)
+                                children = append(children, child)
+                        }</span>
+                }
+                <span class="cov0" title="0">return children</span>
+        }
+
+        // Find roots (nodes with no parent in this domain)
+        <span class="cov0" title="0">var roots []TreeNode
+        for _, row := range rows </span><span class="cov0" title="0">{
+                if row.ParentNodeID == nil </span><span class="cov0" title="0">{
+                        if n, ok := nodeMap[row.NodeID]; ok </span><span class="cov0" title="0">{
+                                root := *n
+                                root.Children = buildChildren(row.NodeID)
+                                roots = append(roots, root)
+                        }</span>
+                }
+        }
+        <span class="cov0" title="0">return roots, nil</span>
+}
+
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package repository
+
+import (
+        "github.com/user/app/internal/model"
+        "gorm.io/gorm"
+)
+
+// TracedNode represents a node found during dependency/impact tracing.
+type TracedNode struct {
+        ID       uint   `json:"id"`
+        NodeID   string `json:"node_id"`
+        Name     string `json:"name"`
+        NodeType string `json:"node_type"`
+        Level    int    `json:"level"`
+}
+
+// TracerRepository handles queries for dependency/impact tracing.
+type TracerRepository struct {
+        db *gorm.DB
+}
+
+// NewTracerRepository creates a new TracerRepository instance.
+func NewTracerRepository(db *gorm.DB) *TracerRepository <span class="cov0" title="0">{
+        return &amp;TracerRepository{db: db}
+}</span>
+
+// FindUpstreamNodes walks parent edges recursively in a given topology up to maxLevel hops.
+func (r *TracerRepository) FindUpstreamNodes(sourceDBID uint, typeSlug string, maxLevel int) ([]TracedNode, error) <span class="cov0" title="0">{
+        var nodes []TracedNode
+        err := r.db.Raw(`
+                WITH RECURSIVE upstream AS (
+                        SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+                        FROM blueprint_edges be
+                        JOIN blueprint_nodes bn ON bn.id = be.from_node_id
+                        JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+                        WHERE be.to_node_id = ? AND bt.slug = ?
+
+                        UNION ALL
+
+                        SELECT bn.id, bn.node_id, bn.name, bn.node_type, u.level + 1
+                        FROM upstream u
+                        JOIN blueprint_edges be ON be.to_node_id = u.id
+                        JOIN blueprint_nodes bn ON bn.id = be.from_node_id
+                        JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+                        WHERE bt.slug = ? AND u.level &lt; ?
+                )
+                SELECT DISTINCT id, node_id, name, node_type, MIN(level) as level
+                FROM upstream
+                GROUP BY id, node_id, name, node_type
+                ORDER BY level, node_type, node_id
+        `, sourceDBID, typeSlug, typeSlug, maxLevel).Scan(&amp;nodes).Error
+        return nodes, err
+}</span>
+
+// FindDownstreamNodes walks child edges recursively in a given topology up to maxLevel hops.
+func (r *TracerRepository) FindDownstreamNodes(sourceDBID uint, typeSlug string, maxLevel int) ([]TracedNode, error) <span class="cov0" title="0">{
+        var nodes []TracedNode
+        err := r.db.Raw(`
+                WITH RECURSIVE downstream AS (
+                        SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+                        FROM blueprint_edges be
+                        JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+                        JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+                        WHERE be.from_node_id = ? AND bt.slug = ?
+
+                        UNION ALL
+
+                        SELECT bn.id, bn.node_id, bn.name, bn.node_type, d.level + 1
+                        FROM downstream d
+                        JOIN blueprint_edges be ON be.from_node_id = d.id
+                        JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+                        JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+                        WHERE bt.slug = ? AND d.level &lt; ?
+                )
+                SELECT DISTINCT id, node_id, name, node_type, MIN(level) as level
+                FROM downstream
+                GROUP BY id, node_id, name, node_type
+                ORDER BY level, node_type, node_id
+        `, sourceDBID, typeSlug, typeSlug, maxLevel).Scan(&amp;nodes).Error
+        return nodes, err
+}</span>
+
+// FindLocalNodes returns direct edge neighbors of a node in a given topology.
+func (r *TracerRepository) FindLocalNodes(sourceDBID uint, typeSlug string) ([]TracedNode, error) <span class="cov0" title="0">{
+        var nodes []TracedNode
+        err := r.db.Raw(`
+                SELECT DISTINCT bn.id, bn.node_id, bn.name, bn.node_type, 0 as level
+                FROM blueprint_edges be
+                JOIN blueprint_nodes bn ON (bn.id = be.from_node_id OR bn.id = be.to_node_id)
+                JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+                WHERE bt.slug = ?
+                  AND (be.from_node_id = ? OR be.to_node_id = ?)
+                  AND bn.id != ?
+                ORDER BY bn.node_type, bn.node_id
+        `, typeSlug, sourceDBID, sourceDBID, sourceDBID).Scan(&amp;nodes).Error
+        return nodes, err
+}</span>
+
+// GetDependencyRules returns all dependency rules for a given node type.
+func (r *TracerRepository) GetDependencyRules(nodeType string) ([]model.DependencyRule, error) <span class="cov0" title="0">{
+        var rules []model.DependencyRule
+        err := r.db.Where("node_type = ?", nodeType).Order("topological_relationship, upstream_level").Find(&amp;rules).Error
+        return rules, err
+}</span>
+
+// GetImpactRules returns all impact rules for a given node type.
+func (r *TracerRepository) GetImpactRules(nodeType string) ([]model.ImpactRule, error) <span class="cov0" title="0">{
+        var rules []model.ImpactRule
+        err := r.db.Where("node_type = ?", nodeType).Order("topological_relationship, downstream_level").Find(&amp;rules).Error
+        return rules, err
+}</span>
+
+// ListCapacityNodeTypes returns all capacity node type metadata.
+func (r *TracerRepository) ListCapacityNodeTypes() ([]model.CapacityNodeType, error) <span class="cov0" title="0">{
+        var types []model.CapacityNodeType
+        err := r.db.Order("topology, node_type").Find(&amp;types).Error
+        return types, err
+}</span>
+
+// FindNodeByStringID looks up a blueprint node by its string node_id.
+func (r *TracerRepository) FindNodeByStringID(nodeID string) (*model.BlueprintNode, error) <span class="cov0" title="0">{
+        var node model.BlueprintNode
+        if err := r.db.Where("node_id = ?", nodeID).First(&amp;node).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return &amp;node, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package repository
+
+import (
+        "github.com/user/app/internal/model"
+        "gorm.io/gorm"
+)
+
+// UserRepository handles database operations for the User model.
+type UserRepository struct {
+        db *gorm.DB
+}
+
+// NewUserRepository creates a new UserRepository instance.
+func NewUserRepository(db *gorm.DB) *UserRepository <span class="cov0" title="0">{
+        return &amp;UserRepository{db: db}
+}</span>
+
+// Create inserts a new user into the database.
+func (r *UserRepository) Create(user *model.User) error <span class="cov0" title="0">{
+        return r.db.Create(user).Error
+}</span>
+
+// FindByEmail retrieves a user by their email address.
+func (r *UserRepository) FindByEmail(email string) (*model.User, error) <span class="cov0" title="0">{
+        var user model.User
+        if err := r.db.Where("email = ?", email).First(&amp;user).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return &amp;user, nil</span>
+}
+
+// FindByID retrieves a user by their ID.
+func (r *UserRepository) FindByID(id uint) (*model.User, error) <span class="cov0" title="0">{
+        var user model.User
+        if err := r.db.First(&amp;user, id).Error; err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return &amp;user, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package router
+
+import (
+        "net/http"
+        "time"
+
+        "github.com/gin-contrib/cors"
+        "github.com/gin-gonic/gin"
+        "github.com/user/app/internal/handler"
+        "github.com/user/app/internal/middleware"
+)
+
+// Setup creates and configures the Gin engine with routes.
+func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.BlueprintHandler, tracerHandler *handler.TracerHandler, jwtSecret string) *gin.Engine <span class="cov0" title="0">{
+        r := gin.Default()
+
+        r.Use(cors.New(cors.Config{
+                AllowOrigins:     []string{"http://localhost:3000"},
+                AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+                AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+                ExposeHeaders:    []string{"Content-Length"},
+                AllowCredentials: true,
+                MaxAge:           12 * time.Hour,
+        }))
+
+        r.GET("/health", func(c *gin.Context) </span><span class="cov0" title="0">{
+                c.JSON(http.StatusOK, gin.H{"status": "ok"})
+        }</span>)
+
+        // Public auth routes
+        <span class="cov0" title="0">auth := r.Group("/api/auth")
+        </span><span class="cov0" title="0">{
+                auth.POST("/register", authHandler.Register)
+                auth.POST("/login", authHandler.Login)
+                auth.POST("/refresh", authHandler.RefreshToken)
+        }</span>
+
+        // Public blueprint read endpoints
+        <span class="cov0" title="0">blueprints := r.Group("/api/blueprints")
+        </span><span class="cov0" title="0">{
+                blueprints.GET("/types", blueprintHandler.ListTypes)
+                blueprints.GET("/nodes", blueprintHandler.ListNodes)
+                blueprints.GET("/nodes/:nodeId", blueprintHandler.GetNode)
+                blueprints.GET("/edges", blueprintHandler.ListEdges)
+                blueprints.GET("/tree/:typeSlug", blueprintHandler.GetTree)
+        }</span>
+
+        // Public model + trace endpoints
+        <span class="cov0" title="0">models := r.Group("/api/models")
+        </span><span class="cov0" title="0">{
+                models.GET("/capacity-nodes", tracerHandler.ListCapacityNodes)
+        }</span>
+        <span class="cov0" title="0">trace := r.Group("/api/trace")
+        </span><span class="cov0" title="0">{
+                trace.GET("/dependencies/:nodeId", tracerHandler.TraceDependencies)
+                trace.GET("/impacts/:nodeId", tracerHandler.TraceImpacts)
+        }</span>
+
+        // Protected routes
+        <span class="cov0" title="0">protected := r.Group("/api")
+        protected.Use(middleware.AuthRequired(jwtSecret))
+        </span><span class="cov0" title="0">{
+                protected.GET("/auth/me", authHandler.Me)
+                protected.POST("/blueprints/ingest", blueprintHandler.Ingest)
+                protected.POST("/models/ingest", tracerHandler.IngestModels)
+        }</span>
+
+        <span class="cov0" title="0">return r</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package service
+
+import (
+        "errors"
+
+        "github.com/user/app/internal/model"
+        "github.com/user/app/internal/repository"
+        "github.com/user/app/pkg/token"
+        "golang.org/x/crypto/bcrypt"
+        "gorm.io/gorm"
+)
+
+var (
+        ErrUserExists       = errors.New("user with this email already exists")
+        ErrInvalidCredentials = errors.New("invalid email or password")
+        ErrUserNotFound     = errors.New("user not found")
+)
+
+// AuthService handles authentication business logic.
+type AuthService struct {
+        userRepo  *repository.UserRepository
+        jwtSecret string
+}
+
+// NewAuthService creates a new AuthService instance.
+func NewAuthService(repo *repository.UserRepository, secret string) *AuthService <span class="cov0" title="0">{
+        return &amp;AuthService{userRepo: repo, jwtSecret: secret}
+}</span>
+
+// Register creates a new user with hashed password and returns the user.
+func (s *AuthService) Register(name, email, password string) (*model.User, string, string, error) <span class="cov0" title="0">{
+        // Check if user already exists
+        if _, err := s.userRepo.FindByEmail(email); err == nil </span><span class="cov0" title="0">{
+                return nil, "", "", ErrUserExists
+        }</span>
+
+        <span class="cov0" title="0">hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", err
+        }</span>
+
+        <span class="cov0" title="0">user := &amp;model.User{
+                Name:     name,
+                Email:    email,
+                Password: string(hashedPassword),
+        }
+
+        if err := s.userRepo.Create(user); err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", err
+        }</span>
+
+        <span class="cov0" title="0">accessToken, err := token.GenerateAccessToken(user.ID, user.Email, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", err
+        }</span>
+
+        <span class="cov0" title="0">refreshToken, err := token.GenerateRefreshToken(user.ID, user.Email, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", err
+        }</span>
+
+        <span class="cov0" title="0">return user, accessToken, refreshToken, nil</span>
+}
+
+// Login validates credentials and returns JWT tokens.
+func (s *AuthService) Login(email, password string) (*model.User, string, string, error) <span class="cov0" title="0">{
+        user, err := s.userRepo.FindByEmail(email)
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return nil, "", "", ErrInvalidCredentials
+                }</span>
+                <span class="cov0" title="0">return nil, "", "", err</span>
+        }
+
+        <span class="cov0" title="0">if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", ErrInvalidCredentials
+        }</span>
+
+        <span class="cov0" title="0">accessToken, err := token.GenerateAccessToken(user.ID, user.Email, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", err
+        }</span>
+
+        <span class="cov0" title="0">refreshToken, err := token.GenerateRefreshToken(user.ID, user.Email, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", "", err
+        }</span>
+
+        <span class="cov0" title="0">return user, accessToken, refreshToken, nil</span>
+}
+
+// RefreshToken validates a refresh token and issues a new token pair.
+func (s *AuthService) RefreshToken(refreshTokenStr string) (string, string, error) <span class="cov0" title="0">{
+        claims, err := token.ValidateToken(refreshTokenStr, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", "", err
+        }</span>
+
+        <span class="cov0" title="0">if claims.TokenType != "refresh" </span><span class="cov0" title="0">{
+                return "", "", errors.New("invalid token type: expected refresh token")
+        }</span>
+
+        <span class="cov0" title="0">accessToken, err := token.GenerateAccessToken(claims.UserID, claims.Email, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", "", err
+        }</span>
+
+        <span class="cov0" title="0">newRefreshToken, err := token.GenerateRefreshToken(claims.UserID, claims.Email, s.jwtSecret)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", "", err
+        }</span>
+
+        <span class="cov0" title="0">return accessToken, newRefreshToken, nil</span>
+}
+
+// GetUser returns a user by ID.
+func (s *AuthService) GetUser(id uint) (*model.User, error) <span class="cov0" title="0">{
+        user, err := s.userRepo.FindByID(id)
+        if err != nil </span><span class="cov0" title="0">{
+                if errors.Is(err, gorm.ErrRecordNotFound) </span><span class="cov0" title="0">{
+                        return nil, ErrUserNotFound
+                }</span>
+                <span class="cov0" title="0">return nil, err</span>
+        }
+        <span class="cov0" title="0">return user, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package service
+
+import (
+        "encoding/csv"
+        "fmt"
+        "os"
+        "path/filepath"
+        "sort"
+        "strings"
+)
+
+// NodeRow represents a parsed row from a blueprint Nodes CSV file.
+type NodeRow struct {
+        NodeID   string
+        Name     string
+        Role     string
+        OrgPath  string
+        NodeType string
+}
+
+// EdgeRow represents a parsed row from a blueprint Edges CSV file.
+type EdgeRow struct {
+        FromName    string
+        FromNodeID  string
+        FromOrgPath string
+        ToName      string
+        ToNodeID    string
+        ToOrgPath   string
+}
+
+// DomainFolder represents a discovered blueprint domain directory.
+type DomainFolder struct {
+        Name string // folder name, e.g. "Cooling system_Blueprint"
+        Path string // full path to the folder
+}
+
+// DiscoverDomains scans basePath for subdirectories representing blueprint domains.
+func DiscoverDomains(basePath string) ([]DomainFolder, error) <span class="cov8" title="1">{
+        entries, err := os.ReadDir(basePath)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("failed to read blueprint directory %s: %w", basePath, err)
+        }</span>
+
+        <span class="cov8" title="1">var domains []DomainFolder
+        for _, e := range entries </span><span class="cov8" title="1">{
+                if !e.IsDir() || strings.HasPrefix(e.Name(), ".") </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">domains = append(domains, DomainFolder{
+                        Name: e.Name(),
+                        Path: filepath.Join(basePath, e.Name()),
+                })</span>
+        }
+        <span class="cov8" title="1">sort.Slice(domains, func(i, j int) bool </span><span class="cov8" title="1">{ return domains[i].Name &lt; domains[j].Name }</span>)
+        <span class="cov8" title="1">return domains, nil</span>
+}
+
+// FindCSVFile finds the nodes or edges CSV file in a domain folder.
+// It looks for files containing "Node" or "Edge" (case-insensitive) with .csv extension.
+func FindCSVFile(domainPath, kind string) (string, error) <span class="cov8" title="1">{
+        entries, err := os.ReadDir(domainPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to read domain directory %s: %w", domainPath, err)
+        }</span>
+        <span class="cov8" title="1">for _, e := range entries </span><span class="cov8" title="1">{
+                lower := strings.ToLower(e.Name())
+                if strings.HasSuffix(lower, ".csv") &amp;&amp; strings.Contains(lower, strings.ToLower(kind)) </span><span class="cov8" title="1">{
+                        return filepath.Join(domainPath, e.Name()), nil
+                }</span>
+        }
+        <span class="cov8" title="1">return "", fmt.Errorf("no %s CSV file found in %s", kind, domainPath)</span>
+}
+
+// ParseNodesCSV reads and parses a blueprint Nodes CSV file.
+func ParseNodesCSV(filePath string) ([]NodeRow, error) <span class="cov8" title="1">{
+        records, err := ReadCSV(filePath)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if len(records) == 0 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("empty CSV file: %s", filePath)
+        }</span>
+
+        // Validate header
+        <span class="cov8" title="1">header := records[0]
+        if len(header) &lt; 5 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("invalid nodes CSV header in %s: expected 5 columns, got %d", filePath, len(header))
+        }</span>
+
+        <span class="cov8" title="1">var rows []NodeRow
+        for _, rec := range records[1:] </span><span class="cov8" title="1">{
+                if len(rec) &lt; 5 || strings.TrimSpace(rec[0]) == "" </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">rows = append(rows, NodeRow{
+                        NodeID:   strings.TrimSpace(rec[0]),
+                        Name:     strings.TrimSpace(rec[1]),
+                        Role:     strings.TrimSpace(rec[2]),
+                        OrgPath:  strings.TrimSpace(rec[3]),
+                        NodeType: strings.TrimSpace(rec[4]),
+                })</span>
+        }
+        <span class="cov8" title="1">return rows, nil</span>
+}
+
+// ParseEdgesCSV reads and parses a blueprint Edges CSV file.
+func ParseEdgesCSV(filePath string) ([]EdgeRow, error) <span class="cov8" title="1">{
+        records, err := ReadCSV(filePath)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if len(records) == 0 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("empty CSV file: %s", filePath)
+        }</span>
+
+        <span class="cov8" title="1">header := records[0]
+        if len(header) &lt; 6 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("invalid edges CSV header in %s: expected 6 columns, got %d", filePath, len(header))
+        }</span>
+
+        <span class="cov8" title="1">var rows []EdgeRow
+        for _, rec := range records[1:] </span><span class="cov8" title="1">{
+                if len(rec) &lt; 6 || strings.TrimSpace(rec[1]) == "" || strings.TrimSpace(rec[4]) == "" </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">rows = append(rows, EdgeRow{
+                        FromName:    strings.TrimSpace(rec[0]),
+                        FromNodeID:  strings.TrimSpace(rec[1]),
+                        FromOrgPath: strings.TrimSpace(rec[2]),
+                        ToName:      strings.TrimSpace(rec[3]),
+                        ToNodeID:    strings.TrimSpace(rec[4]),
+                        ToOrgPath:   strings.TrimSpace(rec[5]),
+                })</span>
+        }
+        <span class="cov8" title="1">return rows, nil</span>
+}
+
+// FolderToSlug converts a blueprint folder name to a URL-friendly slug.
+// Example: "Cooling system_Blueprint" -&gt; "cooling-system"
+func FolderToSlug(folder string) string <span class="cov8" title="1">{
+        s := strings.TrimSuffix(folder, "_Blueprint")
+        s = strings.TrimSuffix(s, " Blueprint")
+        s = strings.ToLower(s)
+        s = strings.ReplaceAll(s, "_", "-")
+        s = strings.ReplaceAll(s, " ", "-")
+        // Collapse multiple hyphens
+        for strings.Contains(s, "--") </span><span class="cov8" title="1">{
+                s = strings.ReplaceAll(s, "--", "-")
+        }</span>
+        <span class="cov8" title="1">return strings.Trim(s, "-")</span>
+}
+
+// FolderToName converts a blueprint folder name to a display name.
+// Example: "Cooling system_Blueprint" -&gt; "Cooling System"
+func FolderToName(folder string) string <span class="cov8" title="1">{
+        s := strings.TrimSuffix(folder, "_Blueprint")
+        s = strings.TrimSuffix(s, " Blueprint")
+        s = strings.ReplaceAll(s, "_", " ")
+        return strings.TrimSpace(s)
+}</span>
+
+func ReadCSV(filePath string) ([][]string, error) <span class="cov8" title="1">{
+        f, err := os.Open(filePath)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("failed to open CSV file %s: %w", filePath, err)
+        }</span>
+        <span class="cov8" title="1">defer f.Close()
+
+        reader := csv.NewReader(f)
+        reader.LazyQuotes = true
+        reader.FieldsPerRecord = -1 // allow variable field count
+        records, err := reader.ReadAll()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to parse CSV file %s: %w", filePath, err)
+        }</span>
+        <span class="cov8" title="1">return records, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package service
+
+import (
+        "fmt"
+        "log"
+        "path/filepath"
+        "time"
+
+        "github.com/user/app/internal/model"
+        "github.com/user/app/internal/repository"
+        "gorm.io/gorm"
+)
+
+// IngestionSummary holds the results of a full blueprint ingestion run.
+type IngestionSummary struct {
+        DomainsProcessed int      `json:"domains_processed"`
+        NodesUpserted    int      `json:"nodes_upserted"`
+        EdgesUpserted    int      `json:"edges_upserted"`
+        EdgesSkipped     int      `json:"edges_skipped"`
+        Errors           []string `json:"errors,omitempty"`
+        DurationMs       int64    `json:"duration_ms"`
+}
+
+// domainResult holds counts from a single domain ingestion.
+type domainResult struct {
+        nodes   int
+        edges   int
+        skipped int
+}
+
+// BlueprintIngestionService orchestrates CSV parsing and database upsert for all domains.
+type BlueprintIngestionService struct {
+        repo *repository.BlueprintRepository
+        db   *gorm.DB
+}
+
+// NewBlueprintIngestionService creates a new ingestion service.
+func NewBlueprintIngestionService(repo *repository.BlueprintRepository, db *gorm.DB) *BlueprintIngestionService <span class="cov0" title="0">{
+        return &amp;BlueprintIngestionService{repo: repo, db: db}
+}</span>
+
+// IngestAll discovers all blueprint domains and ingests their CSV data.
+func (s *BlueprintIngestionService) IngestAll(basePath string) (*IngestionSummary, error) <span class="cov0" title="0">{
+        start := time.Now()
+        summary := &amp;IngestionSummary{}
+
+        domains, err := DiscoverDomains(basePath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to discover domains: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">for _, domain := range domains </span><span class="cov0" title="0">{
+                result, err := s.ingestDomain(domain)
+                if err != nil </span><span class="cov0" title="0">{
+                        summary.Errors = append(summary.Errors, fmt.Sprintf("%s: %v", domain.Name, err))
+                        log.Printf("WARNING: failed to ingest domain %s: %v", domain.Name, err)
+                        continue</span>
+                }
+                <span class="cov0" title="0">summary.DomainsProcessed++
+                summary.NodesUpserted += result.nodes
+                summary.EdgesUpserted += result.edges
+                summary.EdgesSkipped += result.skipped</span>
+        }
+
+        <span class="cov0" title="0">summary.DurationMs = time.Since(start).Milliseconds()
+        return summary, nil</span>
+}
+
+// ingestDomain processes a single blueprint domain within a transaction.
+func (s *BlueprintIngestionService) ingestDomain(domain DomainFolder) (*domainResult, error) <span class="cov0" title="0">{
+        result := &amp;domainResult{}
+
+        err := s.db.Transaction(func(tx *gorm.DB) error </span><span class="cov0" title="0">{
+                bt := &amp;model.BlueprintType{
+                        Name:       FolderToName(domain.Name),
+                        Slug:       FolderToSlug(domain.Name),
+                        FolderName: domain.Name,
+                }
+                if err := s.repo.UpsertType(tx, bt); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("upsert type: %w", err)
+                }</span>
+
+                <span class="cov0" title="0">nodesFile, err := FindCSVFile(domain.Path, "node")
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("find nodes CSV: %w", err)
+                }</span>
+                <span class="cov0" title="0">nodeRows, err := ParseNodesCSV(nodesFile)
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("parse nodes CSV %s: %w", filepath.Base(nodesFile), err)
+                }</span>
+
+                // Build node ID -&gt; DB ID map for edge resolution
+                <span class="cov0" title="0">nodeIDMap := make(map[string]uint, len(nodeRows))
+                for _, row := range nodeRows </span><span class="cov0" title="0">{
+                        node := &amp;model.BlueprintNode{
+                                NodeID:   row.NodeID,
+                                Name:     row.Name,
+                                NodeType: row.NodeType,
+                                NodeRole: row.Role,
+                        }
+                        if err := s.repo.UpsertNode(tx, node); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("upsert node %s: %w", row.NodeID, err)
+                        }</span>
+                        <span class="cov0" title="0">nodeIDMap[row.NodeID] = node.ID
+
+                        membership := &amp;model.BlueprintNodeMembership{
+                                BlueprintTypeID: bt.ID,
+                                BlueprintNodeID: node.ID,
+                                OrgPath:         row.OrgPath,
+                        }
+                        if err := s.repo.UpsertMembership(tx, membership); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("upsert membership for %s: %w", row.NodeID, err)
+                        }</span>
+                }
+                <span class="cov0" title="0">result.nodes = len(nodeRows)
+
+                edgesFile, err := FindCSVFile(domain.Path, "edge")
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("find edges CSV: %w", err)
+                }</span>
+                <span class="cov0" title="0">edgeRows, err := ParseEdgesCSV(edgesFile)
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("parse edges CSV %s: %w", filepath.Base(edgesFile), err)
+                }</span>
+
+                <span class="cov0" title="0">for _, row := range edgeRows </span><span class="cov0" title="0">{
+                        fromID, ok := nodeIDMap[row.FromNodeID]
+                        if !ok </span><span class="cov0" title="0">{
+                                fromNode, err := s.repo.FindNodeByNodeID(tx, row.FromNodeID)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        log.Printf("WARNING: edge source node %s not found, skipping", row.FromNodeID)
+                                        result.skipped++
+                                        continue</span>
+                                }
+                                <span class="cov0" title="0">fromID = fromNode.ID</span>
+                        }
+
+                        <span class="cov0" title="0">toID, ok := nodeIDMap[row.ToNodeID]
+                        if !ok </span><span class="cov0" title="0">{
+                                toNode, err := s.repo.FindNodeByNodeID(tx, row.ToNodeID)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        log.Printf("WARNING: edge target node %s not found, skipping", row.ToNodeID)
+                                        result.skipped++
+                                        continue</span>
+                                }
+                                <span class="cov0" title="0">toID = toNode.ID</span>
+                        }
+
+                        <span class="cov0" title="0">edge := &amp;model.BlueprintEdge{
+                                BlueprintTypeID: bt.ID,
+                                FromNodeID:      fromID,
+                                ToNodeID:        toID,
+                        }
+                        if err := s.repo.UpsertEdge(tx, edge); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("upsert edge %s-&gt;%s: %w", row.FromNodeID, row.ToNodeID, err)
+                        }</span>
+                        <span class="cov0" title="0">result.edges++</span>
+                }
+
+                <span class="cov0" title="0">return nil</span>
+        })
+
+        <span class="cov0" title="0">return result, err</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package service
+
+import (
+        "fmt"
+        "strings"
+
+        "github.com/user/app/internal/model"
+        "github.com/user/app/internal/repository"
+        "gorm.io/gorm"
+)
+
+// TraceResponse is the top-level response for dependency/impact tracing.
+type TraceResponse struct {
+        Source     SourceNode        `json:"source"`
+        Upstream   []TraceLevelGroup `json:"upstream,omitempty"`
+        Local      []TraceLocalGroup `json:"local,omitempty"`
+        Downstream []TraceLevelGroup `json:"downstream,omitempty"`
+        Load       []TraceLocalGroup `json:"load,omitempty"`
+}
+
+// SourceNode identifies the node being traced.
+type SourceNode struct {
+        NodeID   string `json:"node_id"`
+        Name     string `json:"name"`
+        NodeType string `json:"node_type"`
+}
+
+// TraceLevelGroup groups traced nodes by level and topology.
+type TraceLevelGroup struct {
+        Level    int                     `json:"level"`
+        Topology string                  `json:"topology"`
+        Nodes    []repository.TracedNode `json:"nodes"`
+}
+
+// TraceLocalGroup groups traced nodes by topology (no level).
+type TraceLocalGroup struct {
+        Topology string                  `json:"topology"`
+        Nodes    []repository.TracedNode `json:"nodes"`
+}
+
+// DependencyTracer resolves actual node instances from type-level rules.
+type DependencyTracer struct {
+        repo *repository.TracerRepository
+}
+
+// NewDependencyTracer creates a new DependencyTracer.
+func NewDependencyTracer(repo *repository.TracerRepository) *DependencyTracer <span class="cov0" title="0">{
+        return &amp;DependencyTracer{repo: repo}
+}</span>
+
+// TraceDependencies finds all upstream and local dependencies for a node.
+func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, includeLocal bool) (*TraceResponse, error) <span class="cov0" title="0">{
+        node, err := t.repo.FindNodeByStringID(nodeID)
+        if err != nil </span><span class="cov0" title="0">{
+                if err == gorm.ErrRecordNotFound </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("node not found: %s", nodeID)
+                }</span>
+                <span class="cov0" title="0">return nil, err</span>
+        }
+
+        <span class="cov0" title="0">rules, err := t.repo.GetDependencyRules(node.NodeType)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("get dependency rules: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">resp := &amp;TraceResponse{
+                Source: SourceNode{NodeID: node.NodeID, Name: node.Name, NodeType: node.NodeType},
+        }
+
+        // Group rules by topology, separated by relationship type
+        upstreamByTopo, localByTopo := groupDepRules(rules)
+
+        // Resolve upstream dependencies per topology
+        for topo, allowedTypes := range upstreamByTopo </span><span class="cov0" title="0">{
+                slug := topologyToSlug(topo)
+                nodes, err := t.repo.FindUpstreamNodes(node.ID, slug, maxLevels)
+                if err != nil </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">filtered := filterByTypes(nodes, allowedTypes)
+                resp.Upstream = append(resp.Upstream, groupByLevel(filtered, topo)...)</span>
+        }
+
+        // Resolve local dependencies per topology
+        <span class="cov0" title="0">if includeLocal </span><span class="cov0" title="0">{
+                for topo, allowedTypes := range localByTopo </span><span class="cov0" title="0">{
+                        slug := topologyToSlug(topo)
+                        nodes, err := t.repo.FindLocalNodes(node.ID, slug)
+                        if err != nil </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+                        <span class="cov0" title="0">filtered := filterByTypes(nodes, allowedTypes)
+                        if len(filtered) &gt; 0 </span><span class="cov0" title="0">{
+                                resp.Local = append(resp.Local, TraceLocalGroup{Topology: topo, Nodes: filtered})
+                        }</span>
+                }
+        }
+
+        <span class="cov0" title="0">return resp, nil</span>
+}
+
+// TraceImpacts finds all downstream and load impacts for a node.
+func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceResponse, error) <span class="cov0" title="0">{
+        node, err := t.repo.FindNodeByStringID(nodeID)
+        if err != nil </span><span class="cov0" title="0">{
+                if err == gorm.ErrRecordNotFound </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("node not found: %s", nodeID)
+                }</span>
+                <span class="cov0" title="0">return nil, err</span>
+        }
+
+        <span class="cov0" title="0">rules, err := t.repo.GetImpactRules(node.NodeType)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("get impact rules: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">resp := &amp;TraceResponse{
+                Source: SourceNode{NodeID: node.NodeID, Name: node.Name, NodeType: node.NodeType},
+        }
+
+        downstreamByTopo, loadByTopo := groupImpactRules(rules)
+
+        for topo, allowedTypes := range downstreamByTopo </span><span class="cov0" title="0">{
+                slug := topologyToSlug(topo)
+                nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, maxLevels)
+                if err != nil </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">filtered := filterByTypes(nodes, allowedTypes)
+                resp.Downstream = append(resp.Downstream, groupByLevel(filtered, topo)...)</span>
+        }
+
+        <span class="cov0" title="0">for topo, allowedTypes := range loadByTopo </span><span class="cov0" title="0">{
+                slug := topologyToSlug(topo)
+                nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, maxLevels)
+                if err != nil </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">filtered := filterByTypes(nodes, allowedTypes)
+                if len(filtered) &gt; 0 </span><span class="cov0" title="0">{
+                        resp.Load = append(resp.Load, TraceLocalGroup{Topology: topo, Nodes: filtered})
+                }</span>
+        }
+
+        <span class="cov0" title="0">return resp, nil</span>
+}
+
+func topologyToSlug(topology string) string <span class="cov8" title="1">{
+        return strings.ToLower(strings.ReplaceAll(strings.TrimSpace(topology), " ", "-"))
+}</span>
+
+// groupDepRules separates dependency rules into upstream and local, grouped by topology.
+// Returns map[topology] -&gt; set of allowed target node types.
+func groupDepRules(rules []model.DependencyRule) (upstream, local map[string]map[string]bool) <span class="cov8" title="1">{
+        upstream = make(map[string]map[string]bool)
+        local = make(map[string]map[string]bool)
+        // Lookup topology for each dependency node type from capacity_node_types
+        // For now, use the rule's topological relationship to determine which topology to query
+        // The topology info comes from capacity_node_types table, but rules don't carry it.
+        // Workaround: derive topology from the dependency node type's known domain.
+        // Electrical types: RPP, Room PDU, UPS, BESS, Switch Gear, Utility Feed, Generator, Rack PDU, Device PSU
+        // Cooling types: Air Zone, Air Cooling Unit, Liquid Loop, CDU, RDHx, DTC, Cooling Distribution, Cooling Plant
+        for _, r := range rules </span><span class="cov8" title="1">{
+                topo := inferTopology(r.DependencyNodeType)
+                target := upstream
+                if r.TopologicalRelationship == "Local" </span><span class="cov8" title="1">{
+                        target = local
+                }</span>
+                <span class="cov8" title="1">if target[topo] == nil </span><span class="cov8" title="1">{
+                        target[topo] = make(map[string]bool)
+                }</span>
+                <span class="cov8" title="1">target[topo][r.DependencyNodeType] = true</span>
+        }
+        <span class="cov8" title="1">return upstream, local</span>
+}
+
+// groupImpactRules separates impact rules into downstream and load, grouped by topology.
+func groupImpactRules(rules []model.ImpactRule) (downstream, load map[string]map[string]bool) <span class="cov8" title="1">{
+        downstream = make(map[string]map[string]bool)
+        load = make(map[string]map[string]bool)
+        for _, r := range rules </span><span class="cov8" title="1">{
+                topo := inferTopology(r.ImpactNodeType)
+                target := downstream
+                if r.TopologicalRelationship == "Load" </span><span class="cov8" title="1">{
+                        target = load
+                }</span>
+                <span class="cov8" title="1">if target[topo] == nil </span><span class="cov8" title="1">{
+                        target[topo] = make(map[string]bool)
+                }</span>
+                <span class="cov8" title="1">target[topo][r.ImpactNodeType] = true</span>
+        }
+        <span class="cov8" title="1">return downstream, load</span>
+}
+
+// inferTopology maps a node type to its topology based on known classification.
+func inferTopology(nodeType string) string <span class="cov8" title="1">{
+        cooling := map[string]bool{
+                "Air Zone": true, "Air Cooling Unit": true, "Liquid Loop": true, "Liquid Lood": true,
+                "CDU": true, "RDHx": true, "DTC": true, "Cooling Distribution": true, "Cooling Plant": true,
+        }
+        spatial := map[string]bool{
+                "Rack": true, "Row": true, "Zone": true, "Aisle": true, "Room": true, "Floor": true,
+        }
+        whitespace := map[string]bool{
+                "Capacity Cell": true, "Room Bundle": true, "Room PDU Bundle": true, "UPS Bundle": true,
+        }
+        if cooling[nodeType] </span><span class="cov8" title="1">{
+                return "Cooling System"
+        }</span>
+        <span class="cov8" title="1">if spatial[nodeType] </span><span class="cov8" title="1">{
+                return "Spatial Topology"
+        }</span>
+        <span class="cov8" title="1">if whitespace[nodeType] </span><span class="cov8" title="1">{
+                return "Whitespace Blueprint"
+        }</span>
+        <span class="cov8" title="1">return "Electrical System"</span>
+}
+
+func filterByTypes(nodes []repository.TracedNode, allowed map[string]bool) []repository.TracedNode <span class="cov8" title="1">{
+        if len(allowed) == 0 </span><span class="cov8" title="1">{
+                return nodes
+        }</span>
+        <span class="cov8" title="1">var filtered []repository.TracedNode
+        for _, n := range nodes </span><span class="cov8" title="1">{
+                if allowed[n.NodeType] </span><span class="cov8" title="1">{
+                        filtered = append(filtered, n)
+                }</span>
+        }
+        <span class="cov8" title="1">return filtered</span>
+}
+
+func groupByLevel(nodes []repository.TracedNode, topology string) []TraceLevelGroup <span class="cov8" title="1">{
+        levelMap := make(map[int][]repository.TracedNode)
+        for _, n := range nodes </span><span class="cov8" title="1">{
+                levelMap[n.Level] = append(levelMap[n.Level], n)
+        }</span>
+        <span class="cov8" title="1">var groups []TraceLevelGroup
+        for level, ns := range levelMap </span><span class="cov8" title="1">{
+                groups = append(groups, TraceLevelGroup{Level: level, Topology: topology, Nodes: ns})
+        }</span>
+        <span class="cov8" title="1">return groups</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package service
+
+import (
+        "fmt"
+        "strconv"
+        "strings"
+)
+
+// CapacityNodeTypeRow represents a parsed row from Capacity Nodes.csv.
+type CapacityNodeTypeRow struct {
+        NodeType         string
+        Topology         string
+        IsCapacityNode   bool
+        ActiveConstraint bool
+}
+
+// DependencyRuleRow represents a parsed row from Dependencies.csv.
+type DependencyRuleRow struct {
+        NodeType                string
+        DependencyNodeType      string
+        RelationshipType        string
+        TopologicalRelationship string
+        UpstreamLevel           *int
+}
+
+// ImpactRuleRow represents a parsed row from Impacts.csv.
+type ImpactRuleRow struct {
+        NodeType                string
+        ImpactNodeType          string
+        TopologicalRelationship string
+        DownstreamLevel         *int
+}
+
+// ParseCapacityNodesCSV parses the Capacity Nodes CSV file.
+func ParseCapacityNodesCSV(filePath string) ([]CapacityNodeTypeRow, error) <span class="cov8" title="1">{
+        records, err := ReadCSV(filePath)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if len(records) == 0 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("empty CSV file: %s", filePath)
+        }</span>
+        <span class="cov8" title="1">if len(records[0]) &lt; 4 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("invalid capacity nodes CSV header in %s: expected 4 columns, got %d", filePath, len(records[0]))
+        }</span>
+
+        <span class="cov8" title="1">var rows []CapacityNodeTypeRow
+        for _, rec := range records[1:] </span><span class="cov8" title="1">{
+                if len(rec) &lt; 4 || strings.TrimSpace(rec[0]) == "" </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">rows = append(rows, CapacityNodeTypeRow{
+                        NodeType:         strings.TrimSpace(rec[0]),
+                        Topology:         strings.TrimSpace(rec[1]),
+                        IsCapacityNode:   parseBoolStr(rec[2]),
+                        ActiveConstraint: parseBoolStr(rec[3]),
+                })</span>
+        }
+        <span class="cov8" title="1">return rows, nil</span>
+}
+
+// ParseDependenciesCSV parses the Dependencies CSV file.
+func ParseDependenciesCSV(filePath string) ([]DependencyRuleRow, error) <span class="cov8" title="1">{
+        records, err := ReadCSV(filePath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if len(records) == 0 </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("empty CSV file: %s", filePath)
+        }</span>
+        <span class="cov8" title="1">if len(records[0]) &lt; 5 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("invalid dependencies CSV header in %s: expected 5 columns, got %d", filePath, len(records[0]))
+        }</span>
+
+        <span class="cov8" title="1">var rows []DependencyRuleRow
+        for _, rec := range records[1:] </span><span class="cov8" title="1">{
+                if len(rec) &lt; 5 || strings.TrimSpace(rec[0]) == "" || strings.TrimSpace(rec[1]) == "" </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">rows = append(rows, DependencyRuleRow{
+                        NodeType:                strings.TrimSpace(rec[0]),
+                        DependencyNodeType:      strings.TrimSpace(rec[1]),
+                        RelationshipType:        strings.TrimSpace(rec[2]),
+                        TopologicalRelationship: strings.TrimSpace(rec[3]),
+                        UpstreamLevel:           parseOptionalInt(rec[4]),
+                })</span>
+        }
+        <span class="cov8" title="1">return rows, nil</span>
+}
+
+// ParseImpactsCSV parses the Impacts CSV file.
+func ParseImpactsCSV(filePath string) ([]ImpactRuleRow, error) <span class="cov8" title="1">{
+        records, err := ReadCSV(filePath)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if len(records) == 0 </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("empty CSV file: %s", filePath)
+        }</span>
+        <span class="cov8" title="1">if len(records[0]) &lt; 4 </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("invalid impacts CSV header in %s: expected 4 columns, got %d", filePath, len(records[0]))
+        }</span>
+
+        <span class="cov8" title="1">var rows []ImpactRuleRow
+        for _, rec := range records[1:] </span><span class="cov8" title="1">{
+                if len(rec) &lt; 4 || strings.TrimSpace(rec[0]) == "" || strings.TrimSpace(rec[1]) == "" </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">rows = append(rows, ImpactRuleRow{
+                        NodeType:                strings.TrimSpace(rec[0]),
+                        ImpactNodeType:          strings.TrimSpace(rec[1]),
+                        TopologicalRelationship: strings.TrimSpace(rec[2]),
+                        DownstreamLevel:         parseOptionalInt(rec[3]),
+                })</span>
+        }
+        <span class="cov8" title="1">return rows, nil</span>
+}
+
+func parseBoolStr(s string) bool <span class="cov8" title="1">{
+        return strings.EqualFold(strings.TrimSpace(s), "true")
+}</span>
+
+func parseOptionalInt(s string) *int <span class="cov8" title="1">{
+        s = strings.TrimSpace(s)
+        if s == "" </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+        <span class="cov8" title="1">v, err := strconv.Atoi(s)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+        <span class="cov8" title="1">return &amp;v</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package service
+
+import (
+        "fmt"
+        "path/filepath"
+        "time"
+
+        "github.com/user/app/internal/model"
+        "gorm.io/gorm"
+        "gorm.io/gorm/clause"
+)
+
+// ModelIngestionSummary holds results of model CSV ingestion.
+type ModelIngestionSummary struct {
+        CapacityNodesUpserted   int      `json:"capacity_nodes_upserted"`
+        DependencyRulesUpserted int      `json:"dependency_rules_upserted"`
+        ImpactRulesUpserted     int      `json:"impact_rules_upserted"`
+        Errors                  []string `json:"errors,omitempty"`
+        DurationMs              int64    `json:"duration_ms"`
+}
+
+// ModelIngestionService orchestrates ingestion of model CSVs.
+type ModelIngestionService struct {
+        db *gorm.DB
+}
+
+// NewModelIngestionService creates a new ModelIngestionService.
+func NewModelIngestionService(db *gorm.DB) *ModelIngestionService <span class="cov0" title="0">{
+        return &amp;ModelIngestionService{db: db}
+}</span>
+
+// IngestAll parses and upserts all 3 model CSVs from basePath.
+func (s *ModelIngestionService) IngestAll(basePath string) (*ModelIngestionSummary, error) <span class="cov0" title="0">{
+        start := time.Now()
+        summary := &amp;ModelIngestionSummary{}
+
+        // Parse all 3 CSVs
+        capRows, err := ParseCapacityNodesCSV(filepath.Join(basePath, "Capacity Nodes.csv"))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("parse capacity nodes: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">depRows, err := ParseDependenciesCSV(filepath.Join(basePath, "Dependencies.csv"))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("parse dependencies: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">impRows, err := ParseImpactsCSV(filepath.Join(basePath, "Impacts.csv"))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("parse impacts: %w", err)
+        }</span>
+
+        // Upsert in single transaction
+        <span class="cov0" title="0">err = s.db.Transaction(func(tx *gorm.DB) error </span><span class="cov0" title="0">{
+                for _, row := range capRows </span><span class="cov0" title="0">{
+                        m := &amp;model.CapacityNodeType{
+                                NodeType:         row.NodeType,
+                                Topology:         row.Topology,
+                                IsCapacityNode:   row.IsCapacityNode,
+                                ActiveConstraint: row.ActiveConstraint,
+                        }
+                        if err := tx.Clauses(clause.OnConflict{
+                                Columns:   []clause.Column{{Name: "node_type"}},
+                                DoUpdates: clause.AssignmentColumns([]string{"topology", "is_capacity_node", "active_constraint", "updated_at"}),
+                        }).Create(m).Error; err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("upsert capacity node type %s: %w", row.NodeType, err)
+                        }</span>
+                }
+                <span class="cov0" title="0">summary.CapacityNodesUpserted = len(capRows)
+
+                for _, row := range depRows </span><span class="cov0" title="0">{
+                        m := &amp;model.DependencyRule{
+                                NodeType:                row.NodeType,
+                                DependencyNodeType:      row.DependencyNodeType,
+                                RelationshipType:        row.RelationshipType,
+                                TopologicalRelationship: row.TopologicalRelationship,
+                                UpstreamLevel:           row.UpstreamLevel,
+                        }
+                        if err := tx.Clauses(clause.OnConflict{
+                                Columns:   []clause.Column{{Name: "node_type"}, {Name: "dependency_node_type"}},
+                                DoUpdates: clause.AssignmentColumns([]string{"relationship_type", "topological_relationship", "upstream_level", "updated_at"}),
+                        }).Create(m).Error; err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("upsert dependency rule %s-&gt;%s: %w", row.NodeType, row.DependencyNodeType, err)
+                        }</span>
+                }
+                <span class="cov0" title="0">summary.DependencyRulesUpserted = len(depRows)
+
+                for _, row := range impRows </span><span class="cov0" title="0">{
+                        m := &amp;model.ImpactRule{
+                                NodeType:                row.NodeType,
+                                ImpactNodeType:          row.ImpactNodeType,
+                                TopologicalRelationship: row.TopologicalRelationship,
+                                DownstreamLevel:         row.DownstreamLevel,
+                        }
+                        if err := tx.Clauses(clause.OnConflict{
+                                Columns:   []clause.Column{{Name: "node_type"}, {Name: "impact_node_type"}},
+                                DoUpdates: clause.AssignmentColumns([]string{"topological_relationship", "downstream_level", "updated_at"}),
+                        }).Create(m).Error; err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("upsert impact rule %s-&gt;%s: %w", row.NodeType, row.ImpactNodeType, err)
+                        }</span>
+                }
+                <span class="cov0" title="0">summary.ImpactRulesUpserted = len(impRows)
+
+                return nil</span>
+        })
+
+        <span class="cov0" title="0">summary.DurationMs = time.Since(start).Milliseconds()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return summary, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package response
+
+import "github.com/gin-gonic/gin"
+
+// Success sends a JSON response with the given status code and data.
+func Success(c *gin.Context, status int, data interface{}) <span class="cov0" title="0">{
+        c.JSON(status, gin.H{"data": data})
+}</span>
+
+// Error sends a JSON error response with the given status code and message.
+func Error(c *gin.Context, status int, message string) <span class="cov0" title="0">{
+        c.JSON(status, gin.H{"error": message})
+}</span>
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package token
+
+import (
+        "fmt"
+        "time"
+
+        "github.com/golang-jwt/jwt/v5"
+)
+
+// Claims holds the custom JWT claims for access and refresh tokens.
+type Claims struct {
+        UserID    uint   `json:"user_id"`
+        Email     string `json:"email"`
+        TokenType string `json:"token_type"` // "access" or "refresh"
+        jwt.RegisteredClaims
+}
+
+// GenerateAccessToken creates a short-lived (15min) JWT access token.
+func GenerateAccessToken(userID uint, email, secret string) (string, error) <span class="cov0" title="0">{
+        claims := Claims{
+                UserID:    userID,
+                Email:     email,
+                TokenType: "access",
+                RegisteredClaims: jwt.RegisteredClaims{
+                        ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)),
+                        IssuedAt:  jwt.NewNumericDate(time.Now()),
+                },
+        }
+        t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+        return t.SignedString([]byte(secret))
+}</span>
+
+// GenerateRefreshToken creates a long-lived (7 day) JWT refresh token.
+func GenerateRefreshToken(userID uint, email, secret string) (string, error) <span class="cov0" title="0">{
+        claims := Claims{
+                UserID:    userID,
+                Email:     email,
+                TokenType: "refresh",
+                RegisteredClaims: jwt.RegisteredClaims{
+                        ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
+                        IssuedAt:  jwt.NewNumericDate(time.Now()),
+                },
+        }
+        t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+        return t.SignedString([]byte(secret))
+}</span>
+
+// ValidateToken parses and validates a JWT token string, returning claims.
+func ValidateToken(tokenString, secret string) (*Claims, error) <span class="cov0" title="0">{
+        t, err := jwt.ParseWithClaims(tokenString, &amp;Claims{}, func(token *jwt.Token) (interface{}, error) </span><span class="cov0" title="0">{
+                if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+                }</span>
+                <span class="cov0" title="0">return []byte(secret), nil</span>
+        })
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">claims, ok := t.Claims.(*Claims)
+        if !ok || !t.Valid </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("invalid token")
+        }</span>
+        <span class="cov0" title="0">return claims, nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
