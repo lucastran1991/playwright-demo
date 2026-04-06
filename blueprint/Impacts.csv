@@ -38,11 +38,18 @@ BESS,Capacity Cell,Load,
 BESS,Room Bundle,Load,
 BESS,Room PDU Bundle,Load,
 BESS,UPS Bundle,Load,
-Switch Gear,Rack PDU,Downstream,
-Switch Gear,RPP,Downstream,
-Switch Gear,Room PDU,Downstream,
-Switch Gear,UPS,Downstream,
-Switch Gear,BESS,Downstream,
+Switch Gear,BESS,Downstream,1
+Switch Gear,UPS,Downstream,2
+Switch Gear,Room PDU,Downstream,3
+Switch Gear,RPP,Downstream,4
+Switch Gear,Rack PDU,Downstream,5
+Switch Gear,Rack,Load,
+Switch Gear,Row,Load,
+Switch Gear,Zone,Load,
+Switch Gear,Capacity Cell,Load,
+Switch Gear,Room Bundle,Load,
+Switch Gear,Room PDU Bundle,Load,
+Switch Gear,UPS Bundle,Load,
 Utility Feed,Rack PDU,Downstream,6
 Utility Feed,RPP,Downstream,5
 Utility Feed,Room PDU,Downstream,4
@@ -81,6 +88,13 @@ Liquid Loop,UPS Bundle,Load,
 CDU,RDHx,Downstream,2
 CDU,DTC,Downstream,2
 CDU,Liquid Loop,Downstream,1
+CDU,Rack,Load,
+CDU,Row,Load,
+CDU,Zone,Load,
+CDU,Capacity Cell,Load,
+CDU,Room Bundle,Load,
+CDU,Room PDU Bundle,Load,
+CDU,UPS Bundle,Load,
 Air Zone,Rack,Load,
 Air Zone,Row,Load,
 Air Zone,Zone,Load,
@@ -89,6 +103,13 @@ Air Zone,Room Bundle,Load,
 Air Zone,Room PDU Bundle,Load,
 Air Zone,UPS Bundle,Load,
 Air Cooling Unit,Air Zone,Downstream,1
+Air Cooling Unit,Rack,Load,
+Air Cooling Unit,Row,Load,
+Air Cooling Unit,Zone,Load,
+Air Cooling Unit,Capacity Cell,Load,
+Air Cooling Unit,Room Bundle,Load,
+Air Cooling Unit,Room PDU Bundle,Load,
+Air Cooling Unit,UPS Bundle,Load,
 Cooling Distribution,RDHx,Downstream,3
 Cooling Distribution,DTC,Downstream,3
 Cooling Distribution,Air Zone,Downstream,2

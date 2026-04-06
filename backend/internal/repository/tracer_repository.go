@@ -87,6 +87,42 @@ func (r *TracerRepository) FindDownstreamNodes(sourceDBID uint, typeSlug string,
 	return nodes, err
 }
 
+// FindSpatialAncestorsOfType walks up spatial edges from the given node IDs
+// and returns distinct ancestor nodes whose node_type is in the given set.
+// Used to find Load nodes (Rack, Row, Zone) that are spatial parents of
+// electrical downstream nodes (RACKPDU, etc.).
+func (r *TracerRepository) FindSpatialAncestorsOfType(nodeDBIDs []uint, nodeTypes []string) ([]TracedNode, error) {
+	if len(nodeDBIDs) == 0 || len(nodeTypes) == 0 {
+		return nil, nil
+	}
+	var nodes []TracedNode
+	err := r.db.Raw(`
+		WITH RECURSIVE ancestors AS (
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+			FROM blueprint_edges be
+			JOIN blueprint_nodes bn ON bn.id = be.from_node_id
+			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+			WHERE be.to_node_id IN ?
+			  AND bt.slug = 'spatial-topology'
+
+			UNION ALL
+
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, a.level + 1
+			FROM ancestors a
+			JOIN blueprint_edges be ON be.to_node_id = a.id
+			JOIN blueprint_nodes bn ON bn.id = be.from_node_id
+			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+			WHERE bt.slug = 'spatial-topology' AND a.level < 5
+		)
+		SELECT DISTINCT ON (id) id, node_id, name, node_type, MIN(level) as level
+		FROM ancestors
+		WHERE node_type IN ?
+		GROUP BY id, node_id, name, node_type
+		ORDER BY id, level
+	`, nodeDBIDs, nodeTypes).Scan(&nodes).Error
+	return nodes, err
+}
+
 // FindLocalNodes returns direct edge neighbors of a node in a given topology.
 func (r *TracerRepository) FindLocalNodes(sourceDBID uint, typeSlug string) ([]TracedNode, error) {
 	var nodes []TracedNode

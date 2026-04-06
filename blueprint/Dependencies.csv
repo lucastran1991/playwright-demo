@@ -129,6 +129,11 @@ UPS,Generator,Dependency,Upstream,3
 BESS,Switch Gear,Dependency,Upstream,1
 BESS,Utility Feed,Dependency,Upstream,2
 BESS,Generator,Dependency,Upstream,2
+Switch Gear,Utility Feed,Dependency,Upstream,1
+Switch Gear,Generator,Dependency,Upstream,1
+Liquid Loop,CDU,Dependency,Upstream,1
+Liquid Loop,Cooling Distribution,Dependency,Upstream,2
+Liquid Loop,Cooling Plant,Dependency,Upstream,3
 RDHx,Liquid Loop,Dependency,Upstream,1
 RDHx,CDU,Dependency,Upstream,2
 RDHx,Cooling Distribution,Dependency,Upstream,3

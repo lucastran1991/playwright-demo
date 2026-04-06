@@ -196,11 +196,29 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 
 	downstreamByTopo, loadByTopo := t.groupImpactRules(rules)
 
+	// Collect all load types into a single set for cross-topology lookup
+	allLoadTypes := make(map[string]bool)
+	for _, types := range loadByTopo {
+		for nt := range types {
+			allLoadTypes[nt] = true
+		}
+	}
+
+	// Track infra topology slugs for downstream traversal.
+	// Include source node's own topology so Load search has a starting point
+	// even when there are no Downstream rules (e.g. Air Zone has only Load rules).
+	infraSlugSet := make(map[string]bool)
+	sourceTopo := t.lookupTopology(node.NodeType)
+	if slug := t.resolveSlug(sourceTopo); slug != "" {
+		infraSlugSet[slug] = true
+	}
+
 	for topo, allowedTypes := range downstreamByTopo {
 		slug := t.resolveSlug(topo)
 		if slug == "" {
 			continue
 		}
+		infraSlugSet[slug] = true
 		nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, maxLevels)
 		if err != nil {
 			log.Printf("WARNING: downstream trace failed for %s in %s: %v", nodeID, topo, err)
@@ -210,19 +228,65 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 		resp.Downstream = append(resp.Downstream, groupByLevel(filtered, topo)...)
 	}
 
-	for topo, allowedTypes := range loadByTopo {
-		slug := t.resolveSlug(topo)
-		if slug == "" {
-			continue
+	// Load nodes (Rack, Row, etc.) live as children in infra topologies
+	// (e.g. AIRZONE → RACK in Cooling), not in their own topology (Spatial).
+	// Two strategies:
+	// 1. Walk downstream in infra topologies with extended depth (works for Cooling)
+	// 2. Find spatial ancestors of downstream nodes (works for Electrical)
+	if len(allLoadTypes) > 0 {
+		loadMaxLevels := 10
+		loadGroupMap := make(map[string][]repository.TracedNode)
+		seen := make(map[string]bool)
+
+		// Strategy 1: walk downstream in infra topologies (finds Racks in Cooling edges)
+		for slug := range infraSlugSet {
+			nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, loadMaxLevels)
+			if err != nil {
+				continue
+			}
+			for _, n := range nodes {
+				if allLoadTypes[n.NodeType] && !seen[n.NodeID] {
+					seen[n.NodeID] = true
+					loadTopo := t.lookupTopology(n.NodeType)
+					loadGroupMap[loadTopo] = append(loadGroupMap[loadTopo], n)
+				}
+			}
 		}
-		nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, maxLevels)
-		if err != nil {
-			log.Printf("WARNING: load trace failed for %s in %s: %v", nodeID, topo, err)
-			continue
+
+		// Strategy 2: find spatial ancestors of deep downstream nodes
+		// (Rack is spatial parent of RACKPDU, which is deep in electrical chain).
+		// Walk deeper than resp.Downstream (which uses maxLevels) to reach leaf nodes.
+		if len(loadGroupMap) == 0 {
+			loadTypeSlice := make([]string, 0, len(allLoadTypes))
+			for nt := range allLoadTypes {
+				loadTypeSlice = append(loadTypeSlice, nt)
+			}
+			var allDownstreamDBIDs []uint
+			for slug := range infraSlugSet {
+				deepNodes, err := t.repo.FindDownstreamNodes(node.ID, slug, loadMaxLevels)
+				if err != nil {
+					continue
+				}
+				for _, n := range deepNodes {
+					allDownstreamDBIDs = append(allDownstreamDBIDs, n.ID)
+				}
+			}
+			if len(allDownstreamDBIDs) > 0 {
+				spatialLoads, err := t.repo.FindSpatialAncestorsOfType(allDownstreamDBIDs, loadTypeSlice)
+				if err == nil {
+					for _, n := range spatialLoads {
+						if !seen[n.NodeID] {
+							seen[n.NodeID] = true
+							loadTopo := t.lookupTopology(n.NodeType)
+							loadGroupMap[loadTopo] = append(loadGroupMap[loadTopo], n)
+						}
+					}
+				}
+			}
 		}
-		filtered := filterByTypes(nodes, allowedTypes)
-		if len(filtered) > 0 {
-			resp.Load = append(resp.Load, TraceLocalGroup{Topology: topo, Nodes: filtered})
+
+		for topo, nodes := range loadGroupMap {
+			resp.Load = append(resp.Load, TraceLocalGroup{Topology: topo, Nodes: nodes})
 		}
 	}
 
