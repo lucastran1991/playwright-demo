@@ -161,9 +161,9 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 		}
 	}
 
-	// Only upstream + downstream, filtered by level and topology
+	// Upstream, downstream, and local — filtered by level (0..depth) and topology
 	for _, g := range result.Upstream {
-		if g.Level < 1 || g.Level > levels {
+		if g.Level > levels {
 			continue
 		}
 		if !matchTopologyFilter(g.Topology, allowedTopos) {
@@ -171,8 +171,14 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 		}
 		writeNodes("upstream", g.Level, g.Topology, g.Nodes)
 	}
+	for _, g := range result.Local {
+		if !matchTopologyFilter(g.Topology, allowedTopos) {
+			continue
+		}
+		writeNodes("local", 0, g.Topology, g.Nodes)
+	}
 	for _, g := range result.Downstream {
-		if g.Level < 1 || g.Level > levels {
+		if g.Level > levels {
 			continue
 		}
 		if !matchTopologyFilter(g.Topology, allowedTopos) {
@@ -295,9 +301,9 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 				row++
 			}
 
-			// Only upstream + downstream, filtered by level (1..depth) and topology
+			// Upstream, downstream, and local — filtered by level (0..depth) and topology
 			for _, g := range traceResp.Upstream {
-				if g.Level < 1 || g.Level > levels {
+				if g.Level > levels {
 					continue
 				}
 				if !matchTopologyFilter(g.Topology, allowedTopos) {
@@ -307,8 +313,16 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 					writeRow("upstream", g.Level, g.Topology, n)
 				}
 			}
+			for _, g := range traceResp.Local {
+				if !matchTopologyFilter(g.Topology, allowedTopos) {
+					continue
+				}
+				for _, n := range g.Nodes {
+					writeRow("local", 0, g.Topology, n)
+				}
+			}
 			for _, g := range traceResp.Downstream {
-				if g.Level < 1 || g.Level > levels {
+				if g.Level > levels {
 					continue
 				}
 				if !matchTopologyFilter(g.Topology, allowedTopos) {
