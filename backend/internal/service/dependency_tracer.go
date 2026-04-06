@@ -5,6 +5,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/user/app/internal/model"
 	"github.com/user/app/internal/repository"
 	"gorm.io/gorm"
 )
@@ -41,9 +42,10 @@ type TraceLocalGroup struct {
 
 // DependencyTracer resolves actual node instances from type-level rules.
 type DependencyTracer struct {
-	repo       *repository.TracerRepository
-	topoLookup map[string]string // nodeType -> topology name
-	slugLookup map[string]string // topology name -> blueprint_type slug
+	repo           *repository.TracerRepository
+	topoLookup     map[string]string      // nodeType -> topology name
+	slugLookup     map[string]string      // topology name -> blueprint_type slug
+	topoLookupList []model.CapacityNodeType // full list for IsCapacityNode checks
 }
 
 // NewDependencyTracer creates a new DependencyTracer with DB-backed topology lookup.
@@ -66,6 +68,7 @@ func (t *DependencyTracer) RefreshLookups() {
 			lookup[ct.NodeType] = ct.Topology
 		}
 		t.topoLookup = lookup
+		t.topoLookupList = types
 	}
 
 	// Build topology name -> slug mapping from blueprint_types.
@@ -252,12 +255,22 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 		resp.Downstream = append(resp.Downstream, groupByLevel(filtered, topo)...)
 	}
 
-	// Load nodes (Rack, Row, etc.) live in spatial/whitespace topologies but are
-	// connected via infra topologies. Three strategies run unconditionally and merge:
+	// Load impact only applies to Capacity Nodes (IsCapacityNode=true per spec).
+	// Non-capacity nodes (Switch Gear, Rack PDU, ACU, CDU, etc.) only have Downstream impact.
+	isCapacityNode := false
+	for _, ct := range t.topoLookupList {
+		if ct.NodeType == node.NodeType && ct.IsCapacityNode {
+			isCapacityNode = true
+			break
+		}
+	}
+
+	// Load nodes (Rack, Row, etc.) only shown for Capacity Nodes per spec.
+	// Connected via infra topologies. Three strategies run unconditionally and merge:
 	// 1. Walk downstream in infra topologies with extended depth (finds Racks in Cooling)
 	// 2. Find spatial ancestors of downstream nodes (Rack is parent of RACKPDU)
 	// 3. Find spatial descendants of downstream nodes (Zone contains Rack as child)
-	if len(allLoadTypes) > 0 {
+	if isCapacityNode && len(allLoadTypes) > 0 {
 		loadMaxLevels := 10
 		loadGroupMap := make(map[string][]repository.TracedNode)
 		seen := make(map[string]bool)

@@ -12,6 +12,7 @@ Rack,Liquid Loop,Dependency,Upstream,1
 Rack,CDU,Dependency,Upstream,2
 Rack,Cooling Distribution,Dependency,Upstream,3
 Rack,Cooling Plant,Dependency,Upstream,4
+Rack,Rack PDU,Dependency,Local,
 Rack,RDHx,Dependency,Local,
 Rack,DTC,Dependency,Local,
 Row,RPP,Dependency,Upstream,1
