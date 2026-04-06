@@ -162,8 +162,15 @@ func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, inclu
 				upNodes[i].Level += bridge.Level
 			}
 			candidate := filterByTypes(upNodes, allowedTypes)
-			if len(candidate) > len(bestFiltered) {
-				bestFiltered = candidate
+			// Remove nodes whose shifted level exceeds maxLevels
+			var trimmed []repository.TracedNode
+			for _, n := range candidate {
+				if n.Level <= maxLevels {
+					trimmed = append(trimmed, n)
+				}
+			}
+			if len(trimmed) > len(bestFiltered) {
+				bestFiltered = trimmed
 			}
 		}
 		if len(bestFiltered) > 0 {
