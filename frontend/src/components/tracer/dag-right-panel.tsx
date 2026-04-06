@@ -1,32 +1,8 @@
 'use client'
 
-import { useCallback } from "react"
-import { Minus, Plus, Layers, Zap, Droplets, Building2, Package, Download, X } from "lucide-react"
+import { useCallback, useState } from "react"
+import { Minus, Plus, Layers, Zap, Droplets, Building2, Package, Download, X, Loader2 } from "lucide-react"
 import { ThemeToggle } from "@/components/dashboard/theme-toggle"
-import { apiFetch } from "@/lib/api-client"
-import * as XLSX from "xlsx"
-import type { TraceResponse } from "./dag-types"
-
-interface ApiWrapper<T> {
-  data: T
-}
-
-// Node types to export as separate sheets
-const EXPORT_MODELS = [
-  { type: "Rack", label: "Rack" },
-  { type: "RPP", label: "RPP" },
-  { type: "Room PDU", label: "Room PDU" },
-  { type: "UPS", label: "UPS" },
-  { type: "BESS", label: "BESS" },
-  { type: "Switch Gear", label: "Switch Gear" },
-  { type: "Utility Feed", label: "Utility Feed" },
-  { type: "Generator", label: "Generator" },
-  { type: "Air Zone", label: "Air Zone" },
-  { type: "Liquid Loop", label: "Liquid Loop" },
-  { type: "CDU", label: "CDU" },
-  { type: "Cooling Distribution", label: "Cooling Dist" },
-  { type: "Cooling Plant", label: "Cooling Plant" },
-]
 
 const TOPO_CHIPS = [
   { key: "electrical", label: "Electrical", icon: <Zap className="h-3.5 w-3.5" />, color: "#F97316", bg: "rgba(249,115,22,0.15)" },
@@ -45,92 +21,43 @@ interface DagRightPanelProps {
   selectedNodeId: string | null
 }
 
-// Flatten a TraceResponse into CSV-style rows for a sheet
-function traceToRows(resp: TraceResponse) {
-  const rows: Record<string, string>[] = []
-  const src = resp.source
-
-  const addNodes = (direction: string, groups: { level?: number; topology?: string; nodes: { node_id: string; name: string; node_type: string; parent_node_id?: string }[] }[]) => {
-    for (const g of groups) {
-      for (const n of g.nodes) {
-        rows.push({
-          src_node_id: src.node_id,
-          src_node_name: src.name,
-          direction,
-          level: String(g.level ?? 0),
-          topology: g.topology ?? "",
-          node_id: n.node_id,
-          node_name: n.name,
-          node_type: n.node_type,
-          parent_node_id: n.parent_node_id ?? "",
-        })
-      }
-    }
-  }
-
-  // Source row
-  rows.push({
-    src_node_id: src.node_id, src_node_name: src.name, direction: "source",
-    level: "0", topology: src.topology ?? "", node_id: src.node_id,
-    node_name: src.name, node_type: src.node_type, parent_node_id: "",
-  })
-
-  if (resp.upstream) addNodes("upstream", resp.upstream)
-  if (resp.local) addNodes("local", resp.local)
-  if (resp.downstream) addNodes("downstream", resp.downstream)
-  if (resp.load) addNodes("load", resp.load)
-
-  return rows
-}
-
 export default function DagRightPanel({ open, onClose, depth, onDepthChange, selectedTopos, onTopoToggle, selectedNodeId }: DagRightPanelProps) {
+  const [exporting, setExporting] = useState(false)
+
+  // Download bulk XLSX from backend — one sheet per capacity node type
   const handleExportXlsx = useCallback(async () => {
+    setExporting(true)
+    try {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8889"
+      const res = await fetch(`${apiBase}/api/trace/export/xlsx?levels=${depth}`)
+      if (!res.ok) throw new Error("Export failed")
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = "trace-all-models.xlsx"
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error("XLSX export failed:", err)
+    } finally {
+      setExporting(false)
+    }
+  }, [depth])
+
+  // Download single-node CSV export
+  const handleExportCsv = useCallback(async () => {
     if (!selectedNodeId) return
-
-    // Fetch the current node's trace
-    const resp = await apiFetch<ApiWrapper<TraceResponse>>(
-      `/api/trace/full/${selectedNodeId}?levels=${depth}`
-    ).then((r) => r.data)
-
-    const wb = XLSX.utils.book_new()
-
-    // Main trace sheet
-    const mainRows = traceToRows(resp)
-    const mainWs = XLSX.utils.json_to_sheet(mainRows)
-    XLSX.utils.book_append_sheet(wb, mainWs, resp.source.node_type.slice(0, 31))
-
-    // Additional sheets: trace each unique upstream/downstream node type
-    const tracedTypes = new Map<string, string>() // node_type → first node_id
-    for (const section of [resp.upstream, resp.downstream]) {
-      for (const g of section ?? []) {
-        for (const n of g.nodes) {
-          if (!tracedTypes.has(n.node_type)) {
-            tracedTypes.set(n.node_type, n.node_id)
-          }
-        }
-      }
-    }
-
-    // Fetch trace for each unique model type (up to 10 to avoid hammering API)
-    const entries = Array.from(tracedTypes.entries()).slice(0, 10)
-    for (const [nodeType, nodeId] of entries) {
-      try {
-        const modelResp = await apiFetch<ApiWrapper<TraceResponse>>(
-          `/api/trace/full/${nodeId}?levels=${depth}`
-        ).then((r) => r.data)
-        const rows = traceToRows(modelResp)
-        if (rows.length > 0) {
-          const ws = XLSX.utils.json_to_sheet(rows)
-          // Sheet name max 31 chars, no special chars
-          const sheetName = nodeType.replace(/[/\\?*[\]]/g, "").slice(0, 31)
-          XLSX.utils.book_append_sheet(wb, ws, sheetName)
-        }
-      } catch {
-        // Skip failed traces silently
-      }
-    }
-
-    XLSX.writeFile(wb, `trace-${selectedNodeId}.xlsx`)
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8889"
+    const res = await fetch(`${apiBase}/api/trace/full/${selectedNodeId}/export?levels=${depth}`)
+    if (!res.ok) return
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `trace-${selectedNodeId}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
   }, [selectedNodeId, depth])
 
   return (
@@ -201,14 +128,24 @@ export default function DagRightPanel({ open, onClose, depth, onDepthChange, sel
         {/* Export */}
         <div>
           <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Export</label>
-          <button
-            onClick={handleExportXlsx}
-            disabled={!selectedNodeId}
-            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-medium border border-border hover:bg-muted disabled:opacity-30 transition-colors"
-          >
-            <Download className="h-3.5 w-3.5" />
-            Download XLSX
-          </button>
+          <div className="space-y-1">
+            <button
+              onClick={handleExportXlsx}
+              disabled={exporting}
+              className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-medium border border-border hover:bg-muted disabled:opacity-50 transition-colors"
+            >
+              {exporting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+              {exporting ? "Exporting..." : "Download All (XLSX)"}
+            </button>
+            <button
+              onClick={handleExportCsv}
+              disabled={!selectedNodeId}
+              className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-medium border border-border hover:bg-muted disabled:opacity-30 transition-colors"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Current Node (CSV)
+            </button>
+          </div>
         </div>
 
         {/* Theme */}

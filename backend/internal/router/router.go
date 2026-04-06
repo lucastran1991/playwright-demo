@@ -58,6 +58,7 @@ func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.Blueprint
 		trace.GET("/impacts/:nodeId", tracerHandler.TraceImpacts)
 		trace.GET("/full/:nodeId", tracerHandler.TraceFull)
 		trace.GET("/full/:nodeId/export", tracerHandler.TraceExportCSV)
+		trace.GET("/export/xlsx", tracerHandler.TraceExportXLSX)
 	}
 
 	// Protected routes

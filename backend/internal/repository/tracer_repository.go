@@ -25,6 +25,11 @@ func NewTracerRepository(db *gorm.DB) *TracerRepository {
 	return &TracerRepository{db: db}
 }
 
+// DB returns the underlying gorm.DB for ad-hoc queries.
+func (r *TracerRepository) DB() *gorm.DB {
+	return r.db
+}
+
 // FindUpstreamNodes walks parent edges recursively in a given topology up to maxLevel hops.
 func (r *TracerRepository) FindUpstreamNodes(sourceDBID uint, typeSlug string, maxLevel int) ([]TracedNode, error) {
 	var nodes []TracedNode

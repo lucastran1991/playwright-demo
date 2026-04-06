@@ -3,11 +3,14 @@ package handler
 import (
 	"encoding/csv"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xuri/excelize/v2"
+
 	"github.com/user/app/internal/repository"
 	"github.com/user/app/internal/service"
 	"github.com/user/app/pkg/response"
@@ -174,6 +177,130 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 	}
 
 	w.Flush()
+}
+
+// TraceExportXLSX handles GET /api/trace/export/xlsx — bulk XLSX with one sheet per node type.
+// Each sheet contains ALL instances of that type, traced at the given depth.
+func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
+	levels := parseIntParam(c, "levels", 2, 10)
+
+	// Get all capacity node types
+	capTypes, err := h.repo.ListCapacityNodeTypes()
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, "Failed to list node types")
+		return
+	}
+
+	f := excelize.NewFile()
+	defer f.Close()
+	// Remove default "Sheet1"
+	f.DeleteSheet("Sheet1")
+
+	headers := []string{"src_node_id", "src_node_name", "direction", "level", "topology",
+		"node_id", "node_name", "node_type", "parent_node_id", "parent_node_name"}
+
+	for _, ct := range capTypes {
+		if !ct.IsCapacityNode {
+			continue
+		}
+
+		// Fetch all instances of this node type
+		var nodes []struct {
+			NodeID string `json:"node_id"`
+			Name   string `json:"name"`
+		}
+		h.repo.DB().Raw(`SELECT node_id, name FROM blueprint_nodes WHERE node_type = ? ORDER BY node_id`, ct.NodeType).Scan(&nodes)
+
+		if len(nodes) == 0 {
+			continue
+		}
+
+		// Sheet name: max 31 chars
+		sheetName := ct.NodeType
+		if len(sheetName) > 31 {
+			sheetName = sheetName[:31]
+		}
+		f.NewSheet(sheetName)
+
+		// Write headers
+		for col, h := range headers {
+			cell, _ := excelize.CoordinatesToCellName(col+1, 1)
+			f.SetCellValue(sheetName, cell, h)
+		}
+
+		row := 2
+		for _, node := range nodes {
+			traceResp, err := h.tracer.TraceFull(node.NodeID, levels)
+			if err != nil {
+				log.Printf("WARNING: trace failed for %s: %v", node.NodeID, err)
+				continue
+			}
+
+			// Build name lookup
+			nameMap := make(map[string]string)
+			nameMap[traceResp.Source.NodeID] = traceResp.Source.Name
+			for _, groups := range [][]service.TraceLevelGroup{traceResp.Upstream, traceResp.Downstream} {
+				for _, g := range groups {
+					for _, n := range g.Nodes {
+						nameMap[n.NodeID] = n.Name
+					}
+				}
+			}
+			for _, groups := range [][]service.TraceLocalGroup{traceResp.Local, traceResp.Load} {
+				for _, g := range groups {
+					for _, n := range g.Nodes {
+						nameMap[n.NodeID] = n.Name
+					}
+				}
+			}
+
+			src := traceResp.Source
+
+			writeRow := func(direction string, level int, topology string, n repository.TracedNode) {
+				parentID, parentName := "", ""
+				if n.ParentNodeID != nil {
+					parentID = *n.ParentNodeID
+					parentName = nameMap[parentID]
+				}
+				vals := []string{src.NodeID, src.Name, direction, strconv.Itoa(level), topology,
+					n.NodeID, n.Name, n.NodeType, parentID, parentName}
+				for col, v := range vals {
+					cell, _ := excelize.CoordinatesToCellName(col+1, row)
+					f.SetCellValue(sheetName, cell, v)
+				}
+				row++
+			}
+
+			// Source row
+			srcNode := repository.TracedNode{NodeID: src.NodeID, Name: src.Name, NodeType: src.NodeType}
+			writeRow("source", 0, src.Topology, srcNode)
+
+			for _, g := range traceResp.Upstream {
+				for _, n := range g.Nodes {
+					writeRow("upstream", g.Level, g.Topology, n)
+				}
+			}
+			for _, g := range traceResp.Local {
+				for _, n := range g.Nodes {
+					writeRow("local", 0, g.Topology, n)
+				}
+			}
+			for _, g := range traceResp.Downstream {
+				for _, n := range g.Nodes {
+					writeRow("downstream", g.Level, g.Topology, n)
+				}
+			}
+			for _, g := range traceResp.Load {
+				for _, n := range g.Nodes {
+					writeRow("load", 0, g.Topology, n)
+				}
+			}
+		}
+	}
+
+	c.Header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	c.Header("Content-Disposition", `attachment; filename="trace-all-models.xlsx"`)
+	f.Write(c.Writer)
 }
 
 func parseIntParam(c *gin.Context, key string, defaultVal, maxVal int) int {
