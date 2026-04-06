@@ -61,8 +61,10 @@ export function traceToDAGElements(
   nodesMap.set(source.node_id, makeNode(source.node_id, source.name, source.node_type, sourceTopo, 0, true, false))
 
   // Upstream deps -- chain edges using parent_node_id (L2→L1→source)
+  // Sort by level ascending so parent nodes (L1) exist in nodesMap before children (L2) reference them
   if (depResponse?.upstream) {
-    for (const group of depResponse.upstream) {
+    const sortedUpstream = [...depResponse.upstream].sort((a, b) => a.level - b.level)
+    for (const group of sortedUpstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level))
@@ -93,8 +95,10 @@ export function traceToDAGElements(
   }
 
   // Downstream impacts -- chain edges using parent_node_id (source→L1→L2)
+  // Sort by level ascending so parent nodes (L1) exist in nodesMap before children (L2) reference them
   if (impactResponse?.downstream) {
-    for (const group of impactResponse.downstream) {
+    const sortedDownstream = [...impactResponse.downstream].sort((a, b) => a.level - b.level)
+    for (const group of sortedDownstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level))
