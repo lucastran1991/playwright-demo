@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/csv"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -101,6 +103,77 @@ func (h *TracerHandler) TraceFull(c *gin.Context) {
 		return
 	}
 	response.Success(c, http.StatusOK, result)
+}
+
+// TraceExportCSV handles GET /api/trace/full/:nodeId/export — CSV export of DAG tree.
+func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
+	nodeID := c.Param("nodeId")
+	levels := parseIntParam(c, "levels", 2, 10)
+
+	result, err := h.tracer.TraceFull(nodeID, levels)
+	if err != nil {
+		if strings.Contains(err.Error(), "node not found") {
+			response.Error(c, http.StatusNotFound, err.Error())
+			return
+		}
+		response.Error(c, http.StatusInternalServerError, "Failed to trace node")
+		return
+	}
+
+	// Build node_id → name lookup from all traced nodes
+	nameMap := make(map[string]string)
+	src := result.Source
+	nameMap[src.NodeID] = src.Name
+	for _, groups := range [][]service.TraceLevelGroup{result.Upstream, result.Downstream} {
+		for _, g := range groups {
+			for _, n := range g.Nodes {
+				nameMap[n.NodeID] = n.Name
+			}
+		}
+	}
+	for _, groups := range [][]service.TraceLocalGroup{result.Local, result.Load} {
+		for _, g := range groups {
+			for _, n := range g.Nodes {
+				nameMap[n.NodeID] = n.Name
+			}
+		}
+	}
+
+	c.Header("Content-Type", "text/csv")
+	c.Header("Content-Disposition", fmt.Sprintf(`attachment; filename="trace-%s.csv"`, nodeID))
+
+	w := csv.NewWriter(c.Writer)
+	w.Write([]string{"src_node_id", "src_node_name", "direction", "level", "topology", "node_id", "node_name", "node_type", "parent_node_id", "parent_node_name"})
+
+	writeNodes := func(direction string, level int, topology string, nodes []repository.TracedNode) {
+		for _, n := range nodes {
+			parentID := ""
+			parentName := ""
+			if n.ParentNodeID != nil {
+				parentID = *n.ParentNodeID
+				parentName = nameMap[parentID]
+			}
+			w.Write([]string{src.NodeID, src.Name, direction, strconv.Itoa(level), topology, n.NodeID, n.Name, n.NodeType, parentID, parentName})
+		}
+	}
+
+	// Source row
+	w.Write([]string{src.NodeID, src.Name, "source", "0", src.Topology, src.NodeID, src.Name, src.NodeType, "", ""})
+
+	for _, g := range result.Upstream {
+		writeNodes("upstream", g.Level, g.Topology, g.Nodes)
+	}
+	for _, g := range result.Local {
+		writeNodes("local", 0, g.Topology, g.Nodes)
+	}
+	for _, g := range result.Downstream {
+		writeNodes("downstream", g.Level, g.Topology, g.Nodes)
+	}
+	for _, g := range result.Load {
+		writeNodes("load", 0, g.Topology, g.Nodes)
+	}
+
+	w.Flush()
 }
 
 func parseIntParam(c *gin.Context, key string, defaultVal, maxVal int) int {

@@ -21,6 +21,25 @@ export function getTopologyKey(topology: string): string {
   return "default"
 }
 
+// Filter trace response to only include groups matching selected topologies.
+// Source node is always kept. Groups with non-matching topologies are removed.
+export function filterTraceByTopologies(
+  response: TraceResponse | null,
+  selectedTopos: Set<string>
+): TraceResponse | null {
+  if (!response || selectedTopos.size === 0) return response
+
+  const matchTopo = (topology: string) => selectedTopos.has(getTopologyKey(topology))
+
+  return {
+    source: response.source,
+    upstream: response.upstream?.filter((g) => matchTopo(g.topology)),
+    local: response.local?.filter((g) => matchTopo(g.topology)),
+    downstream: response.downstream?.filter((g) => matchTopo(g.topology)),
+    load: response.load?.filter((g) => matchTopo(g.topology)),
+  }
+}
+
 // Edge styles: upstream = cyan, downstream = orange, local = gray dashed, load = purple dashed
 const UPSTREAM_STYLE = { stroke: "#06B6D4", strokeWidth: 2.5 }
 const DOWNSTREAM_STYLE = { stroke: "#F97316", strokeWidth: 2.5 }

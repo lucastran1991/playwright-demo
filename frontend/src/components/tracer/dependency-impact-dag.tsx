@@ -14,10 +14,10 @@ import {
   type Node,
   type Edge,
 } from "@xyflow/react"
-import { Loader2, Minus, Plus, Layers } from "lucide-react"
+import { Loader2, Minus, Plus, Layers, Zap, Droplets, Building2, Package } from "lucide-react"
 import { apiFetch } from "@/lib/api-client"
 import { ThemeToggle } from "@/components/dashboard/theme-toggle"
-import { traceToDAGElements, layoutDAG } from "./dag-helpers"
+import { traceToDAGElements, layoutDAG, filterTraceByTopologies } from "./dag-helpers"
 import TracerNode from "./dag-node"
 import TracerEdge from "./dag-edge"
 import DAGSearch from "./dag-search"
@@ -35,6 +35,7 @@ interface ApiWrapper<T> {
 function DependencyImpactDAGInner() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [depth, setDepth] = useState(2)
+  const [selectedTopos, setSelectedTopos] = useState<Set<string>>(new Set(["electrical", "cooling"]))
   const [popupData, setPopupData] = useState<TracerNodeData | null>(null)
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
@@ -61,7 +62,8 @@ function DependencyImpactDAGInner() {
     if (traceQuery.isLoading) return
 
     const trace = traceQuery.data ?? null
-    const { nodes: rawNodes, edges: rawEdges } = traceToDAGElements(trace)
+    const filtered = filterTraceByTopologies(trace, selectedTopos)
+    const { nodes: rawNodes, edges: rawEdges } = traceToDAGElements(filtered)
     const { nodes: laidNodes, edges: laidEdges } = layoutDAG(rawNodes, rawEdges)
     const nodesWithClick = laidNodes.map((n) => ({
       ...n,
@@ -70,7 +72,7 @@ function DependencyImpactDAGInner() {
     setNodes(nodesWithClick)
     setEdges(laidEdges)
     setTimeout(() => fitView({ padding: 0.2, duration: 400 }), 50)
-  }, [selectedNodeId, traceQuery.data, traceQuery.isLoading])
+  }, [selectedNodeId, traceQuery.data, traceQuery.isLoading, selectedTopos])
 
   const handleSelect = useCallback((nodeId: string) => {
     setSelectedNodeId(nodeId)
@@ -82,8 +84,24 @@ function DependencyImpactDAGInner() {
     setEdges([])
   }, [])
 
+  const toggleTopo = useCallback((key: string) => {
+    setSelectedTopos((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }, [])
+
   const isLoading = !!selectedNodeId && traceQuery.isFetching
   const isEmpty = !selectedNodeId
+
+  const topoChips = [
+    { key: "electrical", label: "Elec", icon: <Zap className="h-3 w-3" />, color: "#F97316", bg: "rgba(249,115,22,0.15)" },
+    { key: "cooling", label: "Cool", icon: <Droplets className="h-3 w-3" />, color: "#06B6D4", bg: "rgba(6,182,212,0.15)" },
+    { key: "spatial", label: "Spatial", icon: <Building2 className="h-3 w-3" />, color: "#8B5CF6", bg: "rgba(139,92,246,0.15)" },
+    { key: "whitespace", label: "WS", icon: <Package className="h-3 w-3" />, color: "#10B981", bg: "rgba(16,185,129,0.15)" },
+  ]
 
   return (
     <div className="relative h-screen h-dvh overflow-hidden bg-card flex flex-col">
@@ -112,6 +130,29 @@ function DependencyImpactDAGInner() {
 
         {/* Search bar - takes remaining space */}
         <DAGSearch onSelect={handleSelect} onClear={handleClear} />
+
+        {/* Topology filter chips */}
+        <div className="flex items-center gap-1 shrink-0">
+          {topoChips.map((t) => {
+            const active = selectedTopos.has(t.key)
+            return (
+              <button
+                key={t.key}
+                onClick={() => toggleTopo(t.key)}
+                className="flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-medium border transition-all"
+                style={{
+                  borderColor: active ? t.color : "hsl(var(--border))",
+                  backgroundColor: active ? t.bg : "transparent",
+                  color: active ? t.color : "hsl(var(--muted-foreground))",
+                  opacity: active ? 1 : 0.5,
+                }}
+              >
+                {t.icon}
+                <span className="hidden sm:inline">{t.label}</span>
+              </button>
+            )
+          })}
+        </div>
 
         {/* Theme toggle */}
         <div className="shrink-0">
