@@ -50,7 +50,8 @@ export default function DagRightPanel({ open, onClose, depth, onDepthChange, sel
   const handleExportCsv = useCallback(async () => {
     if (!selectedNodeId) return
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8889"
-    const res = await fetch(`${apiBase}/api/trace/full/${selectedNodeId}/export?levels=${depth}`)
+    const topoParam = Array.from(selectedTopos).join(",")
+    const res = await fetch(`${apiBase}/api/trace/full/${selectedNodeId}/export?levels=${depth}&topologies=${topoParam}`)
     if (!res.ok) return
     const blob = await res.blob()
     const url = URL.createObjectURL(blob)
@@ -59,7 +60,7 @@ export default function DagRightPanel({ open, onClose, depth, onDepthChange, sel
     a.download = `trace-${selectedNodeId}.csv`
     a.click()
     URL.revokeObjectURL(url)
-  }, [selectedNodeId, depth])
+  }, [selectedNodeId, depth, selectedTopos])
 
   return (
     <div

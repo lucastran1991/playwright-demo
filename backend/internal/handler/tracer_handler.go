@@ -109,9 +109,18 @@ func (h *TracerHandler) TraceFull(c *gin.Context) {
 }
 
 // TraceExportCSV handles GET /api/trace/full/:nodeId/export — CSV export of DAG tree.
+// Only upstream/downstream rows within level range and matching topologies are included.
 func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 	nodeID := c.Param("nodeId")
 	levels := parseIntParam(c, "levels", 2, 10)
+
+	// Parse topology filter
+	allowedTopos := make(map[string]bool)
+	if topoParam := c.Query("topologies"); topoParam != "" {
+		for _, t := range strings.Split(topoParam, ",") {
+			allowedTopos[strings.TrimSpace(strings.ToLower(t))] = true
+		}
+	}
 
 	result, err := h.tracer.TraceFull(nodeID, levels)
 	if err != nil {
@@ -134,13 +143,6 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 			}
 		}
 	}
-	for _, groups := range [][]service.TraceLocalGroup{result.Local, result.Load} {
-		for _, g := range groups {
-			for _, n := range g.Nodes {
-				nameMap[n.NodeID] = n.Name
-			}
-		}
-	}
 
 	c.Header("Content-Type", "text/csv")
 	c.Header("Content-Disposition", fmt.Sprintf(`attachment; filename="trace-%s.csv"`, nodeID))
@@ -150,8 +152,7 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 
 	writeNodes := func(direction string, level int, topology string, nodes []repository.TracedNode) {
 		for _, n := range nodes {
-			parentID := ""
-			parentName := ""
+			parentID, parentName := "", ""
 			if n.ParentNodeID != nil {
 				parentID = *n.ParentNodeID
 				parentName = nameMap[parentID]
@@ -160,20 +161,24 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 		}
 	}
 
-	// Source row
-	w.Write([]string{src.NodeID, src.Name, "source", "0", src.Topology, src.NodeID, src.Name, src.NodeType, "", ""})
-
+	// Only upstream + downstream, filtered by level and topology
 	for _, g := range result.Upstream {
+		if g.Level < 1 || g.Level > levels {
+			continue
+		}
+		if !matchTopologyFilter(g.Topology, allowedTopos) {
+			continue
+		}
 		writeNodes("upstream", g.Level, g.Topology, g.Nodes)
 	}
-	for _, g := range result.Local {
-		writeNodes("local", 0, g.Topology, g.Nodes)
-	}
 	for _, g := range result.Downstream {
+		if g.Level < 1 || g.Level > levels {
+			continue
+		}
+		if !matchTopologyFilter(g.Topology, allowedTopos) {
+			continue
+		}
 		writeNodes("downstream", g.Level, g.Topology, g.Nodes)
-	}
-	for _, g := range result.Load {
-		writeNodes("load", 0, g.Topology, g.Nodes)
 	}
 
 	w.Flush()
