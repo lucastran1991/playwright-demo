@@ -14,17 +14,16 @@ import {
   type Node,
   type Edge,
 } from "@xyflow/react"
-import { Loader2, Minus, Plus, Layers, Zap, Droplets, Building2, Package } from "lucide-react"
+import { Loader2, Settings } from "lucide-react"
 import { apiFetch } from "@/lib/api-client"
-import { ThemeToggle } from "@/components/dashboard/theme-toggle"
 import { traceToDAGElements, layoutDAG, filterTraceByTopologies } from "./dag-helpers"
 import TracerNode from "./dag-node"
 import TracerEdge from "./dag-edge"
 import DAGSearch from "./dag-search"
 import DagDetailPopup from "./dag-detail-popup"
+import DagRightPanel from "./dag-right-panel"
 import type { TraceResponse, TracerNodeData } from "./dag-types"
 
-// Register custom node and edge types
 const nodeTypes = { tracerNode: TracerNode }
 const edgeTypes = { tracerEdge: TracerEdge }
 
@@ -37,11 +36,11 @@ function DependencyImpactDAGInner() {
   const [depth, setDepth] = useState(2)
   const [selectedTopos, setSelectedTopos] = useState<Set<string>>(new Set(["electrical", "cooling"]))
   const [popupData, setPopupData] = useState<TracerNodeData | null>(null)
+  const [panelOpen, setPanelOpen] = useState(false)
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
   const { fitView } = useReactFlow()
 
-  // Fetch combined trace (upstream + local + downstream + load)
   const traceQuery = useQuery({
     queryKey: ["trace-full", selectedNodeId, depth],
     queryFn: () =>
@@ -52,7 +51,6 @@ function DependencyImpactDAGInner() {
     staleTime: 60_000,
   })
 
-  // Sync graph when query settles
   useEffect(() => {
     if (!selectedNodeId) {
       setNodes([])
@@ -96,68 +94,18 @@ function DependencyImpactDAGInner() {
   const isLoading = !!selectedNodeId && traceQuery.isFetching
   const isEmpty = !selectedNodeId
 
-  const topoChips = [
-    { key: "electrical", label: "Elec", icon: <Zap className="h-3 w-3" />, color: "#F97316", bg: "rgba(249,115,22,0.15)" },
-    { key: "cooling", label: "Cool", icon: <Droplets className="h-3 w-3" />, color: "#06B6D4", bg: "rgba(6,182,212,0.15)" },
-    { key: "spatial", label: "Spatial", icon: <Building2 className="h-3 w-3" />, color: "#8B5CF6", bg: "rgba(139,92,246,0.15)" },
-    { key: "whitespace", label: "WS", icon: <Package className="h-3 w-3" />, color: "#10B981", bg: "rgba(16,185,129,0.15)" },
-  ]
-
   return (
     <div className="relative h-screen h-dvh overflow-hidden bg-card flex flex-col">
-      {/* Top toolbar: depth + search + theme toggle in one row */}
+      {/* Top toolbar: search + panel toggle */}
       <div className="relative z-10 flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 border-b border-border bg-card shrink-0">
-        {/* Depth control */}
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-card px-1.5 py-1 shrink-0">
-          <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-          <span className="text-xs font-medium text-muted-foreground hidden sm:inline">Depth</span>
-          <button
-            onClick={() => setDepth((d) => Math.max(1, d - 1))}
-            disabled={depth <= 1}
-            className="h-6 w-6 flex items-center justify-center rounded hover:bg-muted disabled:opacity-30 transition-colors"
-          >
-            <Minus className="h-3 w-3" />
-          </button>
-          <span className="text-sm font-bold w-4 text-center">{depth}</span>
-          <button
-            onClick={() => setDepth((d) => Math.min(6, d + 1))}
-            disabled={depth >= 6}
-            className="h-6 w-6 flex items-center justify-center rounded hover:bg-muted disabled:opacity-30 transition-colors"
-          >
-            <Plus className="h-3 w-3" />
-          </button>
-        </div>
-
-        {/* Search bar - takes remaining space */}
         <DAGSearch onSelect={handleSelect} onClear={handleClear} />
-
-        {/* Topology filter chips */}
-        <div className="flex items-center gap-1 shrink-0">
-          {topoChips.map((t) => {
-            const active = selectedTopos.has(t.key)
-            return (
-              <button
-                key={t.key}
-                onClick={() => toggleTopo(t.key)}
-                className="flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-medium border transition-all"
-                style={{
-                  borderColor: active ? t.color : "hsl(var(--border))",
-                  backgroundColor: active ? t.bg : "transparent",
-                  color: active ? t.color : "hsl(var(--muted-foreground))",
-                  opacity: active ? 1 : 0.5,
-                }}
-              >
-                {t.icon}
-                <span className="hidden sm:inline">{t.label}</span>
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Theme toggle */}
-        <div className="shrink-0">
-          <ThemeToggle />
-        </div>
+        <button
+          onClick={() => setPanelOpen((o) => !o)}
+          className="h-8 w-8 flex items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors shrink-0"
+          title="Settings"
+        >
+          <Settings className="h-4 w-4" />
+        </button>
       </div>
 
       {/* Loading overlay */}
@@ -206,15 +154,24 @@ function DependencyImpactDAGInner() {
             className="!bg-card !border-border !shadow-lg [&>button]:!bg-card [&>button]:!border-border [&>button]:!fill-foreground"
           />
         </ReactFlow>
+
+        {/* Right settings panel */}
+        <DagRightPanel
+          open={panelOpen}
+          onClose={() => setPanelOpen(false)}
+          depth={depth}
+          onDepthChange={setDepth}
+          selectedTopos={selectedTopos}
+          onTopoToggle={toggleTopo}
+          selectedNodeId={selectedNodeId}
+        />
       </div>
 
-      {/* Node detail popup */}
       {popupData && <DagDetailPopup data={popupData} onClose={() => setPopupData(null)} />}
     </div>
   )
 }
 
-// Wrap with ReactFlowProvider for context
 export default function DependencyImpactDAG() {
   return (
     <ReactFlowProvider>
