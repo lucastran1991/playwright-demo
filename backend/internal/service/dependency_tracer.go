@@ -195,6 +195,24 @@ func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, inclu
 			filtered := filterByTypes(nodes, allowedTypes)
 			if len(filtered) > 0 {
 				resp.Local = append(resp.Local, TraceLocalGroup{Topology: topo, Nodes: filtered})
+				continue
+			}
+
+			// Bridge fallback for local: find whitespace/spatial children with target topology edges
+			bridgeNodes, err := t.repo.FindBridgeNodesViaSpatial(node.ID, slug, 5)
+			if err != nil || len(bridgeNodes) == 0 {
+				continue
+			}
+			for _, bridge := range bridgeNodes {
+				localNodes, err := t.repo.FindLocalNodes(bridge.ID, slug)
+				if err != nil {
+					continue
+				}
+				bridgeFiltered := filterByTypes(localNodes, allowedTypes)
+				if len(bridgeFiltered) > 0 {
+					resp.Local = append(resp.Local, TraceLocalGroup{Topology: topo, Nodes: bridgeFiltered})
+					break
+				}
 			}
 		}
 	}
