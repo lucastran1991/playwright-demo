@@ -125,9 +125,11 @@ func (r *TracerRepository) FindSpatialAncestorsOfType(nodeDBIDs []uint, nodeType
 	return nodes, err
 }
 
-// FindBridgeNodesViaSpatial walks down from sourceDBID in spatial-topology
-// and returns nodes that also have edges in the target topology slug.
+// FindBridgeNodesViaSpatial walks down from sourceDBID via spatial and whitespace
+// edges, and returns nodes that also have edges in the target topology slug.
 // Used to find electrical/cooling nodes reachable from spatial/whitespace sources.
+// Walks both spatial-topology and whitespace edges to bridge across topologies
+// (e.g. Capacity Cell → Rack → RackPDU in electrical).
 func (r *TracerRepository) FindBridgeNodesViaSpatial(sourceDBID uint, targetSlug string, maxDepth int) ([]TracedNode, error) {
 	var nodes []TracedNode
 	err := r.db.Raw(`
@@ -136,7 +138,7 @@ func (r *TracerRepository) FindBridgeNodesViaSpatial(sourceDBID uint, targetSlug
 			FROM blueprint_edges be
 			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
-			WHERE be.from_node_id = ? AND bt.slug = 'spatial-topology'
+			WHERE be.from_node_id = ? AND bt.slug IN ('spatial-topology', 'whitespace')
 
 			UNION ALL
 
@@ -145,7 +147,7 @@ func (r *TracerRepository) FindBridgeNodesViaSpatial(sourceDBID uint, targetSlug
 			JOIN blueprint_edges be ON be.from_node_id = sd.id
 			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
-			WHERE bt.slug = 'spatial-topology' AND sd.level < ?
+			WHERE bt.slug IN ('spatial-topology', 'whitespace') AND sd.level < ?
 		)
 		SELECT DISTINCT ON (sd.id) sd.id, sd.node_id, sd.name, sd.node_type, sd.level
 		FROM spatial_desc sd

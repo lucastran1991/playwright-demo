@@ -143,7 +143,7 @@ func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, inclu
 
 		// Spatial-bridge path: find bridge nodes via spatial hierarchy.
 		// Try all bridge nodes, pick the one with the most upstream results.
-		bridgeNodes, err := t.repo.FindBridgeNodesViaSpatial(node.ID, slug, 3)
+		bridgeNodes, err := t.repo.FindBridgeNodesViaSpatial(node.ID, slug, 5)
 		if err != nil || len(bridgeNodes) == 0 {
 			continue
 		}
