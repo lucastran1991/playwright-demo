@@ -29,7 +29,8 @@ export default function DagRightPanel({ open, onClose, depth, onDepthChange, sel
     setExporting(true)
     try {
       const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8889"
-      const res = await fetch(`${apiBase}/api/trace/export/xlsx?levels=${depth}`)
+      const topoParam = Array.from(selectedTopos).join(",")
+      const res = await fetch(`${apiBase}/api/trace/export/xlsx?levels=${depth}&topologies=${topoParam}`)
       if (!res.ok) throw new Error("Export failed")
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
@@ -43,7 +44,7 @@ export default function DagRightPanel({ open, onClose, depth, onDepthChange, sel
     } finally {
       setExporting(false)
     }
-  }, [depth])
+  }, [depth, selectedTopos])
 
   // Download single-node CSV export
   const handleExportCsv = useCallback(async () => {

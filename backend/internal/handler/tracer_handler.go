@@ -179,12 +179,42 @@ func (h *TracerHandler) TraceExportCSV(c *gin.Context) {
 	w.Flush()
 }
 
+// matchTopologyFilter checks if a topology name matches any of the allowed topology keys.
+// Keys: "electrical", "cooling", "spatial", "whitespace". Empty filter = allow all.
+func matchTopologyFilter(topology string, allowedTopos map[string]bool) bool {
+	if len(allowedTopos) == 0 {
+		return true
+	}
+	lower := strings.ToLower(topology)
+	if strings.Contains(lower, "electrical") {
+		return allowedTopos["electrical"]
+	}
+	if strings.Contains(lower, "cooling") {
+		return allowedTopos["cooling"]
+	}
+	if strings.Contains(lower, "spatial") {
+		return allowedTopos["spatial"]
+	}
+	if strings.Contains(lower, "whitespace") {
+		return allowedTopos["whitespace"]
+	}
+	return false
+}
+
 // TraceExportXLSX handles GET /api/trace/export/xlsx — bulk XLSX with one sheet per node type.
-// Each sheet contains ALL instances of that type, traced at the given depth.
+// Query params: levels (depth), topologies (comma-separated: electrical,cooling,spatial,whitespace).
+// Only upstream/downstream rows within level range and matching topologies are included.
 func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 	levels := parseIntParam(c, "levels", 2, 10)
 
-	// Get all capacity node types
+	// Parse topology filter
+	allowedTopos := make(map[string]bool)
+	if topoParam := c.Query("topologies"); topoParam != "" {
+		for _, t := range strings.Split(topoParam, ",") {
+			allowedTopos[strings.TrimSpace(strings.ToLower(t))] = true
+		}
+	}
+
 	capTypes, err := h.repo.ListCapacityNodeTypes()
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to list node types")
@@ -193,7 +223,6 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 
 	f := excelize.NewFile()
 	defer f.Close()
-	// Remove default "Sheet1"
 	f.DeleteSheet("Sheet1")
 
 	headers := []string{"src_node_id", "src_node_name", "direction", "level", "topology",
@@ -204,7 +233,6 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 			continue
 		}
 
-		// Fetch all instances of this node type
 		var nodes []struct {
 			NodeID string `json:"node_id"`
 			Name   string `json:"name"`
@@ -215,14 +243,12 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 			continue
 		}
 
-		// Sheet name: max 31 chars
 		sheetName := ct.NodeType
 		if len(sheetName) > 31 {
 			sheetName = sheetName[:31]
 		}
 		f.NewSheet(sheetName)
 
-		// Write headers
 		for col, h := range headers {
 			cell, _ := excelize.CoordinatesToCellName(col+1, 1)
 			f.SetCellValue(sheetName, cell, h)
@@ -236,17 +262,10 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 				continue
 			}
 
-			// Build name lookup
+			// Build name lookup from ALL traced nodes (needed for parent name resolution)
 			nameMap := make(map[string]string)
 			nameMap[traceResp.Source.NodeID] = traceResp.Source.Name
 			for _, groups := range [][]service.TraceLevelGroup{traceResp.Upstream, traceResp.Downstream} {
-				for _, g := range groups {
-					for _, n := range g.Nodes {
-						nameMap[n.NodeID] = n.Name
-					}
-				}
-			}
-			for _, groups := range [][]service.TraceLocalGroup{traceResp.Local, traceResp.Load} {
 				for _, g := range groups {
 					for _, n := range g.Nodes {
 						nameMap[n.NodeID] = n.Name
@@ -271,28 +290,27 @@ func (h *TracerHandler) TraceExportXLSX(c *gin.Context) {
 				row++
 			}
 
-			// Source row
-			srcNode := repository.TracedNode{NodeID: src.NodeID, Name: src.Name, NodeType: src.NodeType}
-			writeRow("source", 0, src.Topology, srcNode)
-
+			// Only upstream + downstream, filtered by level (1..depth) and topology
 			for _, g := range traceResp.Upstream {
+				if g.Level < 1 || g.Level > levels {
+					continue
+				}
+				if !matchTopologyFilter(g.Topology, allowedTopos) {
+					continue
+				}
 				for _, n := range g.Nodes {
 					writeRow("upstream", g.Level, g.Topology, n)
 				}
 			}
-			for _, g := range traceResp.Local {
-				for _, n := range g.Nodes {
-					writeRow("local", 0, g.Topology, n)
-				}
-			}
 			for _, g := range traceResp.Downstream {
+				if g.Level < 1 || g.Level > levels {
+					continue
+				}
+				if !matchTopologyFilter(g.Topology, allowedTopos) {
+					continue
+				}
 				for _, n := range g.Nodes {
 					writeRow("downstream", g.Level, g.Topology, n)
-				}
-			}
-			for _, g := range traceResp.Load {
-				for _, n := range g.Nodes {
-					writeRow("load", 0, g.Topology, n)
 				}
 			}
 		}
