@@ -50,8 +50,8 @@
 - **`internal/repository/user_repository.go`** - CRUD operations on users
   - Methods: `Create()`, `FindByID()`, `FindByEmail()`
 - **`internal/repository/tracer_repository.go`** - Dependency tracing with recursive CTEs
-  - Methods: `FindUpstreamNodes()`, `FindDownstreamNodes()`, `FindLocalNodes()`
-  - Queries: Capacity node types, dependency rules, impact rules
+  - Methods: `FindUpstreamNodes()`, `FindDownstreamNodes()`, `FindLocalNodes()`, `FindSpatialAncestorsOfType()`, `FindSpatialDescendantsOfType()`, `FindBridgeNodesViaSpatial()`, `HasEdgesInTopology()`
+  - Queries: Capacity node types, dependency rules, impact rules, spatial/topology graph traversal
 - Uses GORM ORM
 
 ### Service Layer (Business Logic)
@@ -64,15 +64,17 @@
   - Methods: `IngestAll()`
   - Transactions for idempotent upsert
 - **`internal/service/dependency_tracer.go`** - Traces node dependencies and impacts
-  - Methods: `TraceDependencies()`, `TraceImpacts()`
+  - Methods: `TraceDependencies()`, `TraceImpacts()`, `TraceFull()`
   - Groups results by topology and level
+  - Supports cross-topology resolution via spatial-bridge traversal for Whitespace/Rack nodes
 
 ### Handler Layer (HTTP)
 - **`internal/handler/auth_handler.go`** - HTTP request/response handling
   - Maps HTTP requests to service calls
   - Input validation, error responses
 - **`internal/handler/tracer_handler.go`** - Model ingestion + dependency tracing HTTP handlers
-  - Endpoints: model ingestion, capacity node listing, dependency/impact tracing
+  - Methods: `TraceDependencies()`, `TraceImpacts()`, `TraceFull()`
+  - Endpoints: model ingestion, capacity node listing, dependency/impact/full tracing
 
 ### Router & Middleware
 - **`internal/router/router.go`** - Route definitions, middleware setup
@@ -277,6 +279,7 @@ Blueprint data stored in `./blueprint/Node & Edge/` directory:
 - `GET /api/models/capacity-nodes` - List all capacity node types with constraints
 - `GET /api/trace/dependencies/:nodeId?levels=2&include_local=true` - Upstream dependencies of node
 - `GET /api/trace/impacts/:nodeId?levels=2&load_scope=` - Downstream impacts of node
+- `GET /api/trace/full/:nodeId?levels=2` - Combined dependencies + impacts in single response
 
 ### Ingestion Service
 **`internal/service/blueprint_ingestion_service.go`**
@@ -322,17 +325,28 @@ Model data stored in `./blueprint/` directory:
 
 ### Tracing Service
 **`internal/service/dependency_tracer.go`**
-- `TraceDependencies(nodeID, maxLevels, includeLocal)` - Resolves upstream dependencies from rules + CTE queries
-- `TraceImpacts(nodeID, maxLevels, loadScope)` - Resolves downstream impacts
+- `TraceDependencies(nodeID, maxLevels, includeLocal)` - Resolves upstream dependencies via spatial-bridge traversal
+  - Direct path: if node has edges in target topology, walk upstream directly
+  - Spatial-bridge path: if node lacks edges in target topology, find intermediate nodes (e.g., RackPDU from Rack) via spatial hierarchy, then walk upstream
+  - Supports cross-topology dependencies (e.g., Rack → electrical via RackPDU bridge)
+- `TraceImpacts(nodeID, maxLevels, loadScope)` - Resolves downstream impacts with dual Load resolution strategies
+  - Strategy 1: walk downstream in infrastructure topologies to find load-typed nodes
+  - Strategy 2: find spatial ancestors/descendants of downstream nodes matching load types (catches cases Strategy 1 misses)
+  - Always runs both strategies and merges results
+- `TraceFull(nodeID, maxLevels)` - Combined endpoint returning upstream + local + downstream + load
 - Groups results by topology and hop level
 - Filters results to only nodes matching rule target types
 
 ### Tracing Repository
 **`internal/repository/tracer_repository.go`**
 - Recursive CTE queries against blueprint_edges topology
-- `FindUpstreamNodes()` - Parent walk (follows edge.from_node_id)
-- `FindDownstreamNodes()` - Child walk (follows edge.to_node_id)
+- `FindUpstreamNodes()` - Parent walk with `DISTINCT ON (id)` to eliminate duplicate node rows
+- `FindDownstreamNodes()` - Child walk with `DISTINCT ON (id)` to eliminate duplicates
 - `FindLocalNodes()` - Direct edge neighbors
+- `FindSpatialAncestorsOfType()` - Walks UP spatial hierarchy to find ancestor nodes of specific types
+- `FindSpatialDescendantsOfType()` - Walks DOWN spatial hierarchy to find descendant nodes of specific types
+- `FindBridgeNodesViaSpatial(sourceDBID, targetSlug)` - Finds nodes in target topology reachable via spatial hierarchy from source
+- `HasEdgesInTopology(nodeDBID, typeSlug)` - Quick check if node participates in target topology
 - Rule lookups: `GetDependencyRules()`, `GetImpactRules()`, `ListCapacityNodeTypes()`
 
 ## Data Flow Examples

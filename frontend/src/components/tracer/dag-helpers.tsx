@@ -21,20 +21,22 @@ export function getTopologyKey(topology: string): string {
   return "default"
 }
 
-// Edge styles: upstream = cyan, downstream = orange, local = gray dashed
+// Edge styles: upstream = cyan, downstream = orange, local = gray dashed, load = purple dashed
 const UPSTREAM_STYLE = { stroke: "#06B6D4", strokeWidth: 2.5 }
 const DOWNSTREAM_STYLE = { stroke: "#F97316", strokeWidth: 2.5 }
 const LOCAL_STYLE = { stroke: "#6B7280", strokeWidth: 1.5, strokeDasharray: "6 3" }
+const LOAD_STYLE = { stroke: "#8B5CF6", strokeWidth: 1.5, strokeDasharray: "4 4" }
 
 const UPSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: "#06B6D4", width: 16, height: 16 }
 const DOWNSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: "#F97316", width: 16, height: 16 }
 const LOCAL_MARKER = { type: MarkerType.ArrowClosed, color: "#6B7280", width: 12, height: 12 }
+const LOAD_MARKER = { type: MarkerType.ArrowClosed, color: "#8B5CF6", width: 12, height: 12 }
 
 const NODE_WIDTH = 180
 const NODE_HEIGHT = 72
 
-function makeNode(id: string, name: string, nodeType: string, topology: string, ring: number, isSource: boolean, isLocal: boolean, level?: number, parentId?: string): Node {
-  const data: TracerNodeData = { nodeId: id, name, nodeType, topology, isSource, isLocal, ring, level: level ?? 0 }
+function makeNode(id: string, name: string, nodeType: string, topology: string, ring: number, isSource: boolean, isLocal: boolean, level?: number, parentId?: string, direction: "upstream" | "downstream" | "local" | "load" | "source" = "upstream"): Node {
+  const data: TracerNodeData = { nodeId: id, name, nodeType, topology, isSource, isLocal, ring, level: level ?? 0, direction }
   const node: Node = { id, type: "tracerNode", position: { x: 0, y: 0 }, data }
   if (parentId) {
     node.parentId = parentId
@@ -44,12 +46,11 @@ function makeNode(id: string, name: string, nodeType: string, topology: string, 
 }
 
 export function traceToDAGElements(
-  depResponse: TraceResponse | null,
-  impactResponse: TraceResponse | null
+  response: TraceResponse | null
 ): { nodes: Node[]; edges: Edge[] } {
-  if (!depResponse && !impactResponse) return { nodes: [], edges: [] }
+  if (!response) return { nodes: [], edges: [] }
 
-  const source = depResponse?.source ?? impactResponse?.source
+  const source = response.source
   if (!source) return { nodes: [], edges: [] }
 
   const nodesMap = new Map<string, Node>()
@@ -58,18 +59,16 @@ export function traceToDAGElements(
 
   // Source node (ring 0)
   const sourceTopo = source.topology || "Electrical System"
-  nodesMap.set(source.node_id, makeNode(source.node_id, source.name, source.node_type, sourceTopo, 0, true, false))
+  nodesMap.set(source.node_id, makeNode(source.node_id, source.name, source.node_type, sourceTopo, 0, true, false, 0, undefined, "source"))
 
   // Upstream deps -- chain edges using parent_node_id (L2→L1→source)
-  // Sort by level ascending so parent nodes (L1) exist in nodesMap before children (L2) reference them
-  if (depResponse?.upstream) {
-    const sortedUpstream = [...depResponse.upstream].sort((a, b) => a.level - b.level)
+  if (response.upstream) {
+    const sortedUpstream = [...response.upstream].sort((a, b) => a.level - b.level)
     for (const group of sortedUpstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level))
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level, undefined, "upstream"))
         }
-        // Edge: this node → its child (parent_node_id). Falls back to source if parent not in graph.
         const rawTarget = n.parent_node_id ?? source.node_id
         const target = nodesMap.has(rawTarget) || rawTarget === source.node_id ? rawTarget : source.node_id
         const edgeId = `dep-${n.node_id}-${target}`
@@ -80,12 +79,12 @@ export function traceToDAGElements(
     }
   }
 
-  // Local deps -> will be grouped around source
-  if (depResponse?.local) {
-    for (const group of depResponse.local) {
+  // Local deps -> grouped around source
+  if (response.local) {
+    for (const group of response.local) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          const localNode = makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true, 0)
+          const localNode = makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true, 0, undefined, "local")
           nodesMap.set(n.node_id, localNode)
           localNodes.push(localNode)
         }
@@ -95,15 +94,13 @@ export function traceToDAGElements(
   }
 
   // Downstream impacts -- chain edges using parent_node_id (source→L1→L2)
-  // Sort by level ascending so parent nodes (L1) exist in nodesMap before children (L2) reference them
-  if (impactResponse?.downstream) {
-    const sortedDownstream = [...impactResponse.downstream].sort((a, b) => a.level - b.level)
+  if (response.downstream) {
+    const sortedDownstream = [...response.downstream].sort((a, b) => a.level - b.level)
     for (const group of sortedDownstream) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level))
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, group.level, false, false, group.level, undefined, "downstream"))
         }
-        // Edge: parent → this node. Falls back to source if parent not in graph.
         const rawFrom = n.parent_node_id ?? source.node_id
         const from = nodesMap.has(rawFrom) || rawFrom === source.node_id ? rawFrom : source.node_id
         const edgeId = `impact-${from}-${n.node_id}`
@@ -114,14 +111,14 @@ export function traceToDAGElements(
     }
   }
 
-  // Load impacts
-  if (impactResponse?.load) {
-    for (const group of impactResponse.load) {
+  // Load impacts — distinct purple dashed edges, skip nodes already in downstream
+  if (response.load) {
+    for (const group of response.load) {
       for (const n of group.nodes) {
         if (!nodesMap.has(n.node_id)) {
-          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, true, 0))
+          nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, false, 0, undefined, "load"))
         }
-        edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOCAL_STYLE, markerEnd: LOCAL_MARKER })
+        edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOAD_STYLE, markerEnd: LOAD_MARKER })
       }
     }
   }

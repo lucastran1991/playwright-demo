@@ -137,3 +137,13 @@ Cooling Plant,Capacity Cell,Load,
 Cooling Plant,Room Bundle,Load,
 Cooling Plant,Room PDU Bundle,Load,
 Cooling Plant,UPS Bundle,Load,
+Rack,Rack PDU,Downstream,1
+Rack,Server,Downstream,1
+Rack,Rack PDU Outlet,Downstream,2
+Rack,Rack,Load,
+Rack,Row,Load,
+Rack,Zone,Load,
+Rack,Capacity Cell,Load,
+Rack,Room Bundle,Load,
+Rack,Room PDU Bundle,Load,
+Rack,UPS Bundle,Load,

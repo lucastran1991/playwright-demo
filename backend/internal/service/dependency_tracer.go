@@ -124,34 +124,51 @@ func (t *DependencyTracer) TraceDependencies(nodeID string, maxLevels int, inclu
 		if slug == "" {
 			continue
 		}
+
+		// Try direct path first
+		var filtered []repository.TracedNode
 		nodes, err := t.repo.FindUpstreamNodes(node.ID, slug, maxLevels)
-		if err != nil {
-			log.Printf("WARNING: upstream trace failed for %s in %s: %v", nodeID, topo, err)
+		if err == nil {
+			filtered = filterByTypes(nodes, allowedTypes)
+		}
+
+		// If direct path found results, use them
+		if len(filtered) > 0 {
+			resp.Upstream = append(resp.Upstream, groupByLevel(filtered, topo)...)
 			continue
 		}
-		filtered := filterByTypes(nodes, allowedTypes)
 
-		// If no matching upstream found, also trace from this node's direct children
-		// in the same topology. This handles cases like Rack→RACKPDU in electrical
-		// where RPP feeds RACKPDU (not Rack directly).
-		if len(filtered) == 0 {
-			children, err := t.repo.FindDownstreamNodes(node.ID, slug, 1)
-			if err == nil {
-				for _, child := range children {
-					childUpstream, err := t.repo.FindUpstreamNodes(child.ID, slug, maxLevels)
-					if err != nil {
-						continue
-					}
-					// Shift levels +1 since we went through a child first
-					for i := range childUpstream {
-						childUpstream[i].Level++
-					}
-					filtered = append(filtered, filterByTypes(childUpstream, allowedTypes)...)
-				}
-			}
+		// Spatial-bridge path: find bridge nodes via spatial hierarchy.
+		// Try all bridge nodes, pick the one with the most upstream results.
+		bridgeNodes, err := t.repo.FindBridgeNodesViaSpatial(node.ID, slug, 3)
+		if err != nil || len(bridgeNodes) == 0 {
+			continue
 		}
 
-		resp.Upstream = append(resp.Upstream, groupByLevel(filtered, topo)...)
+		var bestFiltered []repository.TracedNode
+		for _, bridge := range bridgeNodes {
+			upNodes, err := t.repo.FindUpstreamNodes(bridge.ID, slug, maxLevels)
+			if err != nil {
+				continue
+			}
+			if allowedTypes[bridge.NodeType] {
+				upNodes = append([]repository.TracedNode{
+					{ID: bridge.ID, NodeID: bridge.NodeID, Name: bridge.Name,
+						NodeType: bridge.NodeType, Level: bridge.Level,
+						ParentNodeID: &node.NodeID},
+				}, upNodes...)
+			}
+			for i := range upNodes {
+				upNodes[i].Level += bridge.Level
+			}
+			candidate := filterByTypes(upNodes, allowedTypes)
+			if len(candidate) > len(bestFiltered) {
+				bestFiltered = candidate
+			}
+		}
+		if len(bestFiltered) > 0 {
+			resp.Upstream = append(resp.Upstream, groupByLevel(bestFiltered, topo)...)
+		}
 	}
 
 	if includeLocal {
@@ -228,23 +245,26 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 		resp.Downstream = append(resp.Downstream, groupByLevel(filtered, topo)...)
 	}
 
-	// Load nodes (Rack, Row, etc.) live as children in infra topologies
-	// (e.g. AIRZONE → RACK in Cooling), not in their own topology (Spatial).
-	// Two strategies:
-	// 1. Walk downstream in infra topologies with extended depth (works for Cooling)
-	// 2. Find spatial ancestors of downstream nodes (works for Electrical)
+	// Load nodes (Rack, Row, etc.) live in spatial/whitespace topologies but are
+	// connected via infra topologies. Three strategies run unconditionally and merge:
+	// 1. Walk downstream in infra topologies with extended depth (finds Racks in Cooling)
+	// 2. Find spatial ancestors of downstream nodes (Rack is parent of RACKPDU)
+	// 3. Find spatial descendants of downstream nodes (Zone contains Rack as child)
 	if len(allLoadTypes) > 0 {
 		loadMaxLevels := 10
 		loadGroupMap := make(map[string][]repository.TracedNode)
 		seen := make(map[string]bool)
 
-		// Strategy 1: walk downstream in infra topologies (finds Racks in Cooling edges)
+		// Collect all downstream DB IDs for spatial lookups
+		var allDownstreamDBIDs []uint
 		for slug := range infraSlugSet {
 			nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, loadMaxLevels)
 			if err != nil {
 				continue
 			}
 			for _, n := range nodes {
+				allDownstreamDBIDs = append(allDownstreamDBIDs, n.ID)
+				// Strategy 1: check if this downstream node is a load type
 				if allLoadTypes[n.NodeType] && !seen[n.NodeID] {
 					seen[n.NodeID] = true
 					loadTopo := t.lookupTopology(n.NodeType)
@@ -253,33 +273,32 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 			}
 		}
 
-		// Strategy 2: find spatial ancestors of deep downstream nodes
-		// (Rack is spatial parent of RACKPDU, which is deep in electrical chain).
-		// Walk deeper than resp.Downstream (which uses maxLevels) to reach leaf nodes.
-		if len(loadGroupMap) == 0 {
-			loadTypeSlice := make([]string, 0, len(allLoadTypes))
-			for nt := range allLoadTypes {
-				loadTypeSlice = append(loadTypeSlice, nt)
-			}
-			var allDownstreamDBIDs []uint
-			for slug := range infraSlugSet {
-				deepNodes, err := t.repo.FindDownstreamNodes(node.ID, slug, loadMaxLevels)
-				if err != nil {
-					continue
+		loadTypeSlice := make([]string, 0, len(allLoadTypes))
+		for nt := range allLoadTypes {
+			loadTypeSlice = append(loadTypeSlice, nt)
+		}
+
+		if len(allDownstreamDBIDs) > 0 && len(loadTypeSlice) > 0 {
+			// Strategy 2: spatial ancestors (Rack is parent of RackPDU in spatial)
+			spatialLoads, err := t.repo.FindSpatialAncestorsOfType(allDownstreamDBIDs, loadTypeSlice)
+			if err == nil {
+				for _, n := range spatialLoads {
+					if !seen[n.NodeID] {
+						seen[n.NodeID] = true
+						loadTopo := t.lookupTopology(n.NodeType)
+						loadGroupMap[loadTopo] = append(loadGroupMap[loadTopo], n)
+					}
 				}
-				for _, n := range deepNodes {
-					allDownstreamDBIDs = append(allDownstreamDBIDs, n.ID)
-				}
 			}
-			if len(allDownstreamDBIDs) > 0 {
-				spatialLoads, err := t.repo.FindSpatialAncestorsOfType(allDownstreamDBIDs, loadTypeSlice)
-				if err == nil {
-					for _, n := range spatialLoads {
-						if !seen[n.NodeID] {
-							seen[n.NodeID] = true
-							loadTopo := t.lookupTopology(n.NodeType)
-							loadGroupMap[loadTopo] = append(loadGroupMap[loadTopo], n)
-						}
+
+			// Strategy 3: spatial descendants (Zone contains Rack as child)
+			spatialDescs, err := t.repo.FindSpatialDescendantsOfType(allDownstreamDBIDs, loadTypeSlice)
+			if err == nil {
+				for _, n := range spatialDescs {
+					if !seen[n.NodeID] {
+						seen[n.NodeID] = true
+						loadTopo := t.lookupTopology(n.NodeType)
+						loadGroupMap[loadTopo] = append(loadGroupMap[loadTopo], n)
 					}
 				}
 			}
@@ -288,6 +307,31 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 		for topo, nodes := range loadGroupMap {
 			resp.Load = append(resp.Load, TraceLocalGroup{Topology: topo, Nodes: nodes})
 		}
+	}
+
+	return resp, nil
+}
+
+// TraceFull returns combined dependency + impact trace in a single response.
+func (t *DependencyTracer) TraceFull(nodeID string, maxLevels int) (*TraceResponse, error) {
+	depResp, depErr := t.TraceDependencies(nodeID, maxLevels, true)
+	impResp, impErr := t.TraceImpacts(nodeID, maxLevels)
+
+	if depErr != nil && impErr != nil {
+		return nil, depErr
+	}
+
+	resp := depResp
+	if resp == nil {
+		resp = impResp
+	}
+	if resp == nil {
+		return nil, fmt.Errorf("node not found: %s", nodeID)
+	}
+
+	if impResp != nil {
+		resp.Downstream = impResp.Downstream
+		resp.Load = impResp.Load
 	}
 
 	return resp, nil

@@ -40,58 +40,37 @@ function DependencyImpactDAGInner() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
   const { fitView } = useReactFlow()
 
-  // Fetch dependency trace (upstream + local)
-  const depQuery = useQuery({
-    queryKey: ["trace-deps", selectedNodeId, depth],
+  // Fetch combined trace (upstream + local + downstream + load)
+  const traceQuery = useQuery({
+    queryKey: ["trace-full", selectedNodeId, depth],
     queryFn: () =>
       apiFetch<ApiWrapper<TraceResponse>>(
-        `/api/trace/dependencies/${selectedNodeId}?levels=${depth}&include_local=true`
+        `/api/trace/full/${selectedNodeId}?levels=${depth}`
       ).then((res) => res.data),
     enabled: !!selectedNodeId,
     staleTime: 60_000,
   })
 
-  // Fetch impact trace (downstream + load)
-  const impactQuery = useQuery({
-    queryKey: ["trace-impact", selectedNodeId, depth],
-    queryFn: () =>
-      apiFetch<ApiWrapper<TraceResponse>>(
-        `/api/trace/impacts/${selectedNodeId}?levels=${depth}`
-      ).then((res) => res.data),
-    enabled: !!selectedNodeId,
-    staleTime: 60_000,
-  })
-
-  // Sync graph when both queries settle
+  // Sync graph when query settles
   useEffect(() => {
     if (!selectedNodeId) {
       setNodes([])
       setEdges([])
       return
     }
-    // Wait until at least one has data (other may 404 gracefully)
-    if (depQuery.isLoading && impactQuery.isLoading) return
+    if (traceQuery.isLoading) return
 
-    const dep = depQuery.data ?? null
-    const impact = impactQuery.data ?? null
-    const { nodes: rawNodes, edges: rawEdges } = traceToDAGElements(dep, impact)
+    const trace = traceQuery.data ?? null
+    const { nodes: rawNodes, edges: rawEdges } = traceToDAGElements(trace)
     const { nodes: laidNodes, edges: laidEdges } = layoutDAG(rawNodes, rawEdges)
-    // Inject click handler into each node's data
     const nodesWithClick = laidNodes.map((n) => ({
       ...n,
       data: { ...n.data, onNodeClick: (d: TracerNodeData) => setPopupData(d) },
     }))
     setNodes(nodesWithClick)
     setEdges(laidEdges)
-    // Center view after ReactFlow measures new nodes (needs slight delay)
     setTimeout(() => fitView({ padding: 0.2, duration: 400 }), 50)
-  }, [
-    selectedNodeId,
-    depQuery.data,
-    impactQuery.data,
-    depQuery.isLoading,
-    impactQuery.isLoading,
-  ])
+  }, [selectedNodeId, traceQuery.data, traceQuery.isLoading])
 
   const handleSelect = useCallback((nodeId: string) => {
     setSelectedNodeId(nodeId)
@@ -103,7 +82,7 @@ function DependencyImpactDAGInner() {
     setEdges([])
   }, [])
 
-  const isLoading = !!selectedNodeId && (depQuery.isFetching || impactQuery.isFetching)
+  const isLoading = !!selectedNodeId && traceQuery.isFetching
   const isEmpty = !selectedNodeId
 
   return (

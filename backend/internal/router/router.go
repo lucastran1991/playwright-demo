@@ -56,6 +56,7 @@ func Setup(authHandler *handler.AuthHandler, blueprintHandler *handler.Blueprint
 	{
 		trace.GET("/dependencies/:nodeId", tracerHandler.TraceDependencies)
 		trace.GET("/impacts/:nodeId", tracerHandler.TraceImpacts)
+		trace.GET("/full/:nodeId", tracerHandler.TraceFull)
 	}
 
 	// Protected routes

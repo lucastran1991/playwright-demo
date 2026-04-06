@@ -48,10 +48,9 @@ func (r *TracerRepository) FindUpstreamNodes(sourceDBID uint, typeSlug string, m
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE bt.slug = ? AND u.level < ?
 		)
-		SELECT id, node_id, name, node_type, MIN(level) as level, parent_node_id
+		SELECT DISTINCT ON (id) id, node_id, name, node_type, level, parent_node_id
 		FROM upstream
-		GROUP BY id, node_id, name, node_type, parent_node_id
-		ORDER BY level, node_type, node_id
+		ORDER BY id, level, parent_node_id
 	`, sourceDBID, typeSlug, typeSlug, maxLevel).Scan(&nodes).Error
 	return nodes, err
 }
@@ -79,10 +78,9 @@ func (r *TracerRepository) FindDownstreamNodes(sourceDBID uint, typeSlug string,
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE bt.slug = ? AND d.level < ?
 		)
-		SELECT id, node_id, name, node_type, MIN(level) as level, parent_node_id
+		SELECT DISTINCT ON (id) id, node_id, name, node_type, level, parent_node_id
 		FROM downstream
-		GROUP BY id, node_id, name, node_type, parent_node_id
-		ORDER BY level, node_type, node_id
+		ORDER BY id, level, parent_node_id
 	`, sourceDBID, typeSlug, typeSlug, maxLevel).Scan(&nodes).Error
 	return nodes, err
 }
@@ -114,10 +112,88 @@ func (r *TracerRepository) FindSpatialAncestorsOfType(nodeDBIDs []uint, nodeType
 			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
 			WHERE bt.slug = 'spatial-topology' AND a.level < 5
 		)
-		SELECT DISTINCT ON (id) id, node_id, name, node_type, MIN(level) as level
+		SELECT DISTINCT ON (id) id, node_id, name, node_type, level
 		FROM ancestors
 		WHERE node_type IN ?
-		GROUP BY id, node_id, name, node_type
+		ORDER BY id, level
+	`, nodeDBIDs, nodeTypes).Scan(&nodes).Error
+	return nodes, err
+}
+
+// HasEdgesInTopology returns true if the node has at least one edge in the given topology.
+func (r *TracerRepository) HasEdgesInTopology(nodeDBID uint, typeSlug string) bool {
+	var count int64
+	r.db.Raw(`
+		SELECT COUNT(*) FROM blueprint_edges be
+		JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+		WHERE bt.slug = ? AND (be.from_node_id = ? OR be.to_node_id = ?)
+	`, typeSlug, nodeDBID, nodeDBID).Scan(&count)
+	return count > 0
+}
+
+// FindBridgeNodesViaSpatial walks down from sourceDBID in spatial-topology
+// and returns nodes that also have edges in the target topology slug.
+// Used to find electrical/cooling nodes reachable from spatial/whitespace sources.
+func (r *TracerRepository) FindBridgeNodesViaSpatial(sourceDBID uint, targetSlug string, maxDepth int) ([]TracedNode, error) {
+	var nodes []TracedNode
+	err := r.db.Raw(`
+		WITH RECURSIVE spatial_desc AS (
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+			FROM blueprint_edges be
+			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+			WHERE be.from_node_id = ? AND bt.slug = 'spatial-topology'
+
+			UNION ALL
+
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, sd.level + 1
+			FROM spatial_desc sd
+			JOIN blueprint_edges be ON be.from_node_id = sd.id
+			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+			WHERE bt.slug = 'spatial-topology' AND sd.level < ?
+		)
+		SELECT DISTINCT ON (sd.id) sd.id, sd.node_id, sd.name, sd.node_type, sd.level
+		FROM spatial_desc sd
+		WHERE EXISTS (
+			SELECT 1 FROM blueprint_edges be2
+			JOIN blueprint_types bt2 ON bt2.id = be2.blueprint_type_id
+			WHERE bt2.slug = ?
+			  AND (be2.from_node_id = sd.id OR be2.to_node_id = sd.id)
+		)
+		ORDER BY sd.id, sd.level
+	`, sourceDBID, maxDepth, targetSlug).Scan(&nodes).Error
+	return nodes, err
+}
+
+// FindSpatialDescendantsOfType walks down spatial edges from the given node IDs
+// and returns distinct descendant nodes whose node_type is in the given set.
+func (r *TracerRepository) FindSpatialDescendantsOfType(nodeDBIDs []uint, nodeTypes []string) ([]TracedNode, error) {
+	if len(nodeDBIDs) == 0 || len(nodeTypes) == 0 {
+		return nil, nil
+	}
+	var nodes []TracedNode
+	err := r.db.Raw(`
+		WITH RECURSIVE descendants AS (
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, 1 as level
+			FROM blueprint_edges be
+			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+			WHERE be.from_node_id IN ?
+			  AND bt.slug = 'spatial-topology'
+
+			UNION ALL
+
+			SELECT bn.id, bn.node_id, bn.name, bn.node_type, d.level + 1
+			FROM descendants d
+			JOIN blueprint_edges be ON be.from_node_id = d.id
+			JOIN blueprint_nodes bn ON bn.id = be.to_node_id
+			JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
+			WHERE bt.slug = 'spatial-topology' AND d.level < 5
+		)
+		SELECT DISTINCT ON (id) id, node_id, name, node_type, level
+		FROM descendants
+		WHERE node_type IN ?
 		ORDER BY id, level
 	`, nodeDBIDs, nodeTypes).Scan(&nodes).Error
 	return nodes, err

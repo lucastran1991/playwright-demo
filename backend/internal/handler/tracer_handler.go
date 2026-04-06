@@ -86,6 +86,23 @@ func (h *TracerHandler) TraceImpacts(c *gin.Context) {
 	response.Success(c, http.StatusOK, result)
 }
 
+// TraceFull handles GET /api/trace/full/:nodeId — combined dependency + impact.
+func (h *TracerHandler) TraceFull(c *gin.Context) {
+	nodeID := c.Param("nodeId")
+	levels := parseIntParam(c, "levels", 2, 10)
+
+	result, err := h.tracer.TraceFull(nodeID, levels)
+	if err != nil {
+		if strings.Contains(err.Error(), "node not found") {
+			response.Error(c, http.StatusNotFound, err.Error())
+			return
+		}
+		response.Error(c, http.StatusInternalServerError, "Failed to trace node")
+		return
+	}
+	response.Success(c, http.StatusOK, result)
+}
+
 func parseIntParam(c *gin.Context, key string, defaultVal, maxVal int) int {
 	if v, err := strconv.Atoi(c.Query(key)); err == nil && v > 0 {
 		if v > maxVal {
