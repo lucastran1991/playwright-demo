@@ -120,17 +120,6 @@ func (r *TracerRepository) FindSpatialAncestorsOfType(nodeDBIDs []uint, nodeType
 	return nodes, err
 }
 
-// HasEdgesInTopology returns true if the node has at least one edge in the given topology.
-func (r *TracerRepository) HasEdgesInTopology(nodeDBID uint, typeSlug string) bool {
-	var count int64
-	r.db.Raw(`
-		SELECT COUNT(*) FROM blueprint_edges be
-		JOIN blueprint_types bt ON bt.id = be.blueprint_type_id
-		WHERE bt.slug = ? AND (be.from_node_id = ? OR be.to_node_id = ?)
-	`, typeSlug, nodeDBID, nodeDBID).Scan(&count)
-	return count > 0
-}
-
 // FindBridgeNodesViaSpatial walks down from sourceDBID in spatial-topology
 // and returns nodes that also have edges in the target topology slug.
 // Used to find electrical/cooling nodes reachable from spatial/whitespace sources.

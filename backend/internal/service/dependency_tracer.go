@@ -255,7 +255,9 @@ func (t *DependencyTracer) TraceImpacts(nodeID string, maxLevels int) (*TraceRes
 		loadGroupMap := make(map[string][]repository.TracedNode)
 		seen := make(map[string]bool)
 
-		// Collect all downstream DB IDs for spatial lookups
+		// Collect all downstream DB IDs for spatial lookups.
+		// Uses loadMaxLevels (10) instead of user maxLevels to reach deeper leaf nodes
+		// like RackPDU that connect to spatial Load nodes (Rack, Row, Zone).
 		var allDownstreamDBIDs []uint
 		for slug := range infraSlugSet {
 			nodes, err := t.repo.FindDownstreamNodes(node.ID, slug, loadMaxLevels)
@@ -319,6 +321,12 @@ func (t *DependencyTracer) TraceFull(nodeID string, maxLevels int) (*TraceRespon
 
 	if depErr != nil && impErr != nil {
 		return nil, depErr
+	}
+	if depErr != nil {
+		log.Printf("WARNING: TraceFull partial failure (deps) for %s: %v", nodeID, depErr)
+	}
+	if impErr != nil {
+		log.Printf("WARNING: TraceFull partial failure (impacts) for %s: %v", nodeID, impErr)
 	}
 
 	resp := depResp
