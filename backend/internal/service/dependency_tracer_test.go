@@ -1,6 +1,7 @@
 package service
 
 import (
+	"os"
 	"strings"
 	"testing"
 
@@ -8,17 +9,23 @@ import (
 	"github.com/user/app/internal/testutil"
 )
 
-// setupTracer creates a DependencyTracer backed by a real test DB.
-func setupTracer(t *testing.T) (*DependencyTracer, func()) {
-	t.Helper()
-	db, cleanup := testutil.SetupTestDB(t)
-	if err := testutil.TruncateAll(db); err != nil {
-		t.Fatalf("truncate failed: %v", err)
+// Package-level tracer seeded once in TestMain — all tests are read-only.
+var testTracer *DependencyTracer
+
+func TestMain(m *testing.M) {
+	// Setup test DB if available; non-DB tests (helpers, CSV parsers) still run either way.
+	db, cleanup := testutil.SetupTestDBForMain()
+	if db != nil {
+		testutil.TruncateAndSeedForMain(db)
+		repo := repository.NewTracerRepository(db)
+		testTracer = NewDependencyTracer(repo)
 	}
-	testutil.SeedTraceFixtures(t, db)
-	repo := repository.NewTracerRepository(db)
-	tracer := NewDependencyTracer(repo)
-	return tracer, cleanup
+
+	code := m.Run()
+	if db != nil {
+		cleanup()
+	}
+	os.Exit(code)
 }
 
 // hasNodeInUpstream checks whether any upstream group contains the given nodeID.
@@ -45,7 +52,7 @@ func hasNodeInDownstream(resp *TraceResponse, nodeID string) bool {
 	return false
 }
 
-// getUpstreamLevel returns the level at which nodeID appears in upstream, or -1 if absent.
+// getUpstreamLevel returns the level at which nodeID appears in upstream, or -1.
 func getUpstreamLevel(resp *TraceResponse, nodeID string) int {
 	for _, g := range resp.Upstream {
 		for _, n := range g.Nodes {
@@ -57,89 +64,85 @@ func getUpstreamLevel(resp *TraceResponse, nodeID string) int {
 	return -1
 }
 
-// TestTraceFull_MergesUpstreamAndDownstream verifies RPP-01 has both upstream and downstream.
-func TestTraceFull_MergesUpstreamAndDownstream(t *testing.T) {
-	tracer, cleanup := setupTracer(t)
-	defer cleanup()
+func skipIfNoDB(t *testing.T) {
+	t.Helper()
+	if testTracer == nil {
+		t.Skip("PostgreSQL not available")
+	}
+}
 
-	resp, err := tracer.TraceFull("RPP-01", 5)
+// TestTraceFull_MergesUpstreamAndDownstream verifies RPP-01 has both.
+func TestTraceFull_MergesUpstreamAndDownstream(t *testing.T) {
+	skipIfNoDB(t)
+	resp, err := testTracer.TraceFull("RPP-01", 5)
 	if err != nil {
 		t.Fatalf("TraceFull RPP-01: %v", err)
 	}
 	if resp.Source.NodeID != "RPP-01" {
-		t.Errorf("source NodeID = %q, want RPP-01", resp.Source.NodeID)
+		t.Errorf("source: want RPP-01, got %q", resp.Source.NodeID)
 	}
 	if !hasNodeInUpstream(resp, "UPS-01") {
-		t.Error("expected UPS-01 in upstream, not found")
+		t.Error("expected UPS-01 in upstream")
 	}
 	if !hasNodeInDownstream(resp, "RACKPDU-01") {
-		t.Error("expected RACKPDU-01 in downstream, not found")
+		t.Error("expected RACKPDU-01 in downstream")
 	}
 }
 
-// TestTraceFull_NodeNotFound verifies that a missing nodeID returns an error.
+// TestTraceFull_NodeNotFound verifies error for missing node.
 func TestTraceFull_NodeNotFound(t *testing.T) {
-	tracer, cleanup := setupTracer(t)
-	defer cleanup()
-
-	_, err := tracer.TraceFull("DOES-NOT-EXIST", 5)
+	skipIfNoDB(t)
+	_, err := testTracer.TraceFull("DOES-NOT-EXIST", 5)
 	if err == nil {
-		t.Fatal("expected error for missing node, got nil")
+		t.Fatal("expected error, got nil")
 	}
 	if !strings.Contains(err.Error(), "node not found") {
-		t.Errorf("error %q does not contain 'node not found'", err.Error())
+		t.Errorf("error %q missing 'node not found'", err.Error())
 	}
 }
 
-// TestTraceFull_NodeWithNoDependencyRules verifies GEN-01 returns empty upstream.
+// TestTraceFull_NodeWithNoDependencyRules verifies GEN-01 has empty upstream.
 func TestTraceFull_NodeWithNoDependencyRules(t *testing.T) {
-	tracer, cleanup := setupTracer(t)
-	defer cleanup()
-
-	resp, err := tracer.TraceFull("GEN-01", 5)
+	skipIfNoDB(t)
+	resp, err := testTracer.TraceFull("GEN-01", 5)
 	if err != nil {
 		t.Fatalf("TraceFull GEN-01: %v", err)
 	}
 	if len(resp.Upstream) != 0 {
-		t.Errorf("expected empty upstream for GEN-01, got %d groups", len(resp.Upstream))
+		t.Errorf("expected empty upstream, got %d groups", len(resp.Upstream))
 	}
 }
 
-// TestTraceFull_NodeWithNoImpactRules verifies RACKPDU-01 returns empty downstream.
+// TestTraceFull_NodeWithNoImpactRules verifies RACKPDU-01 has empty downstream.
 func TestTraceFull_NodeWithNoImpactRules(t *testing.T) {
-	tracer, cleanup := setupTracer(t)
-	defer cleanup()
-
-	resp, err := tracer.TraceFull("RACKPDU-01", 5)
+	skipIfNoDB(t)
+	resp, err := testTracer.TraceFull("RACKPDU-01", 5)
 	if err != nil {
 		t.Fatalf("TraceFull RACKPDU-01: %v", err)
 	}
 	if len(resp.Downstream) != 0 {
-		t.Errorf("expected empty downstream for RACKPDU-01, got %d groups", len(resp.Downstream))
+		t.Errorf("expected empty downstream, got %d groups", len(resp.Downstream))
 	}
 }
 
-// TestTraceFull_SourceNodeFields verifies all source fields are correct for RPP-01.
+// TestTraceFull_SourceNodeFields verifies all source fields for RPP-01.
 func TestTraceFull_SourceNodeFields(t *testing.T) {
-	tracer, cleanup := setupTracer(t)
-	defer cleanup()
-
-	resp, err := tracer.TraceFull("RPP-01", 5)
+	skipIfNoDB(t)
+	resp, err := testTracer.TraceFull("RPP-01", 5)
 	if err != nil {
 		t.Fatalf("TraceFull RPP-01: %v", err)
 	}
-
 	src := resp.Source
 	if src.NodeID != "RPP-01" {
-		t.Errorf("Source.NodeID = %q, want RPP-01", src.NodeID)
+		t.Errorf("NodeID = %q, want RPP-01", src.NodeID)
 	}
 	if src.Name != "RPP Panel 1" {
-		t.Errorf("Source.Name = %q, want 'RPP Panel 1'", src.Name)
+		t.Errorf("Name = %q, want 'RPP Panel 1'", src.Name)
 	}
 	if src.NodeType != "RPP" {
-		t.Errorf("Source.NodeType = %q, want RPP", src.NodeType)
+		t.Errorf("NodeType = %q, want RPP", src.NodeType)
 	}
 	if src.Topology != "Electrical System" {
-		t.Errorf("Source.Topology = %q, want 'Electrical System'", src.Topology)
+		t.Errorf("Topology = %q, want 'Electrical System'", src.Topology)
 	}
 }

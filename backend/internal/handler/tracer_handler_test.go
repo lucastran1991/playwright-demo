@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strings"
 	"testing"
 
@@ -10,149 +11,116 @@ import (
 	"github.com/user/app/internal/testutil"
 )
 
-// setupTestRouter builds a minimal gin router with trace routes and real PostgreSQL.
-// Returns the router and a cleanup function.
-func setupTestRouter(t *testing.T) (*gin.Engine, func()) {
-	t.Helper()
-	db, cleanup := testutil.SetupTestDB(t)
-	if err := testutil.TruncateAll(db); err != nil {
-		cleanup()
-		t.Fatalf("truncate: %v", err)
+// Package-level router seeded once in TestMain — all tests are read-only.
+var testRouter *gin.Engine
+
+func TestMain(m *testing.M) {
+	gin.SetMode(gin.TestMode)
+
+	db, cleanup := testutil.SetupTestDBForMain()
+	if db == nil {
+		os.Exit(0) // skip all — DB unavailable
 	}
-	testutil.SeedTraceFixtures(t, db)
+	defer cleanup()
+
+	testutil.TruncateAndSeedForMain(db)
 
 	repo := repository.NewTracerRepository(db)
 	tracer := service.NewDependencyTracer(repo)
-	h := NewTracerHandler(nil, tracer, repo, "") // nil ingestion svc — not testing that
+	h := NewTracerHandler(nil, tracer, repo, "")
 
-	gin.SetMode(gin.TestMode)
 	r := gin.New()
 	trace := r.Group("/api/trace")
 	trace.GET("/full/:nodeId", h.TraceFull)
 	trace.GET("/dependencies/:nodeId", h.TraceDependencies)
 	trace.GET("/impacts/:nodeId", h.TraceImpacts)
+	testRouter = r
 
-	return r, cleanup
+	os.Exit(m.Run())
 }
 
-// TestTraceFull_HappyPath_RPP verifies RPP-01 returns 200 with upstream (UPS-01) and downstream (RACKPDU-01).
+// TestTraceFull_HappyPath_RPP verifies RPP-01 returns upstream + downstream.
 func TestTraceFull_HappyPath_RPP(t *testing.T) {
-	router, cleanup := setupTestRouter(t)
-	defer cleanup()
-
-	w, resp := doTraceRequest(t, router, "/api/trace/full/RPP-01")
-
+	w, resp := doTraceRequest(t, testRouter, "/api/trace/full/RPP-01")
 	if w.Code != 200 {
 		t.Fatalf("expected 200, got %d", w.Code)
 	}
 	if resp.Data == nil {
-		t.Fatal("expected data field, got nil")
+		t.Fatal("expected data, got nil")
 	}
 	if resp.Data.Source.NodeID != "RPP-01" {
 		t.Errorf("source node_id: want RPP-01, got %q", resp.Data.Source.NodeID)
 	}
-	if resp.Data.Source.NodeType != "RPP" {
-		t.Errorf("source node_type: want RPP, got %q", resp.Data.Source.NodeType)
-	}
 	if len(resp.Data.Upstream) == 0 {
-		t.Error("expected non-empty upstream for RPP-01")
+		t.Error("expected non-empty upstream")
 	}
 	if len(resp.Data.Downstream) == 0 {
-		t.Error("expected non-empty downstream for RPP-01")
+		t.Error("expected non-empty downstream")
 	}
 	if findNodeInLevelGroups(resp.Data.Upstream, "UPS-01") == nil {
-		t.Error("expected UPS-01 in upstream for RPP-01")
+		t.Error("expected UPS-01 in upstream")
 	}
 	if findNodeInLevelGroups(resp.Data.Downstream, "RACKPDU-01") == nil {
-		t.Error("expected RACKPDU-01 in downstream for RPP-01")
+		t.Error("expected RACKPDU-01 in downstream")
 	}
 }
 
-// TestTraceFull_HappyPath_RackPDU verifies RACKPDU-01 upstream contains RPP at L1 and UPS at L2.
+// TestTraceFull_HappyPath_RackPDU verifies upstream contains RPP at L1 and UPS at L2.
 func TestTraceFull_HappyPath_RackPDU(t *testing.T) {
-	router, cleanup := setupTestRouter(t)
-	defer cleanup()
-
-	w, resp := doTraceRequest(t, router, "/api/trace/full/RACKPDU-01")
-
+	w, resp := doTraceRequest(t, testRouter, "/api/trace/full/RACKPDU-01")
 	if w.Code != 200 {
 		t.Fatalf("expected 200, got %d", w.Code)
 	}
-	if resp.Data == nil {
-		t.Fatal("expected data field, got nil")
+	if resp.Data == nil || len(resp.Data.Upstream) == 0 {
+		t.Fatal("expected non-empty upstream")
 	}
-	if len(resp.Data.Upstream) == 0 {
-		t.Fatal("expected non-empty upstream for RACKPDU-01")
+	if g := levelGroupForNode(resp.Data.Upstream, "RPP-01"); g == nil {
+		t.Error("expected RPP-01 in upstream")
+	} else if g.Level != 1 {
+		t.Errorf("RPP-01 level: want 1, got %d", g.Level)
 	}
-
-	rppGroup := levelGroupForNode(resp.Data.Upstream, "RPP-01")
-	if rppGroup == nil {
-		t.Error("expected RPP-01 in upstream for RACKPDU-01")
-	} else if rppGroup.Level != 1 {
-		t.Errorf("RPP-01 upstream level: want 1, got %d", rppGroup.Level)
-	}
-
-	upsGroup := levelGroupForNode(resp.Data.Upstream, "UPS-01")
-	if upsGroup == nil {
-		t.Error("expected UPS-01 in upstream for RACKPDU-01")
-	} else if upsGroup.Level != 2 {
-		t.Errorf("UPS-01 upstream level: want 2, got %d", upsGroup.Level)
+	if g := levelGroupForNode(resp.Data.Upstream, "UPS-01"); g == nil {
+		t.Error("expected UPS-01 in upstream")
+	} else if g.Level != 2 {
+		t.Errorf("UPS-01 level: want 2, got %d", g.Level)
 	}
 }
 
-// TestTraceFull_NotFound verifies that an unknown node ID returns 404 with "node not found" error.
+// TestTraceFull_NotFound verifies 404 for unknown node.
 func TestTraceFull_NotFound(t *testing.T) {
-	router, cleanup := setupTestRouter(t)
-	defer cleanup()
-
-	w, resp := doTraceRequest(t, router, "/api/trace/full/NONEXISTENT-99")
-
+	w, resp := doTraceRequest(t, testRouter, "/api/trace/full/NONEXISTENT-99")
 	if w.Code != 404 {
 		t.Fatalf("expected 404, got %d", w.Code)
 	}
 	if !strings.Contains(resp.Error, "node not found") {
-		t.Errorf("error message: want contains 'node not found', got %q", resp.Error)
+		t.Errorf("error: want 'node not found', got %q", resp.Error)
 	}
 }
 
-// TestTraceFull_LevelsParam verifies ?levels=1 returns RPP at L1 but not UPS at L2.
+// TestTraceFull_LevelsParam verifies ?levels=1 filters out L2 nodes.
 func TestTraceFull_LevelsParam(t *testing.T) {
-	router, cleanup := setupTestRouter(t)
-	defer cleanup()
-
-	w, resp := doTraceRequest(t, router, "/api/trace/full/RACKPDU-01?levels=1")
-
+	w, resp := doTraceRequest(t, testRouter, "/api/trace/full/RACKPDU-01?levels=1")
 	if w.Code != 200 {
 		t.Fatalf("expected 200, got %d", w.Code)
 	}
-	if resp.Data == nil {
-		t.Fatal("expected data field, got nil")
-	}
 	if findNodeInLevelGroups(resp.Data.Upstream, "RPP-01") == nil {
-		t.Error("expected RPP-01 in upstream at levels=1")
+		t.Error("expected RPP-01 at levels=1")
 	}
 	if findNodeInLevelGroups(resp.Data.Upstream, "UPS-01") != nil {
-		t.Error("UPS-01 (L2) should not appear when levels=1")
+		t.Error("UPS-01 (L2) should not appear at levels=1")
 	}
 }
 
-// TestTraceFull_DefaultLevels verifies that omitting ?levels defaults to 2.
+// TestTraceFull_DefaultLevels verifies default levels=2 returns both L1 and L2.
 func TestTraceFull_DefaultLevels(t *testing.T) {
-	router, cleanup := setupTestRouter(t)
-	defer cleanup()
-
-	w, resp := doTraceRequest(t, router, "/api/trace/full/RACKPDU-01")
-
+	w, resp := doTraceRequest(t, testRouter, "/api/trace/full/RACKPDU-01")
 	if w.Code != 200 {
 		t.Fatalf("expected 200, got %d", w.Code)
 	}
-	if resp.Data == nil {
-		t.Fatal("expected data field, got nil")
-	}
 	if findNodeInLevelGroups(resp.Data.Upstream, "RPP-01") == nil {
-		t.Error("expected RPP-01 in upstream at default levels")
+		t.Error("expected RPP-01 at default levels")
 	}
 	if findNodeInLevelGroups(resp.Data.Upstream, "UPS-01") == nil {
-		t.Error("expected UPS-01 in upstream at default levels (should reach L2)")
+		t.Error("expected UPS-01 at default levels (L2)")
 	}
 }

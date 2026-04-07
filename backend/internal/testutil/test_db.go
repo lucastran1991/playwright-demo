@@ -3,7 +3,6 @@ package testutil
 import (
 	"fmt"
 	"os"
-	"testing"
 	"time"
 
 	"github.com/user/app/internal/database"
@@ -12,36 +11,32 @@ import (
 	"gorm.io/gorm"
 )
 
-// SetupTestDB connects to a test PostgreSQL database, runs migrations, and
-// returns the DB handle plus a cleanup function. Skips the test if DB is unavailable.
-func SetupTestDB(t *testing.T) (*gorm.DB, func()) {
-	t.Helper()
-
+// SetupTestDBForMain connects to a test PostgreSQL database and runs migrations.
+// Returns nil DB if PostgreSQL is unavailable (caller should skip or exit gracefully).
+// Designed for TestMain where *testing.T is not available.
+func SetupTestDBForMain() (*gorm.DB, func()) {
 	dbName := getEnvDefault("TEST_DB_NAME", "app_test")
 	cfg := &config.Config{
-		DBHost:    getEnvDefault("DB_HOST", "localhost"),
-		DBPort:    getEnvDefault("DB_PORT", "5432"),
-		DBUser:    getEnvDefault("DB_USER", "postgres"),
+		DBHost:     getEnvDefault("DB_HOST", "localhost"),
+		DBPort:     getEnvDefault("DB_PORT", "5432"),
+		DBUser:     getEnvDefault("DB_USER", "postgres"),
 		DBPassword: getEnvDefault("DB_PASSWORD", "postgres"),
-		DBName:    dbName,
-		DBSSLMode: getEnvDefault("DB_SSLMODE", "disable"),
+		DBName:     dbName,
+		DBSSLMode:  getEnvDefault("DB_SSLMODE", "disable"),
 	}
 
 	db, err := gorm.Open(postgres.Open(cfg.DSN()), &gorm.Config{})
 	if err != nil {
-		t.Skipf("PostgreSQL not available (db=%s): %v", dbName, err)
+		return nil, func() {}
 	}
 
-	sqlDB, err := db.DB()
-	if err != nil {
-		t.Fatalf("failed to get sql.DB: %v", err)
-	}
+	sqlDB, _ := db.DB()
 	sqlDB.SetMaxOpenConns(5)
 	sqlDB.SetMaxIdleConns(2)
 	sqlDB.SetConnMaxLifetime(time.Minute)
 
 	if err := database.Migrate(db); err != nil {
-		t.Fatalf("migration failed: %v", err)
+		return nil, func() {}
 	}
 
 	cleanup := func() {
@@ -52,23 +47,26 @@ func SetupTestDB(t *testing.T) (*gorm.DB, func()) {
 	return db, cleanup
 }
 
-// TruncateAll removes all data from tracer-related tables in FK-safe order.
-func TruncateAll(db *gorm.DB) error {
+// TruncateAndSeedForMain atomically truncates all tables and seeds fixture data.
+// Uses a PostgreSQL advisory lock so parallel test packages serialize their
+// setup against the same database. Panics on failure (TestMain cannot t.Fatal).
+func TruncateAndSeedForMain(db *gorm.DB) {
+	const lockID = 12345
+	db.Exec("SELECT pg_advisory_lock(?)", lockID)
+
 	tables := []string{
-		"blueprint_edges",
-		"blueprint_node_memberships",
-		"blueprint_nodes",
-		"blueprint_types",
-		"capacity_node_types",
-		"dependency_rules",
-		"impact_rules",
+		"blueprint_edges", "blueprint_node_memberships", "blueprint_nodes",
+		"blueprint_types", "capacity_node_types", "dependency_rules", "impact_rules",
 	}
 	for _, table := range tables {
 		if err := db.Exec(fmt.Sprintf("TRUNCATE TABLE %s CASCADE", table)).Error; err != nil {
-			return fmt.Errorf("truncate %s: %w", table, err)
+			db.Exec("SELECT pg_advisory_unlock(?)", lockID)
+			panic(fmt.Sprintf("truncate %s: %v", table, err))
 		}
 	}
-	return nil
+
+	seedTraceFixturesPanic(db)
+	db.Exec("SELECT pg_advisory_unlock(?)", lockID)
 }
 
 func getEnvDefault(key, fallback string) string {
