@@ -3,6 +3,13 @@ import { Zap, Droplets, Building2, Package } from "lucide-react"
 import { MarkerType, type Node, type Edge } from "@xyflow/react"
 import type { TraceResponse, TracerNodeData } from "./dag-types"
 
+// Utilization color: green <60%, yellow 60-80%, red >80%
+export function getUtilColor(pct: number): string {
+  if (pct > 80) return "#EF4444"
+  if (pct >= 60) return "#EAB308"
+  return "#22C55E"
+}
+
 // Dark-theme optimized topology colors
 export const TOPOLOGY_CONFIG: Record<string, { color: string; bg: string; icon: React.ReactNode }> = {
   electrical: { color: "#F97316", bg: "rgba(249,115,22,0.1)", icon: <Zap className="h-3 w-3" /> },
@@ -37,6 +44,7 @@ export function filterTraceByTopologies(
     local: response.local?.filter((g) => matchTopo(g.topology)),
     downstream: response.downstream?.filter((g) => matchTopo(g.topology)),
     load: response.load?.filter((g) => matchTopo(g.topology)),
+    capacity: response.capacity,
   }
 }
 
@@ -139,6 +147,14 @@ export function traceToDAGElements(
         }
         edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOAD_STYLE, markerEnd: LOAD_MARKER })
       }
+    }
+  }
+
+  // Enrich nodes with capacity data from response
+  const capacityMap = response.capacity ?? {}
+  for (const [nodeId, node] of nodesMap) {
+    if (capacityMap[nodeId]) {
+      ;(node.data as TracerNodeData).capacity = capacityMap[nodeId]
     }
   }
 

@@ -1,13 +1,14 @@
 'use client'
 
 import { Handle, Position, type NodeProps, type Node } from "@xyflow/react"
-import { TOPOLOGY_CONFIG, getTopologyKey } from "./dag-helpers"
+import { TOPOLOGY_CONFIG, getTopologyKey, getUtilColor } from "./dag-helpers"
 import type { TracerNodeData } from "./dag-types"
 
 export default function TracerNode({ data }: NodeProps<Node<TracerNodeData>>) {
   const topoKey = getTopologyKey(data.topology)
   const config = TOPOLOGY_CONFIG[topoKey] ?? TOPOLOGY_CONFIG.default
   const { color, bg, icon } = config
+  const cap = data.capacity
 
   const borderStyle = data.isLocal ? "border-dashed" : "border-solid"
   const sourceRing = data.isSource ? "ring-2 ring-amber-400/60 shadow-lg shadow-amber-400/20" : ""
@@ -52,6 +53,30 @@ export default function TracerNode({ data }: NodeProps<Node<TracerNodeData>>) {
       <p className="text-[11px] text-muted-foreground leading-tight truncate">
         {data.name}
       </p>
+
+      {/* Capacity utilization bar */}
+      {cap?.utilization_pct != null && (
+        <div className="flex items-center gap-1 mt-0.5">
+          <div
+            className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden"
+            title={`${cap.allocated_load ?? 0}/${cap.rated_capacity ?? cap.design_capacity ?? 0} kW`}
+          >
+            <div
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${Math.min(cap.utilization_pct, 100)}%`,
+                backgroundColor: getUtilColor(cap.utilization_pct),
+              }}
+            />
+          </div>
+          <span
+            className="text-[9px] font-bold tabular-nums shrink-0"
+            style={{ color: getUtilColor(cap.utilization_pct) }}
+          >
+            {Math.round(cap.utilization_pct)}%
+          </span>
+        </div>
+      )}
 
       <Handle type="source" position={Position.Right} className="!border-0 !w-2 !h-2 !rounded-full" style={{ background: color }} />
     </div>

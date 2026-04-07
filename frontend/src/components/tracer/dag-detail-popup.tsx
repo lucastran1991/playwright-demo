@@ -1,7 +1,7 @@
 'use client'
 
 import { X } from "lucide-react"
-import { TOPOLOGY_CONFIG, getTopologyKey } from "./dag-helpers"
+import { TOPOLOGY_CONFIG, getTopologyKey, getUtilColor } from "./dag-helpers"
 import type { TracerNodeData } from "./dag-types"
 
 interface Props {
@@ -69,6 +69,46 @@ export default function DagDetailPopup({ data, onClose }: Props) {
               color="#8B5CF6"
             />
           </div>
+
+          {/* Capacity section */}
+          {data.capacity && data.capacity.utilization_pct != null && (
+            <div className="space-y-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Capacity
+              </p>
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Utilization</span>
+                  <span className="font-bold" style={{ color: getUtilColor(data.capacity.utilization_pct) }}>
+                    {Math.round(data.capacity.utilization_pct)}%
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${Math.min(data.capacity.utilization_pct, 100)}%`,
+                      backgroundColor: getUtilColor(data.capacity.utilization_pct),
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {data.capacity.rated_capacity != null && (
+                  <DetailCard label="Rated Capacity" value={`${data.capacity.rated_capacity} kW`} accent={color} />
+                )}
+                {data.capacity.design_capacity != null && data.capacity.design_capacity !== data.capacity.rated_capacity && (
+                  <DetailCard label="Design Capacity" value={`${data.capacity.design_capacity} kW`} accent={color} />
+                )}
+                {data.capacity.allocated_load != null && (
+                  <DetailCard label="Allocated Load" value={`${Math.round(data.capacity.allocated_load * 10) / 10} kW`} accent={color} />
+                )}
+                {data.capacity.available_capacity != null && (
+                  <DetailCard label="Available" value={`${Math.round(data.capacity.available_capacity * 10) / 10} kW`} accent="#22C55E" />
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Node ID copyable */}
           <div className="rounded-lg bg-muted/50 px-3 py-2 flex items-center gap-2">

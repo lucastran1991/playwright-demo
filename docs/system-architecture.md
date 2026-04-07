@@ -349,6 +349,54 @@ Model data stored in `./blueprint/` directory:
 - `HasEdgesInTopology(nodeDBID, typeSlug)` - Quick check if node participates in target topology
 - Rule lookups: `GetDependencyRules()`, `GetImpactRules()`, `ListCapacityNodeTypes()`
 
+## Load-Capacity Calculator Feature
+
+### Overview
+Ingests per-node capacity data from CSV, computes bottom-up load aggregation, exposes capacity metrics via API, and displays utilization badges on the Tracer DAG.
+
+### Models
+- **NodeVariable** - Key-value store for sparse capacity data
+  - Fields: `id`, `node_id`, `variable_name`, `value`, `unit`, `source` (csv_import | computed)
+  - Composite unique: (node_id, variable_name)
+
+### CSV Source
+`blueprint/ISET capacity - rack load flow.csv` (657 nodes, 35 columns)
+- Per-node-type column mapping to standardized variable names
+- Key variables: design_capacity, rated_capacity, allocated_load (kW)
+
+### Capacity Services
+**`internal/service/capacity_csv_parser.go`**
+- `ParseCapacityFlowCSV(filePath)` - Parses CSV with node-type-specific column mappings
+- Supports 15 node types (Rack, RPP, Room PDU, UPS, Air Zone, Liquid Loop, etc.)
+
+**`internal/service/capacity_ingestion_service.go`**
+- `IngestCSV(filePath)` - Parse CSV + upsert raw values + trigger computation
+
+**`internal/service/load_capacity_calculator.go`**
+- `ComputeAll()` - Bottom-up aggregation from leaf Rack nodes to parent capacity nodes
+- Computes: available_capacity, utilization_pct for each node
+- Uses spatial hierarchy (FindSpatialDescendantsOfType) to find child Racks
+- Idempotent: deletes prior computed values before recomputing
+
+### Capacity Repository
+**`internal/repository/capacity_repository.go`**
+- CRUD for node_variables table
+- `GetCapacityMapForNodes()` - Batch capacity lookup for trace enrichment
+- `GetCapacitySummary()` - Aggregate stats (avg utilization, overloaded count)
+- `ListCapacityNodes()` - Paginated list with type/utilization filters
+
+### API Endpoints
+- `POST /api/capacity/ingest` - Trigger CSV ingestion + computation
+- `GET /api/capacity/nodes/:nodeId` - Single node capacity metrics
+- `GET /api/capacity/summary` - Aggregate capacity stats
+- `GET /api/capacity/nodes?type=Rack&min_utilization=80` - Filtered node list
+- `GET /api/trace/full/:nodeId` - Now includes `capacity` map in response
+
+### Frontend Integration
+- `TraceResponse.capacity` map enriches DAG nodes with capacity data
+- DAG nodes show utilization progress bar (green <60%, yellow 60-80%, red >80%)
+- Detail popup shows full capacity breakdown (rated, allocated, available, utilization)
+
 ## Data Flow Examples
 
 ### Login Flow

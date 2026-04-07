@@ -40,5 +40,6 @@ func Migrate(db *gorm.DB) error {
 		&model.CapacityNodeType{},
 		&model.DependencyRule{},
 		&model.ImpactRule{},
+		&model.NodeVariable{},
 	)
 }

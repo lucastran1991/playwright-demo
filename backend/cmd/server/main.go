@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"path/filepath"
 
 	"github.com/user/app/internal/config"
 	"github.com/user/app/internal/database"
@@ -41,7 +42,17 @@ func main() {
 	depTracer := service.NewDependencyTracer(tracerRepo)
 	tracerHandler := handler.NewTracerHandler(modelIngestionSvc, depTracer, tracerRepo, cfg.ModelDir)
 
-	r := router.Setup(authHandler, blueprintHandler, tracerHandler, cfg.JWTSecret, cfg.CORSOrigin)
+	// Capacity load calculator wiring
+	capacityRepo := repository.NewCapacityRepository(db)
+	calculator := service.NewLoadCapacityCalculator(capacityRepo, tracerRepo, db)
+	capacityIngestionSvc := service.NewCapacityIngestionService(capacityRepo, calculator, db)
+	capacityCSVPath := filepath.Join(cfg.ModelDir, "ISET capacity - rack load flow.csv")
+	capacityHandler := handler.NewCapacityHandler(capacityIngestionSvc, capacityRepo, capacityCSVPath)
+
+	// Inject capacity repo into tracer for /trace/full enrichment
+	depTracer.SetCapacityRepo(capacityRepo)
+
+	r := router.Setup(authHandler, blueprintHandler, tracerHandler, capacityHandler, cfg.JWTSecret, cfg.CORSOrigin)
 
 	log.Printf("Server starting on :%s", cfg.ServerPort)
 	if err := r.Run(":" + cfg.ServerPort); err != nil {

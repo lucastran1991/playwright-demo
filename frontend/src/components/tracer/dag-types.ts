@@ -19,12 +19,23 @@ export interface TraceLocalGroup {
   nodes: TracedNode[]
 }
 
+// Per-node capacity metrics from backend enrichment
+export interface CapacityData {
+  design_capacity?: number
+  rated_capacity?: number
+  allocated_load?: number
+  available_capacity?: number
+  utilization_pct?: number
+  [key: string]: number | undefined
+}
+
 export interface TraceResponse {
   source: { node_id: string; name: string; node_type: string; topology?: string }
   upstream?: TraceLevelGroup[]
   local?: TraceLocalGroup[]
   downstream?: TraceLevelGroup[]
   load?: TraceLocalGroup[]
+  capacity?: Record<string, CapacityData> // nodeID -> metrics
 }
 
 export interface SearchNode {
@@ -45,5 +56,6 @@ export interface TracerNodeData extends Record<string, unknown> {
   ring: number // distance from source: 0=source, 1=level1, 2=level2, etc.
   level: number // upstream/downstream level (0 for source/local)
   direction: "upstream" | "downstream" | "local" | "load" | "source"
+  capacity?: CapacityData
   onNodeClick?: (data: TracerNodeData) => void
 }

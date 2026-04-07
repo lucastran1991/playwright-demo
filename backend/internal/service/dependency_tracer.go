@@ -12,11 +12,12 @@ import (
 
 // TraceResponse is the top-level response for dependency/impact tracing.
 type TraceResponse struct {
-	Source     SourceNode        `json:"source"`
-	Upstream   []TraceLevelGroup `json:"upstream,omitempty"`
-	Local      []TraceLocalGroup `json:"local,omitempty"`
-	Downstream []TraceLevelGroup `json:"downstream,omitempty"`
-	Load       []TraceLocalGroup `json:"load,omitempty"`
+	Source     SourceNode                    `json:"source"`
+	Upstream   []TraceLevelGroup             `json:"upstream,omitempty"`
+	Local      []TraceLocalGroup             `json:"local,omitempty"`
+	Downstream []TraceLevelGroup             `json:"downstream,omitempty"`
+	Load       []TraceLocalGroup             `json:"load,omitempty"`
+	Capacity   map[string]map[string]float64 `json:"capacity,omitempty"` // nodeID -> varName -> value
 }
 
 // SourceNode identifies the node being traced.
@@ -43,9 +44,15 @@ type TraceLocalGroup struct {
 // DependencyTracer resolves actual node instances from type-level rules.
 type DependencyTracer struct {
 	repo           *repository.TracerRepository
-	topoLookup     map[string]string      // nodeType -> topology name
-	slugLookup     map[string]string      // topology name -> blueprint_type slug
-	topoLookupList []model.CapacityNodeType // full list for IsCapacityNode checks
+	capRepo        *repository.CapacityRepository // optional, nil = no capacity enrichment
+	topoLookup     map[string]string              // nodeType -> topology name
+	slugLookup     map[string]string              // topology name -> blueprint_type slug
+	topoLookupList []model.CapacityNodeType       // full list for IsCapacityNode checks
+}
+
+// SetCapacityRepo injects the capacity repository for /trace/full enrichment.
+func (t *DependencyTracer) SetCapacityRepo(repo *repository.CapacityRepository) {
+	t.capRepo = repo
 }
 
 // NewDependencyTracer creates a new DependencyTracer with DB-backed topology lookup.
@@ -380,7 +387,40 @@ func (t *DependencyTracer) TraceFull(nodeID string, maxLevels int) (*TraceRespon
 		resp.Load = impResp.Load
 	}
 
+	// Enrich with capacity data if capacity repo is available
+	if t.capRepo != nil {
+		allNodeIDs := collectAllNodeIDs(resp)
+		capMap, err := t.capRepo.GetCapacityMapForNodes(allNodeIDs)
+		if err == nil && len(capMap) > 0 {
+			resp.Capacity = capMap
+		}
+	}
+
 	return resp, nil
+}
+
+// collectAllNodeIDs gathers unique node IDs from all parts of a TraceResponse.
+func collectAllNodeIDs(resp *TraceResponse) []string {
+	seen := map[string]bool{resp.Source.NodeID: true}
+	for _, groups := range [][]TraceLevelGroup{resp.Upstream, resp.Downstream} {
+		for _, g := range groups {
+			for _, n := range g.Nodes {
+				seen[n.NodeID] = true
+			}
+		}
+	}
+	for _, groups := range [][]TraceLocalGroup{resp.Local, resp.Load} {
+		for _, g := range groups {
+			for _, n := range g.Nodes {
+				seen[n.NodeID] = true
+			}
+		}
+	}
+	ids := make([]string, 0, len(seen))
+	for id := range seen {
+		ids = append(ids, id)
+	}
+	return ids
 }
 
 // resolveSlug maps a topology name to its blueprint_type slug using cached DB data.
