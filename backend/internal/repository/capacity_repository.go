@@ -105,7 +105,9 @@ func (r *CapacityRepository) GetNodeCapacity(nodeID string) (*NodeCapacity, erro
 		Name     string `json:"name"`
 		NodeType string `json:"node_type"`
 	}
-	r.db.Raw(`SELECT node_id, name, node_type FROM blueprint_nodes WHERE node_id = ? LIMIT 1`, nodeID).Scan(&node)
+	if err := r.db.Raw(`SELECT node_id, name, node_type FROM blueprint_nodes WHERE node_id = ? LIMIT 1`, nodeID).Scan(&node).Error; err != nil {
+		return nil, err
+	}
 
 	cap := &NodeCapacity{
 		NodeID:   nodeID,
@@ -139,7 +141,7 @@ func (r *CapacityRepository) GetCapacitySummary() (*CapacitySummary, error) {
 			COUNT(DISTINCT node_id) as total_nodes,
 			COALESCE(AVG(CASE WHEN variable_name = 'utilization_pct' THEN value END), 0) as avg_utilization,
 			COUNT(DISTINCT CASE WHEN variable_name = 'utilization_pct' AND value > 100 THEN node_id END) as overloaded_nodes,
-			COUNT(DISTINCT CASE WHEN variable_name = 'utilization_pct' AND value > 80 THEN node_id END) as high_util_nodes,
+			COUNT(DISTINCT CASE WHEN variable_name = 'utilization_pct' AND value > 80 AND value <= 100 THEN node_id END) as high_util_nodes,
 			COALESCE(SUM(CASE WHEN variable_name = 'rated_capacity' AND source = 'csv_import' THEN value ELSE 0 END), 0) as total_capacity,
 			COALESCE(SUM(CASE WHEN variable_name = 'allocated_load' AND source = 'csv_import' THEN value ELSE 0 END), 0) as total_load
 		FROM node_variables

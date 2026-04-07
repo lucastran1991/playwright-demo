@@ -79,9 +79,10 @@ func (s *CapacityIngestionService) IngestCSV(filePath string) (*CapacityIngestio
 		computeSummary, err := s.calculator.ComputeAll()
 		if err != nil {
 			summary.Errors = append(summary.Errors, "compute aggregates: "+err.Error())
-		} else {
-			summary.ComputedVariables = computeSummary.VariablesComputed
+			summary.DurationMs = time.Since(start).Milliseconds()
+			return summary, fmt.Errorf("ingestion succeeded but aggregation failed: %w", err)
 		}
+		summary.ComputedVariables = computeSummary.VariablesComputed
 	}
 
 	summary.DurationMs = time.Since(start).Milliseconds()

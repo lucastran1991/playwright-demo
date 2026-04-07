@@ -1,7 +1,7 @@
 ---
 title: "Dependency & Impact DAG UI"
 description: "ReactFlow+Dagre DAG visualization page at /dashboard/tracer for tracing node dependencies and impacts"
-status: pending
+status: complete
 priority: P1
 effort: 6h
 branch: main

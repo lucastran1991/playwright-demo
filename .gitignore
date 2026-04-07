@@ -209,3 +209,6 @@ __marimo__/
 # Go binary
 backend/server
 ~$*
+
+# Next.js build output
+.next/
