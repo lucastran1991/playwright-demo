@@ -1,19 +1,11 @@
-// PM2 ecosystem config -- reads from system.cfg.json with env override support
+// PM2 ecosystem config -- reads ports from system.cfg.json (URLs managed via .env files)
 const path = require('path')
 const fs = require('fs')
 const cfg = require('./system.cfg.json')
 
-// Apply production overrides if binary exists (prod build indicator)
+// Detect if production binary exists (determines run mode: compiled binary vs go run)
 const backendBinExists = fs.existsSync(path.resolve(__dirname, cfg.backend.cwd, 'server'))
 const nextBuildExists = fs.existsSync(path.resolve(__dirname, cfg.frontend.cwd, '.next'))
-const isProd = backendBinExists && nextBuildExists
-if (isProd && cfg.environments && cfg.environments.production) {
-  const env = cfg.environments.production
-  if (env.backend) Object.assign(cfg.backend, env.backend)
-  if (env.frontend) Object.assign(cfg.frontend, env.frontend)
-  if (env.api) Object.assign(cfg.api, env.api)
-  if (env.host) cfg.host = env.host
-}
 
 const { execSync } = require('child_process')
 const backendCwd = path.resolve(__dirname, cfg.backend.cwd)

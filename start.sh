@@ -54,27 +54,20 @@ esac
 
 # --- Start flow ---
 
-# Read config from system.cfg.json with environment override support
-BE_PORT=8889; FE_PORT=8089; BE_URL="http://localhost:8889"; FE_URL="http://localhost:8089"
+# Read ports from system.cfg.json (base config only — never apply production URL overrides locally)
+BE_PORT=8889; FE_PORT=8089
 if command -v python3 >/dev/null 2>&1 && [[ -f "$SYSCFG" ]]; then
   eval "$(python3 -c "
 import json
 cfg = json.load(open('$SYSCFG'))
-# Apply production overrides when --prod flag is set
-if $PROD_MODE:
-    env = cfg.get('environments', {}).get('production', {})
-    for section in ('backend', 'frontend', 'api'):
-        if section in env and section in cfg:
-            cfg[section].update(env[section])
-    if 'host' in env:
-        cfg['host'] = env['host']
 be, fe = cfg['backend'], cfg['frontend']
 print(f'BE_PORT={be[\"port\"]}')
 print(f'FE_PORT={fe[\"port\"]}')
-print(f'BE_URL={be[\"url\"]}')
-print(f'FE_URL={fe[\"url\"]}')
 ")"
 fi
+# URLs always use localhost — production servers should configure .env files directly
+BE_URL="http://localhost:$BE_PORT"
+FE_URL="http://localhost:$FE_PORT"
 
 # PostgreSQL (optional)
 if [[ "$WITH_POSTGRES" -eq 1 ]]; then
