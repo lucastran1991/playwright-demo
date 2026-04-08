@@ -48,16 +48,25 @@ export function filterTraceByTopologies(
   }
 }
 
-// Edge styles: upstream = cyan, downstream = orange, local = gray dashed, load = purple dashed
-const UPSTREAM_STYLE = { stroke: "#06B6D4", strokeWidth: 2.5 }
-const DOWNSTREAM_STYLE = { stroke: "#F97316", strokeWidth: 2.5 }
-const LOCAL_STYLE = { stroke: "#6B7280", strokeWidth: 1.5, strokeDasharray: "6 3" }
-const LOAD_STYLE = { stroke: "#8B5CF6", strokeWidth: 1.5, strokeDasharray: "4 4" }
+// Direction colors: distinct from topology colors, used for outer border + edges
+export const DIRECTION_COLORS: Record<string, string> = {
+  upstream: "#3B82F6",   // blue
+  downstream: "#EF4444", // red
+  local: "#64748B",      // slate
+  load: "#EC4899",       // pink
+  source: "#EAB308",     // yellow
+}
 
-const UPSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: "#06B6D4", width: 16, height: 16 }
-const DOWNSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: "#F97316", width: 16, height: 16 }
-const LOCAL_MARKER = { type: MarkerType.ArrowClosed, color: "#6B7280", width: 12, height: 12 }
-const LOAD_MARKER = { type: MarkerType.ArrowClosed, color: "#8B5CF6", width: 12, height: 12 }
+// Edge styles per direction
+const UPSTREAM_STYLE = { stroke: DIRECTION_COLORS.upstream, strokeWidth: 2.5 }
+const DOWNSTREAM_STYLE = { stroke: DIRECTION_COLORS.downstream, strokeWidth: 2.5 }
+const LOCAL_STYLE = { stroke: DIRECTION_COLORS.local, strokeWidth: 1.5, strokeDasharray: "6 3" }
+const LOAD_STYLE = { stroke: DIRECTION_COLORS.load, strokeWidth: 1.5, strokeDasharray: "4 4" }
+
+const UPSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: DIRECTION_COLORS.upstream, width: 16, height: 16 }
+const DOWNSTREAM_MARKER = { type: MarkerType.ArrowClosed, color: DIRECTION_COLORS.downstream, width: 16, height: 16 }
+const LOCAL_MARKER = { type: MarkerType.ArrowClosed, color: DIRECTION_COLORS.local, width: 12, height: 12 }
+const LOAD_MARKER = { type: MarkerType.ArrowClosed, color: DIRECTION_COLORS.load, width: 12, height: 12 }
 
 const NODE_WIDTH = 180
 const NODE_HEIGHT = 72
@@ -115,7 +124,10 @@ export function traceToDAGElements(
           nodesMap.set(n.node_id, localNode)
           localNodes.push(localNode)
         }
-        edges.push({ id: `local-${n.node_id}-${source.node_id}`, source: n.node_id, target: source.node_id, type: "tracerEdge", style: LOCAL_STYLE, markerEnd: LOCAL_MARKER })
+        const edgeId = `local-${source.node_id}-${n.node_id}`
+        if (!edges.some((e) => e.id === edgeId)) {
+          edges.push({ id: edgeId, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOCAL_STYLE, markerEnd: LOCAL_MARKER, sourceHandle: "source-bottom", targetHandle: "local-target" })
+        }
       }
     }
   }
@@ -145,7 +157,10 @@ export function traceToDAGElements(
         if (!nodesMap.has(n.node_id)) {
           nodesMap.set(n.node_id, makeNode(n.node_id, n.name, n.node_type, group.topology, 1, false, false, 0, undefined, "load"))
         }
-        edges.push({ id: `load-${source.node_id}-${n.node_id}`, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOAD_STYLE, markerEnd: LOAD_MARKER })
+        const edgeId = `load-${source.node_id}-${n.node_id}`
+        if (!edges.some((e) => e.id === edgeId)) {
+          edges.push({ id: edgeId, source: source.node_id, target: n.node_id, type: "tracerEdge", style: LOAD_STYLE, markerEnd: LOAD_MARKER })
+        }
       }
     }
   }
@@ -158,94 +173,60 @@ export function traceToDAGElements(
     }
   }
 
-  // If local deps exist, create a group node containing source + local deps
-  // Use vertical stack layout: source on top, local deps below
+  // No group container -- local nodes positioned after Dagre layout in layoutDAG
   const allNodes = Array.from(nodesMap.values())
-  if (localNodes.length > 0) {
-    const groupId = `group-local-${source.node_id}`
-    const totalItems = localNodes.length + 1 // source + locals
-    const ITEM_GAP = 24
-    const LABEL_H = 32
-    const INNER_PAD = 30
-    const groupW = NODE_WIDTH + INNER_PAD * 2
-    const groupH = LABEL_H + totalItems * NODE_HEIGHT + (totalItems - 1) * ITEM_GAP + INNER_PAD * 2
-
-    const groupNode: Node = {
-      id: groupId,
-      type: "group",
-      position: { x: 0, y: 0 },
-      data: { label: "Local" },
-      style: {
-        width: groupW,
-        height: groupH,
-        border: "1.5px dashed #6B7280",
-        borderRadius: "12px",
-        backgroundColor: "rgba(107,114,128,0.05)",
-      },
-      zIndex: -1,
-    }
-
-    // Source node at top of group
-    const sourceInGroup = nodesMap.get(source.node_id)!
-    sourceInGroup.parentId = groupId
-    sourceInGroup.extent = "parent"
-    sourceInGroup.position = { x: INNER_PAD, y: LABEL_H + INNER_PAD }
-    sourceInGroup.zIndex = 10
-
-    // Local deps stacked below source
-    localNodes.forEach((ln, i) => {
-      ln.parentId = groupId
-      ln.extent = "parent"
-      ln.position = { x: INNER_PAD, y: LABEL_H + INNER_PAD + (i + 1) * (NODE_HEIGHT + ITEM_GAP) }
-      ln.zIndex = 10
-    })
-
-    // Group must come first in nodes array, set high zIndex on all non-group nodes
-    const nonGroupNodes = allNodes.map((n) => ({ ...n, zIndex: n.zIndex ?? 10 }))
-    return { nodes: [groupNode, ...nonGroupNodes], edges }
-  }
-
-  // No group: set zIndex on all nodes to stay above edges
   return { nodes: allNodes.map((n) => ({ ...n, zIndex: 10 })), edges }
 }
 
-// Dagre LR layout
+// Dagre RL layout: downstream LEFT, upstream RIGHT, local nodes BELOW source
 export function layoutDAG(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges: Edge[] } {
   if (nodes.length === 0) return { nodes, edges }
 
-  // Only layout top-level nodes (no parentId) with Dagre
-  const topLevel = nodes.filter((n) => !n.parentId)
-  const children = nodes.filter((n) => !!n.parentId)
+  // Separate local nodes from Dagre layout -- they get positioned manually below source
+  const dagreNodes = nodes.filter((n) => (n.data as TracerNodeData).direction !== "local")
+  const localNodes = nodes.filter((n) => (n.data as TracerNodeData).direction === "local")
 
-  if (topLevel.length === 0) return { nodes, edges }
+  if (dagreNodes.length === 0) return { nodes, edges }
 
   const g = new dagre.graphlib.Graph()
   g.setDefaultEdgeLabel(() => ({}))
-  g.setGraph({ rankdir: "LR", ranksep: 120, nodesep: 50, marginx: 30, marginy: 30 })
+  g.setGraph({ rankdir: "RL", ranksep: 120, nodesep: 50, marginx: 30, marginy: 30 })
 
-  for (const node of topLevel) {
-    const w = node.style?.width ? Number(node.style.width) : NODE_WIDTH
-    const h = node.style?.height ? Number(node.style.height) : NODE_HEIGHT
-    g.setNode(node.id, { width: w, height: h })
+  for (const node of dagreNodes) {
+    g.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT })
   }
 
-  // Only add edges between top-level nodes (or group nodes)
+  // Only add edges between dagre nodes (skip local edges)
+  const dagreIds = new Set(dagreNodes.map((n) => n.id))
   for (const edge of edges) {
-    const srcTop = topLevel.find((n) => n.id === edge.source || children.some((c) => c.id === edge.source && c.parentId === n.id))
-    const tgtTop = topLevel.find((n) => n.id === edge.target || children.some((c) => c.id === edge.target && c.parentId === n.id))
-    if (srcTop && tgtTop) {
-      g.setEdge(srcTop.id, tgtTop.id)
+    if (dagreIds.has(edge.source) && dagreIds.has(edge.target)) {
+      g.setEdge(edge.source, edge.target)
     }
   }
 
   dagre.layout(g)
 
-  const laid = topLevel.map((node) => {
+  const laid = dagreNodes.map((node) => {
     const pos = g.node(node.id)
-    const w = node.style?.width ? Number(node.style.width) : NODE_WIDTH
-    const h = node.style?.height ? Number(node.style.height) : NODE_HEIGHT
-    return { ...node, position: { x: pos.x - w / 2, y: pos.y - h / 2 } }
+    return { ...node, position: { x: pos.x - NODE_WIDTH / 2, y: pos.y - NODE_HEIGHT / 2 } }
   })
 
-  return { nodes: [...laid, ...children], edges }
+  // Position local nodes in a row below the source node
+  if (localNodes.length > 0) {
+    const sourceNode = laid.find((n) => (n.data as TracerNodeData).isSource)
+    const sourceX = sourceNode?.position.x ?? 0
+    const sourceY = sourceNode?.position.y ?? 0
+    const LOCAL_GAP = 24
+    const LOCAL_Y_OFFSET = 140 // vertical gap below source
+    const totalWidth = localNodes.length * NODE_WIDTH + (localNodes.length - 1) * LOCAL_GAP
+    const startX = sourceX + NODE_WIDTH / 2 - totalWidth / 2 // center below source
+
+    const positionedLocals = localNodes.map((ln, i) => ({
+      ...ln,
+      position: { x: startX + i * (NODE_WIDTH + LOCAL_GAP), y: sourceY + LOCAL_Y_OFFSET },
+    }))
+    return { nodes: [...laid, ...positionedLocals], edges }
+  }
+
+  return { nodes: [...laid, ...localNodes], edges }
 }

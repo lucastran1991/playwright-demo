@@ -123,7 +123,7 @@ function DependencyImpactDAGInner() {
               Search for a node to trace dependencies and impacts
             </p>
             <p className="text-muted-foreground/60 text-xs">
-              Upstream dependencies shown in blue, downstream impacts in red
+              Downstream impacts (left, red) | Upstream dependencies (right, blue)
             </p>
           </div>
         </div>
