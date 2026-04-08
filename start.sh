@@ -92,16 +92,14 @@ if [[ "$WITH_POSTGRES" -eq 1 ]]; then
   createdb app_dev 2>/dev/null || true
 fi
 
-# Validate env files exist
+# Auto-create env files from examples if missing
 if [[ ! -f "$BACKEND/.env" ]]; then
-  echo "Missing backend/.env — copy from .env.example:"
-  echo "  cp $BACKEND/.env.example $BACKEND/.env"
-  exit 1
+  cp "$BACKEND/.env.example" "$BACKEND/.env"
+  echo "Created backend/.env from .env.example"
 fi
 if [[ ! -f "$FRONTEND/.env.local" ]]; then
-  echo "Missing frontend/.env.local — copy from .env.example:"
-  echo "  cp $FRONTEND/.env.example $FRONTEND/.env.local"
-  exit 1
+  cp "$FRONTEND/.env.example" "$FRONTEND/.env.local"
+  echo "Created frontend/.env.local from .env.example"
 fi
 
 # Cross-platform sed in-place (macOS uses -i '', GNU/Linux uses -i)
