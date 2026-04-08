@@ -129,7 +129,7 @@ fi
 # Production build
 if [[ "$PROD_MODE" -eq 1 ]]; then
   echo "Building backend binary..."
-  (cd "$BACKEND" && GOTOOLCHAIN=auto go build -o server ./cmd/server)
+  (cd "$BACKEND" && GOTOOLCHAIN=auto GONOSUMCHECK="golang.org/toolchain" go build -o server ./cmd/server)
   echo "Building frontend..."
   (cd "$FRONTEND" && $PKG run build)
 fi
